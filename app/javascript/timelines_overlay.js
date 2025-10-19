@@ -69,5 +69,6 @@ function initOverlay() {
   player.ready(() => {
     renderAt(Number(player.currentTime?.() || 0));
     player.on("timeupdate", () => renderAt(Number(player.currentTime?.() || 0)));
+    console.log(player.currentTime());
   });
 }
