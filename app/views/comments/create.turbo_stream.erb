@@ -1,0 +1,26 @@
+<% if @comment.persisted? %>
+  <%= turbo_stream.prepend "comments_list" do %>
+    <%= render partial: "comments/comment", locals: { comment: @comment } %>
+  <% end %>
+
+  <%# ツリー表示の更新 %>
+  <% if @comment.parent_id.present? %>
+    <%= turbo_stream.replace "replies-#{@comment.parent_id}" do %>
+      <%= render partial: "comments/tree",
+                 locals: { nodes: @comment.parent.children.order(:created_at).arrange,
+                           video: @comment.video,
+                           list_id: "replies-#{@comment.parent_id}" } %>
+    <% end %>
+  <% else %>
+    <%= turbo_stream.replace "comments_tree" do %>
+      <%= render partial: "comments/tree",
+                 locals: { nodes: @comment.video.comments.order(:created_at).arrange,
+                           video: @comment.video,
+                           list_id: "comments_tree" } %>
+    <% end %>
+  <% end %>
+<% end %>
+
+<%= turbo_stream.replace "new_comment_form" do %>
+  <%= render partial: "comments/form", locals: { comment: (@comment.persisted? ? Comment.new : @comment), video: @comment.video } %>
+<% end %>

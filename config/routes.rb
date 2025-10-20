@@ -20,6 +20,7 @@ Rails.application.routes.draw do
         get :all, constraints: { format: :html }
       end
     end
+    resources :comments, only: %i[create edit destroy], shallow: true
   end
   resources :tags, only: %i[index show create destroy new]
 end

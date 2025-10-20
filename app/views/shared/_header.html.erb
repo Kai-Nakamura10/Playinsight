@@ -4,14 +4,14 @@
       <%= image_tag 'logo.png', class: 'h-15 w-auto' %>
     <% end %>
 
-    <nav data-controller="menu">
-      <button data-action="click->menu#toggle" class="block md:hidden p-2 text-gray-800 focus:outline-none">
+    <nav data-controller="toggle">
+      <button data-action="click->toggle#toggle" class="block md:hidden p-2 text-gray-800 focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
         </svg>
       </button>
 
-      <div data-menu-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none">
+      <div data-toggle-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none">
         <ul class="flex justify-between flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">
           <li>
             <%= link_to t('header.basic_rules'), '#', class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>

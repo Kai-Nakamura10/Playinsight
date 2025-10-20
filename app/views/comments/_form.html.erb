@@ -1,0 +1,24 @@
+<div class="row mb-3">
+  <div class="col-lg-8 offset-lg-2">
+    <%= form_with model: comment, url: video_comments_path(video) do |f| %>
+      <%# 子コメントの場合に親ID/タイムラインIDを送る %>
+      <% if comment.respond_to?(:parent_id) && comment.parent_id.present? %>
+        <%= hidden_field_tag "comment[parent_id]", comment.parent_id %>
+      <% end %>
+      <% if comment.respond_to?(:timeline_id) && comment.timeline_id.present? %>
+        <%= f.hidden_field :timeline_id %>
+      <% end %>
+      <% if comment.respond_to?(:video_timestamp_seconds) && comment.video_timestamp_seconds.present? %>
+        <%= f.hidden_field :video_timestamp_seconds %>
+      <% end %>
+
+      <div class="mb-3">
+        <%= f.label :body, "コメント", class: "form-label" %>
+        <%= f.text_area :body, class: "form-control", rows: 4 %>
+      </div>
+      <div class="mb-3">
+        <%= f.submit "コメントを投稿", class: "btn btn-primary" %>
+      </div>
+    <% end %>
+  </div>
+</div>

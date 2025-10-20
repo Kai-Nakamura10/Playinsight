@@ -9,6 +9,8 @@ class VideosController < ApplicationController
 
   def show
     @video = Video.includes(:tags).find(params[:id])
+    @comment_tree = @video.comments.order(:created_at).arrange
+    @new_comment = @video.comments.new
   end
 
   def edit

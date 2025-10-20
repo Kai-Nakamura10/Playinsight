@@ -1,0 +1,24 @@
+<tr id="comment-<%= comment.id %>">
+  <td>
+    <p><%= h(comment.body) %></p>
+    <p class="text-sm text-gray-500">投稿者 <%= comment.user.try(:nickname) || comment.user.try(:email) %></p>
+    <% if current_user == comment.user %>
+      <div class="mt-2">
+        <%= button_to "削除", comment_path(comment), method: :delete, data: { turbo_confirm: "本当に削除しますか?" }, class: "text-red-600" %>
+      </div>
+    <% end %>
+
+    <div class="mt-2" data-controller="toggle">
+      <button type="button"
+              class="px-3 py-1 rounded bg-gray-100 hover:bg-gray-200 text-gray-800"
+              data-action="click->toggle#toggle">
+        返信
+      </button>
+      <div class="mt-2 hidden" data-toggle-target="panel">
+        <%= render "comments/form",
+                   video: comment.video,
+                   comment: comment.video.comments.new(parent_id: comment.id, timeline_id: comment.timeline_id, video_timestamp_seconds: comment.video_timestamp_seconds) %>
+      </div>
+    </div>
+  </td>
+</tr>
