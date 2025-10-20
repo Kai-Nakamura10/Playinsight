@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_08_044309) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_20_142744) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -71,12 +71,13 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_08_044309) do
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.bigint "video_id", null: false
-    t.bigint "timeline_id", null: false
+    t.bigint "timeline_id"
     t.decimal "video_timestamp_seconds", precision: 8, scale: 2
     t.text "body"
     t.string "ancestry"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["ancestry"], name: "index_comments_on_ancestry"
     t.index ["timeline_id"], name: "index_comments_on_timeline_id"
     t.index ["user_id"], name: "index_comments_on_user_id"
     t.index ["video_id"], name: "index_comments_on_video_id"

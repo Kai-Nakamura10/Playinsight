@@ -81,3 +81,18 @@
     <%= f.submit "タイムラインを追加", class: "bg-green-600 text-black px-4 py-2 rounded hover:bg-green-700" %>
   </div>
 <% end %>
+<h2 class="text-lg font-semibold mb-2 mt-6">コメント</h2>
+<div id="comments_wrapper">
+  <table class="w-full table-auto border-collapse">
+    <tbody id="comments_list">
+      <%= render partial: "comments/comment", collection: @video.comments.order(created_at: :desc), as: :comment %>
+    </tbody>
+  </table>
+</div>
+<div id="new_comment_form">
+  <%= render partial: "comments/form", locals: { comment: Comment.new, video: @video } %>
+</div>
+<div class="mt-4">
+  <%= render "comments/tree", nodes: @comment_tree, video: @video, list_id: "comments_tree" %>
+  
+</div>

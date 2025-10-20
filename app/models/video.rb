@@ -5,6 +5,7 @@ class Video < ApplicationRecord
   has_many :tactics, through: :video_tactics
   has_many :video_tags, dependent: :destroy
   has_many :tags, through: :video_tags
+  has_many :comments, dependent: :destroy
   has_one_attached :file
   has_one_attached :thumbnail
 
