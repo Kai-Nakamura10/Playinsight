@@ -1,6 +1,15 @@
 class VideosController < ApplicationController
   def index
-    @videos = Video.includes(:user).with_attached_file.with_attached_thumbnail.order(created_at: :desc)
+    if params[:tag_id].present?
+      tag = Tag.find(params[:tag_id])
+      @videos = tag.videos
+                   .includes(:user)
+                   .with_attached_file
+                   .with_attached_thumbnail
+                   .order(created_at: :desc)
+    else
+      @videos = Video.includes(:user).with_attached_file.with_attached_thumbnail.order(created_at: :desc)
+    end
   end
 
   def new
@@ -20,7 +29,7 @@ class VideosController < ApplicationController
   def update
     @video = current_user.videos.find(params[:id])
     if @video.update(video_params)
-      redirect_to videos_path(@video)
+      redirect_to video_path(@video)
     else
       render :edit, status: :unprocessable_entity
     end
@@ -35,7 +44,7 @@ class VideosController < ApplicationController
   def create
     @video = current_user.videos.new(video_params)
     if @video.save
-      redirect_to videos_path(@video)
+      redirect_to video_path(@video)
     else
       render :new, status: :unprocessable_entity
     end

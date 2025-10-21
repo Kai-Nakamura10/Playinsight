@@ -2,7 +2,7 @@
 <ul>
   <% @tags.each do |tag| %>
     <li>
-      <%= link_to tag.name, tag_path(tag) %>
+      <%= link_to "#{tag.name} (#{tag.videos.count})", videos_path(tag_id: tag.id) %>
     </li>
   <% end %>
 </ul>

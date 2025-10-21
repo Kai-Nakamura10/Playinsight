@@ -18,11 +18,11 @@ class TimelinesController < ApplicationController
     if @timeline.save
       @timelines = @video.timelines.order(:start_seconds)
       respond_to do |format|
-        format.html { redirect_to video_path(@video), notice: 'タイムラインを追加しました。' }
+        format.html { redirect_to video_path(@video), notice: "タイムラインを追加しました。" }
         format.turbo_stream
       end
     else
-      redirect_to video_path(@video), alert: 'タイムラインの追加に失敗しました。'
+      redirect_to video_path(@video), alert: "タイムラインの追加に失敗しました。"
     end
   end
 
@@ -31,9 +31,9 @@ class TimelinesController < ApplicationController
   def update
     mapped_attrs = map_params_to_model(timeline_params)
     if @timeline.update(mapped_attrs)
-      redirect_to video_path(@timeline.video), notice: 'タイムラインを更新しました。'
+      redirect_to video_path(@timeline.video), notice: "タイムラインを更新しました。"
     else
-      redirect_to edit_timeline_path(@timeline), alert: 'タイムラインの更新に失敗しました。'
+      redirect_to edit_timeline_path(@timeline), alert: "タイムラインの更新に失敗しました。"
     end
   end
 
@@ -43,7 +43,7 @@ class TimelinesController < ApplicationController
     @timelines = video.timelines.order(:start_seconds)
 
     respond_to do |format|
-      format.html { redirect_to video_path(video), notice: 'タイムラインを削除しました。' }
+      format.html { redirect_to video_path(video), notice: "タイムラインを削除しました。" }
       format.turbo_stream
     end
   end

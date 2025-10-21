@@ -1,6 +1,6 @@
 class CommentsController < ApplicationController
-  before_action :set_video, only: [:create]
-  before_action :set_comment, only: [:destroy]
+  before_action :set_video, only: [ :create ]
+  before_action :set_comment, only: [ :destroy ]
   def create
     if comment_params[:parent_id].present?
       parent = @video.comments.find(comment_params[:parent_id])
