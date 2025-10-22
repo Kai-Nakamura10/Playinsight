@@ -23,4 +23,5 @@ Rails.application.routes.draw do
     resources :comments, only: %i[create edit destroy], shallow: true
   end
   resources :tags, only: %i[index show create destroy new]
+  resources :bestselects
 end
