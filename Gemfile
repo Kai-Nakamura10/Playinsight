@@ -50,7 +50,7 @@ gem "streamio-ffmpeg"
 
 gem "sidekiq", "~> 8.0", ">= 8.0.7"
 
-gem "aws-sdk-cloudfront", "~> 1.129"
+gem "aws-sdk-cloudfront", "~> 1.132"
 
 gem "redis", "~> 5.4", ">= 5.4.1"
 
