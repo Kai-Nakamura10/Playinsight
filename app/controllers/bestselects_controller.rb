@@ -5,5 +5,6 @@ class BestselectsController < ApplicationController
 
   def show
     @bestselect = Bestselect.find(params[:id])
+    @next_bestselect = Bestselect.where("id > ?", @bestselect.id).order(:id).first
   end
 end

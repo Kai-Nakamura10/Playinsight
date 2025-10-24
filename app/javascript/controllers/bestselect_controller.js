@@ -3,6 +3,9 @@ import { Controller } from "@hotwired/stimulus"
 // Controls answer selection and shows correct/incorrect feedback
 export default class extends Controller {
   static targets = ["result", "answer", "explanation"]
+  static values = { 
+    currentId: Number
+  }
 
   connect() {
     // Clear any stale state on connect
