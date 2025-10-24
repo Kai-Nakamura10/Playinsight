@@ -1,7 +1,7 @@
 <div class="relative min-h-[calc(100vh-134px)] bg-center bg-contain bg-no-repeat" style="background-image: url('<%= asset_path("Group_34_#{@bestselect.id}.svg") %>');"></div>
 
 <% if @bestselect.present? %>
-  <div class="question p-4" data-controller="bestselect">
+  <div class="question p-4" data-controller="bestselect" data-bestselect-current-id-value="<%= @bestselect.id %>">
     <h2 class="text-xl font-semibold mb-4"><%= @bestselect.question %></h2>
 
     <ul class="answers space-y-2 mb-6">
@@ -25,10 +25,15 @@
       <h3 class="font-medium mb-2">解説</h3>
       <p><%= @bestselect.explanation %></p>
     </div>
+
+    <% if @next_bestselect.present? %>
+      <div class="mt-6">
+        <%= link_to "次の問題へ", bestselect_path(@next_bestselect), class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+      </div>
+    <% end %>
   </div>
 <% else %>
   <div class="p-4">
     <p>問題が見つかりません。`bin/rails db:seed` を実行してください。</p>
   </div>
 <% end %>
-<button>Bestselect</button>
