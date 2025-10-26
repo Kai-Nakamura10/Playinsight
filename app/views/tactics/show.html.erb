@@ -1,0 +1,40 @@
+<div class="relative min-h-[calc(100vh-134px)] bg-center bg-contain bg-no-repeat" style="background-image: url('<%= asset_path("Group_1_#{@tactic.id}.svg") %>');"></div>
+
+<div class="tactic">
+  <h1><%= @tactic.title %></h1>
+
+  <% if @tactic.trigger.present? %>
+    <p>トリガー：<%= @tactic.trigger %></p>
+  <% end %>
+
+  <% if @tactic.description.present? %>
+    <div class="description"><%= simple_format(@tactic.description) %></div>
+  <% end %>
+
+  <% steps = @tactic.steps || {} %>
+
+  <% success_conditions = steps["success_conditions"] || steps["success"] %>
+  <% if success_conditions.present? %>
+    <h2>✅ 成功条件</h2>
+    <ul>
+      <% success_conditions.each do |cond| %>
+        <li><%= cond %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% common_failures = steps["common_failures"] || steps["failures"] %>
+  <% if common_failures.present? %>
+    <h2>⚠️ よくある失敗</h2>
+    <ul>
+      <% common_failures.each do |f| %>
+        <li><%= f %></li>
+      <% end %>
+    </ul>
+  <% end %>
+
+  <% if @tactic.counters.present? %>
+    <h2>🔄 カウンター</h2>
+    <p><%= @tactic.counters %></p>
+  <% end %>
+</div>

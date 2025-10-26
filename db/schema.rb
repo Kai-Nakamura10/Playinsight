@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_20_142744) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_26_120000) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -149,6 +149,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_20_142744) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.index ["slug"], name: "index_tactics_on_slug_unique", unique: true, where: "(slug IS NOT NULL)"
   end
 
   create_table "tags", force: :cascade do |t|

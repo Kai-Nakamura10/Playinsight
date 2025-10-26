@@ -67,3 +67,24 @@ bestselect5.answers.create!([
   { body: "③にパス", position: 3, is_correct: true },
   { body: "ロールターンをする", position: 4, is_correct: false }
 ])
+
+# 2対1の速攻
+tactic = Tactic.find_or_initialize_by(slug: "fastbreak-2on1")
+tactic.assign_attributes(
+title: "2対1の速攻",
+trigger: "DFが1人/中央レーン確保",
+description: nil, # 任意
+steps: {
+"success_conditions" => [
+"中央レーン優先",
+"パスはDFの外側",
+"1回だけフェイク"
+],
+"common_failures" => [
+"突っ込みすぎてブロックされる",
+"味方と同じレーンを走る"
+]
+},
+counters: "DFがパス読み → 保持者がそのままレイアップ"
+)
+tactic.save!
