@@ -1,0 +1,12 @@
+<h1><%= @rule.title %></h1>
+<div>
+  <%= simple_format(@rule.body) %>
+  <p>ID: <%= @rule.id %></p>
+</div>
+<% if @next_bestselect.present? %>
+  <div class="mt-6 flex gap-3">
+    <%= link_to "次のルール →",
+      rule_path(@next_rule),
+      class: "px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" %>
+  </div>
+<% end %>
