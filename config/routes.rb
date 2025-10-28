@@ -25,4 +25,5 @@ Rails.application.routes.draw do
   resources :tags, only: %i[index show create destroy new]
   resources :bestselects
   resources :tactics
+  resources :questions
 end

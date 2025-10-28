@@ -1,0 +1,23 @@
+<% grouped = @faqs.group_by(&:category) %>
+
+<div class="faqs">
+  <% grouped.each do |category, faqs| %>
+    <section class="faq-category">
+      <h2 class="faq-category__title"><%= category.presence || "その他" %></h2>
+
+      <dl class="faq-list">
+        <% faqs.sort_by(&:order).each_with_index do |faq, i| %>
+          <dt class="faq-question">
+            Q<%= i + 1 %>. <%= h(faq.body) %>
+          </dt>
+
+          <% faq.faqs_answers.each do |ans| %>
+            <dd class="faq-answer">
+              A. <%= simple_format(h(ans.body)) %>
+            </dd>
+          <% end %>
+        <% end %>
+      </dl>
+    </section>
+  <% end %>
+</div>
