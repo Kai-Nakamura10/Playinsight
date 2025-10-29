@@ -3,7 +3,7 @@
   <%= simple_format(@rule.body) %>
   <p>ID: <%= @rule.id %></p>
 </div>
-<% if @next_bestselect.present? %>
+<% if @next_rule.present? %>
   <div class="mt-6 flex gap-3">
     <%= link_to "次のルール →",
       rule_path(@next_rule),
