@@ -1,0 +1,16 @@
+<h1>ルール検索</h1>
+
+<%= form_with url: search_rules_path, method: :get, local: true do %>
+  <%= text_field_tag :q, params[:q], placeholder: "キーワードを入力" %>
+  <%= submit_tag "検索" %>
+<% end %>
+
+<% if @rules.present? %>
+  <ul>
+    <% @rules.each do |rule| %>
+      <li><%= link_to rule.title, rule_path(rule) %></li>
+    <% end %>
+  </ul>
+<% elsif params[:q].present? %>
+  <p>該当するルールは見つかりませんでした。</p>
+<% end %>

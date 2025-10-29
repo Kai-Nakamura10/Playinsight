@@ -26,5 +26,9 @@ Rails.application.routes.draw do
   resources :bestselects
   resources :tactics
   resources :questions
-  resources :rules
+  resources :rules do
+    collection do
+      get :search
+    end
+  end
 end
