@@ -4,7 +4,8 @@ class Tactic < ApplicationRecord
   has_many :videos, through: :video_tactics
   validates :title, presence: true
   validates :slug, presence: true, uniqueness: true
-  before_validation :apply_text_to_json_arrays
+  # Ensure text accessor fields are reflected into JSON columns before validation
+  before_validation :apply_text_fields_to_steps_and_counters
 
   def success_conditions
     (steps.is_a?(Hash) ? steps["success_conditions"] : nil) || []
