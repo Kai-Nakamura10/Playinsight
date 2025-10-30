@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_26_120000) do
+ActiveRecord::Schema[8.0].define(version: 2025_10_30_054044) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -144,7 +144,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_26_120000) do
     t.string "title"
     t.text "description"
     t.string "trigger"
-    t.jsonb "steps"
+    t.jsonb "steps", default: {}
     t.string "counters"
     t.string "slug"
     t.datetime "created_at", null: false
@@ -189,11 +189,12 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_26_120000) do
   create_table "video_tactics", force: :cascade do |t|
     t.bigint "video_id", null: false
     t.bigint "tactic_id", null: false
-    t.integer "display_time"
+    t.decimal "display_time", precision: 8, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tactic_id"], name: "index_video_tactics_on_tactic_id"
-    t.index ["video_id", "tactic_id"], name: "index_video_tactics_on_video_id_and_tactic_id", unique: true
+    t.index ["video_id", "display_time"], name: "index_video_tactics_on_video_id_and_display_time"
+    t.index ["video_id", "tactic_id", "display_time"], name: "index_video_tactics_on_video_id_and_tactic_id_and_display_time", unique: true
     t.index ["video_id"], name: "index_video_tactics_on_video_id"
   end
 

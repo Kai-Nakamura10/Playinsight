@@ -1,0 +1,41 @@
+<h3 class="text-md font-semibold mt-6 mb-2">登録済みの戦術</h3>
+<table class="w-full border-collapse">
+  <thead>
+    <tr class="bg-gray-100">
+      <th class="border px-3 py-2 text-left">秒数</th>
+      <th class="border px-3 py-2 text-left">戦術</th>
+      <th class="border px-3 py-2 text-left">メモ</th>
+      <th class="border px-3 py-2">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @video_tactics.each do |vt| %>
+      <tr>
+        <td class="border px-3 py-2 w-32">
+          <%= form_with model: vt, url: video_tactic_path(vt), method: :patch, class: "flex items-center gap-2" do |f| %>
+            <%= f.number_field :display_time, value: vt.display_time.to_f, step: 0.1, min: 0,
+                  id: "vt_display_time_#{vt.id}",
+                  class: "rounded border px-2 py-1 w-24" %>
+            <button type="button" class="rounded px-2 py-1 border"
+              onclick="
+                (function(){
+                  const p = videojs(document.getElementById('player-<%= @video.id %>'));
+                  document.getElementById('vt_display_time_<%= vt.id %>').value = p.currentTime().toFixed(2);
+                })();
+              ">
+              現在位置
+            </button>
+            <%= f.submit "更新", class: "rounded bg-gray-700 px-2 py-1 text-white" %>
+          <% end %>
+        </td>
+        <td class="border px-3 py-2"><%= vt.tactic.title %></td>
+        <td class="border px-3 py-2"><%= vt.note %></td>
+        <td class="border px-3 py-2 text-center">
+          <%= button_to "削除", video_tactic_path(vt), method: :delete,
+                data: { turbo_confirm: "削除しますか？" },
+                class: "rounded bg-red-600 px-3 py-1 text-white" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

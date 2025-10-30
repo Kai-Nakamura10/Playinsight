@@ -1,0 +1,44 @@
+<%= form_with model: tactic, class: "space-y-5" do |f| %>
+  <div>
+    <%= f.label :title, "タイトル" %>
+    <%= f.text_field :title, class: "mt-1 w-full rounded border px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.label :slug, "スラッグ" %>
+    <%= f.text_field :slug, class: "mt-1 w-full rounded border px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.label :trigger, "トリガー" %>
+    <%= f.text_field :trigger, class: "mt-1 w-full rounded border px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.label :description, "説明" %>
+    <%= f.text_area :description, rows: 4, class: "mt-1 w-full rounded border px-3 py-2" %>
+  </div>
+
+  <div>
+    <%= f.label :success_text, "成功条件（1行=1項目）" %>
+    <%= f.text_area :success_text,
+          value: (tactic.success_text.presence || tactic.success_conditions.join("\n")),
+          rows: 4, class: "mt-1 w-full rounded border px-3 py-2 font-mono" %>
+  </div>
+
+  <div>
+    <%= f.label :failure_text, "よくある失敗（1行=1項目）" %>
+    <%= f.text_area :failure_text,
+          value: (tactic.failure_text.presence || tactic.common_failures.join("\n")),
+          rows: 4, class: "mt-1 w-full rounded border px-3 py-2 font-mono" %>
+  </div>
+
+  <div>
+    <%= f.label :counters_text, "カウンター（文字列でOK）" %>
+    <%= f.text_field :counters_text,
+          value: (tactic.counters_text.presence || tactic.counters_string),
+          class: "mt-1 w-full rounded border px-3 py-2" %>
+  </div>
+
+  <%= f.submit class: "rounded bg-blue-600 px-4 py-2 text-white" %>
+<% end %>
