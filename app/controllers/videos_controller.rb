@@ -20,6 +20,9 @@ class VideosController < ApplicationController
     @video = Video.includes(:tags).find(params[:id])
     @comment_tree = @video.comments.order(:created_at).arrange
     @new_comment = @video.comments.new
+    @video_tactics = @video.video_tactics.includes(:tactic).order(:display_time)
+    @tactics = Tactic.order(:title)
+    @tactics_payload = @video.video_tactics.includes(:tactic).order(:display_time).map { |vt| { display_time: vt.display_time.to_f, tactic_name: vt.tactic.title } }
   end
 
   def edit

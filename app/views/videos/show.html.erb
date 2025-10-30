@@ -2,7 +2,7 @@
   <div class="relative">
     <video
       id="player-<%= @video.id %>"
-      class="video-js vjs-default-skin w-full h-auto bg-black mx-auto max-w-4xl mt-6"
+      class="video-js vjs-default-skin w-full h-auto bg-black mx-auto"
       controls
       preload="auto"
       playsinline
@@ -14,21 +14,11 @@
         <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
       <% end %>
     </video>
-    <div
-      id="tactic-overlay"
-      data-video-id="<%= @video.id %>"
-      class="pointer-events-none absolute inset-0 z-20"
-    >
-      <div
-        id="tactic-badge-<%= @video.id %>"
-        class="absolute hidden max-w-[80%]
-              bg-white/85 backdrop-blur-sm text-gray-900
-              text-sm md:text-base font-semibold
-              rounded-md px-3 py-2
-              shadow-xl ring-1 ring-black/10"
-        style="transform: translate(-50%, -100%);"
-      ></div>
-    </div>
+    <%= tag.div(
+      id: "tactic-overlay",
+      data: { video_id: @video.id, tactics: @tactics_payload },
+      class: "pointer-events-none absolute inset-0 z-50"
+    ) %>
   </div>
 </div>
 <h3>タグ</h3>
@@ -94,5 +84,73 @@
 </div>
 <div class="mt-4">
   <%= render "comments/tree", nodes: @comment_tree, video: @video, list_id: "comments_tree" %>
-  
 </div>
+<h2 class="text-lg font-bold mt-6 mb-2">この動画に戦術を追加</h2>
+
+<%= form_with url: video_tactics_path, method: :post, class: "flex flex-wrap gap-3 items-end" do %>
+  <%= hidden_field_tag "video_tactic[video_id]", @video.id %>
+
+  <div>
+    <label class="block text-sm font-medium">戦術</label>
+    <%= select_tag "video_tactic[tactic_id]",
+          options_from_collection_for_select(@tactics, :id, :title),
+          class: "rounded border px-3 py-2" %>
+  </div>
+
+  <div>
+    <label class="block text-sm font-medium">表示秒</label>
+    <%= number_field_tag "video_tactic[display_time]", 2.0, step: 0.1, min: 0,
+          id: "vt_display_time_new",
+          class: "rounded border px-3 py-2 w-28" %>
+    <button type="button" class="ml-2 rounded px-2 py-1 border"
+      onclick="
+        (function(){
+          const p = videojs(document.getElementById('player-<%= @video.id %>'));
+          document.getElementById('vt_display_time_new').value = p.currentTime().toFixed(2);
+        })();
+      ">
+      現在の再生位置をセット
+    </button>
+  </div>
+
+  <%= submit_tag "追加", class: "rounded bg-blue-600 px-4 py-2 text-white" %>
+<% end %>
+<h3 class="text-md font-semibold mt-6 mb-2">登録済みの戦術</h3>
+<table class="w-full border-collapse">
+  <thead>
+    <tr class="bg-gray-100">
+      <th class="border px-3 py-2 text-left">秒数</th>
+      <th class="border px-3 py-2 text-left">戦術</th>
+      <th class="border px-3 py-2">操作</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% @video_tactics.each do |vt| %>
+      <tr>
+        <td class="border px-3 py-2 w-32">
+          <%= form_with model: vt, url: video_tactic_path(vt), method: :patch, class: "flex items-center gap-2" do |f| %>
+            <%= f.number_field :display_time, value: vt.display_time.to_f, step: 0.1, min: 0,
+                  id: "vt_display_time_#{vt.id}",
+                  class: "rounded border px-2 py-1 w-24" %>
+            <button type="button" class="rounded px-2 py-1 border"
+              onclick="
+                (function(){
+                  const p = videojs(document.getElementById('player-<%= @video.id %>'));
+                  document.getElementById('vt_display_time_<%= vt.id %>').value = p.currentTime().toFixed(2);
+                })();
+              ">
+              現在位置
+            </button>
+            <%= f.submit "更新", class: "rounded bg-gray-700 px-2 py-1 text-white" %>
+          <% end %>
+        </td>
+        <td class="border px-3 py-2"><%= vt.tactic.title %></td>
+        <td class="border px-3 py-2 text-center">
+          <%= button_to "削除", video_tactic_path(vt), method: :delete,
+                data: { turbo_confirm: "削除しますか？" },
+                class: "rounded bg-red-600 px-3 py-1 text-white" %>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>

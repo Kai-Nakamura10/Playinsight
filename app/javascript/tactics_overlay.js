@@ -6,14 +6,14 @@ document.addEventListener("DOMContentLoaded", initTacticsOverlay);
 function initTacticsOverlay() {
   const overlay = document.getElementById("tactic-overlay");
   if (!overlay || overlay.dataset.tacticsInited) return;
-  overlay.dataset.tacticsInited = "1";
 
   const videoId = overlay.dataset.videoId;
   const videoEl = document.getElementById(`player-${videoId}`);
   if (!videoEl) return;
 
-  // Use the imported videojs directly; no global dependency
-  const player = (videoEl.player && videoEl.player.on) ? videoEl.player : videojs(videoEl);
+  // Initialize or reuse the player and store it on the element
+  const player = videoEl.player && videoEl.player.on ? videoEl.player : videojs(videoEl);
+  videoEl.player = player;
   // Read tactics data from data attribute if provided, else use example data
   // Expected shape: [{ display_time: Number (seconds), tactic_name: String }, ...]
   let tacticsData = [];
@@ -73,48 +73,59 @@ function initTacticsOverlay() {
 
   let prev = 0;
 
-  player.on("loadedmetadata", () => {
+  // Defer event binding until the player is ready
+  player.ready(() => {
+    overlay.dataset.tacticsInited = "1";
+
     try {
       prev = Number(player.currentTime?.() || 0) || 0;
     } catch (_) {
       prev = 0;
     }
-  });
 
-  player.on("timeupdate", () => {
-    let now = 0;
-    try {
-      now = Number(player.currentTime?.() || 0) || 0;
-    } catch (_) {
-      return;
-    }
+    player.on("loadedmetadata", () => {
+      try {
+        prev = Number(player.currentTime?.() || 0) || 0;
+      } catch (_) {
+        prev = 0;
+      }
+    });
 
-    const forward = now >= prev;
+    player.on("timeupdate", () => {
+      let now = 0;
+      try {
+        now = Number(player.currentTime?.() || 0) || 0;
+      } catch (_) {
+        return;
+      }
 
-    if (forward) {
-      // Forward: check from small -> large
-      tacticsData.forEach((t) => {
-        if (fired.has(keyOf(t))) return;
-        const m = Number(t.display_time) || 0;
-        // Crossing condition (forward): prev < m <= now
-        if (prev < m && m <= now) {
-          showTactic(t);
-          fired.add(keyOf(t));
-        }
-      });
-    } else {
-      // Rewind: check from large -> small for natural order
-      tacticsData.slice().reverse().forEach((t) => {
-        if (fired.has(keyOf(t))) return;
-        const m = Number(t.display_time) || 0;
-        // Crossing condition (rewind): now <= m < prev
-        if (now <= m && m < prev) {
-          showTactic(t);
-          fired.add(keyOf(t));
-        }
-      });
-    }
+      const forward = now >= prev;
 
-    prev = now; // Important: update at the end
+      if (forward) {
+        // Forward: check from small -> large
+        tacticsData.forEach((t) => {
+          if (fired.has(keyOf(t))) return;
+          const m = Number(t.display_time) || 0;
+          // Crossing condition (forward): prev < m <= now
+          if (prev < m && m <= now) {
+            showTactic(t);
+            fired.add(keyOf(t));
+          }
+        });
+      } else {
+        // Rewind: check from large -> small for natural order
+        tacticsData.slice().reverse().forEach((t) => {
+          if (fired.has(keyOf(t))) return;
+          const m = Number(t.display_time) || 0;
+          // Crossing condition (rewind): now <= m < prev
+          if (now <= m && m < prev) {
+            showTactic(t);
+            fired.add(keyOf(t));
+          }
+        });
+      }
+
+      prev = now; // Important: update at the end
+    });
   });
 }

@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     end
     resources :comments, only: %i[create edit destroy], shallow: true
   end
+  resources :video_tactics, only: [ :create, :update, :destroy ]
   resources :tags, only: %i[index show create destroy new]
   resources :bestselects
   resources :tactics
