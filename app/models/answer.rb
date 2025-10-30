@@ -4,7 +4,7 @@ class Answer < ApplicationRecord
   validates :position, presence: true, numericality: { only_integer: true, greater_than: 0 }
   validates :is_correct, inclusion: { in: [ true, false ] }
   default_scope { order(:position) }
-  before_validation :set_position, on: :create
+  before_validation :set_position, on: :create#ab
   private
   def set_position
     if self.position.nil?
