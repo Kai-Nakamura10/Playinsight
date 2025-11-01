@@ -36,7 +36,7 @@
 <div class="max-w-4xl mx-auto mt-6 p-4 bg-white shadow-md rounded">
   <h1 class="text-2xl font-bold mb-4"><%= @video.title %></h1>
   <p class="text-gray-700 mb-4"><%= @video.description %></p>
-  <p class="text-sm text-gray-500 mb-2">公開設定: <%= @video.visibility %></p>
+  <p class="text-sm text-gray-500 mb-2">公開設定: <%= t("enums.video.visibility.#{@video.visibility}") %></p>
   <p class="text-sm text-gray-500 mb-2">長さ: <%= @video.duration_seconds.present? ? "#{@video.duration_seconds}秒" : "解析中…" %></p>
   <p class="text-sm text-gray-500">保存日時: <%= l(@video.created_at, format: :long) %></p>
   <div class="mt-4 flex space-x-2">

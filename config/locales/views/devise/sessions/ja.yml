@@ -4,6 +4,7 @@ ja:
       new:
         login: ログイン
         title: ログイン
+        remember_me: ログイン状態を保存する
     shared:
       links:
         to_register_page: 登録ページへ

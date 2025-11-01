@@ -12,7 +12,7 @@
 
   <div>
     <%= f.label :visibility %>
-    <%= f.select :visibility, [%w[公開 public], %w[限定公開 unlisted], %w[非公開 private]], {}, {} %>
+    <%= f.select :visibility, Video.visibilities.keys.map { |k| [ t("enums.video.visibility.#{k}"), k ] }, { prompt: "選択してください" }, { class: "form-select" } %>
   </div>
 
   <div>
