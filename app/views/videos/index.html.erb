@@ -22,7 +22,7 @@
               <div class="text-lg font-semibold text-gray-900 mb-2"><%= video.title %></div>
               <div class="text-sm text-gray-600 mb-3"><%= truncate(video.description, length: 220) %></div>
 
-              <div class="text-xs text-gray-500 mb-4">公開設定: <%= video.visibility %>  •  長さ: <%= video.duration_seconds.present? ? "#{video.duration_seconds}秒" : "解析中…" %></div>
+              <div class="text-xs text-gray-500 mb-4">公開設定: <%= t("enums.video.visibility.#{video.visibility}") %> •  長さ: <%= video.duration_seconds.present? ? "#{video.duration_seconds}秒" : "解析中…" %></div>
 
               <div class="text-xs text-gray-400">保存日時: <%= l(video.created_at, format: :long) %></div>
             </div>

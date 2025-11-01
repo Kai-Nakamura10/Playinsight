@@ -15,7 +15,9 @@ class Video < ApplicationRecord
   validates :visibility, inclusion: { in: %w[public unlisted private] }
   validates :duration_seconds, numericality: { only_integer: true, greater_than_or_equal_to: 0 }, allow_nil: true
   after_commit :enqueue_video_job, on: :create
+
   private
+
   def enqueue_processing
     VideoJob.perform_later(id)
   end

@@ -5,8 +5,8 @@ ja:
     rule_search: ルール検索機能
     tactics_quiz: 戦術クイズ
     faq: 質問集
-    best_selections: Best Selections
-    videos: Videos
+    best_selections: 状況判断クイズ
+    videos: 試合分析
     sign_in: サインイン
     sign_out: サインアウト
   time:
@@ -14,3 +14,9 @@ ja:
       default: "%Y/%m/%d(%a) %H:%M"
       long: "%Y年%m月%d日(%a) %H時%M分"
       short: "%m/%d(%a) %H:%M"
+  enums:
+    video:
+      visibility:
+        public: "公開"
+        unlisted: "限定公開"
+        private: "非公開"

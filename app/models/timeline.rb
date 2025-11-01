@@ -1,7 +1,7 @@
 class Timeline < ApplicationRecord
   belongs_to :video
 
-  KINDS = %w[question bestselect].freeze
+  KINDS = %w[質問 よい選択 戦術].freeze
 
   validates :kind, presence: true, inclusion: { in: KINDS }
   validates :start_seconds, presence: true, numericality: { greater_than_or_equal_to: 0 }

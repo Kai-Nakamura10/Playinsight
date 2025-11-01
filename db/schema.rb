@@ -213,9 +213,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_083434) do
     t.string "title", null: false
     t.text "description"
     t.integer "duration_seconds"
-    t.string "visibility", default: "unlisted", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "visibility", default: "unlisted", null: false
     t.index ["user_id"], name: "index_videos_on_user_id"
   end
 
