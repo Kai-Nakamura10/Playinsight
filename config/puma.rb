@@ -35,9 +35,18 @@ environment ENV.fetch("RAILS_ENV", "production")
 workers ENV.fetch("WEB_CONCURRENCY", 0)
 preload_app!
 
-on_worker_boot do
-  ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+if workers_count > 0
+  before_worker_boot do
+    ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+  end
+else
+  on_booted do
+    ActiveRecord::Base.establish_connection if defined?(ActiveRecord)
+  end
 end
+
+port ENV.fetch("PORT", 3000)
+environment ENV.fetch("RACK_ENV", ENV.fetch("RAILS_ENV", "development"))
 
 # Allow puma to be restarted by `bin/rails restart` command.
 plugin :tmp_restart
