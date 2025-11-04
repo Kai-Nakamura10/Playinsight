@@ -1,5 +1,6 @@
 class VideoJob < ApplicationJob
   queue_as :default
+  queue_as :video
 
   def perform(video_id)
     video = Video.find_by(id: video_id)
@@ -9,34 +10,40 @@ class VideoJob < ApplicationJob
     needs_thumbnail = !video.thumbnail.attached?
     return unless needs_duration || needs_thumbnail
 
-    src = Tempfile.new([ "video", File.extname(video.file.filename.to_s) ])
-    src.binmode
-    src.write(video.file.download)
-    src.flush
+    video.file.blob.open(tmpdir: "/tmp") do |src_file|
+      movie = FFMPEG::Movie.new(src_file.path)
 
-    movie = FFMPEG::Movie.new(src.path)
+      if needs_duration
+        duration = movie.duration.to_i
+        video.update_column(:duration_seconds, duration)
+      else
+        duration = video.duration_seconds.to_i
+      end
 
-    duration = movie.duration.to_i
-    video.update_column(:duration_seconds, duration) if needs_duration
+      if needs_thumbnail
+        Dir.mktmpdir do |dir|
+          out = File.join(dir, "video_#{video.id}_thumb.jpg")
 
-    if needs_thumbnail
-      thumb = Tempfile.new(%w[thumb .jpg])
-      thumb.binmode
-      seek = duration >= 5 ? 5 : 0
-      movie.screenshot(thumb.path, seek_time: seek, resolution: "640x360")
-      thumb.rewind
+          seek = duration >= 5 ? 5 : 0
+          movie.screenshot(
+            out,
+            seek_time: seek,
+            resolution: "640x360",
+            custom: %w[-nostdin -threads 1]
+          )
 
-      video.thumbnail.attach(
-        io: thumb,
-        filename: "video_#{video.id}_thumb.jpg",
-        content_type: "image/jpeg"
-      )
+          File.open(out, "rb") do |f|
+            video.thumbnail.attach(
+              io: f,
+              filename: File.basename(out),
+              content_type: "image/jpeg"
+            )
+          end
+        end
+      end
     end
   rescue => e
     Rails.logger.error("[VideoJob] video_id=#{video_id} #{e.class}: #{e.message}")
     raise
-  ensure
-    src.close!   if src
-    thumb.close! if defined?(thumb) && thumb
   end
 end
