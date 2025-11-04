@@ -32,7 +32,7 @@ port ENV.fetch("PORT")
 
 environment ENV.fetch("RAILS_ENV", "production")
 
-workers ENV.fetch("WEB_CONCURRENCY", 5)
+workers ENV.fetch("WEB_CONCURRENCY", 1)
 preload_app!
 
 on_worker_boot do
