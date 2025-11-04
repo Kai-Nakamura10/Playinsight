@@ -1,5 +1,4 @@
 class VideoJob < ApplicationJob
-  queue_as :default
   queue_as :video
 
   def perform(video_id)
