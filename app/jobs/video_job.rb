@@ -29,7 +29,7 @@ class VideoJob < ApplicationJob
             out,
             seek_time: seek,
             resolution: "640x360",
-            custom: %w(-nostdin -threads 1)
+            custom: %w[-nostdin -threads 1]
           )
 
           File.open(out, "rb") do |f|
