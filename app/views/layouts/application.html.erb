@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html>
+<html prefix="og: http://ogp.me/ns#">
   <head>
     <title>Play insight</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
@@ -9,6 +9,15 @@
     <link href="https://vjs.zencdn.net/8.23.4/video-js.css" rel="stylesheet" />
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_include_tag "application", "data-turbo-track": "reload", type: "module" %>
+    <meta property="og:site_name" content="Playinsight" />
+    <meta property="og:title" content="試合分析をしてチームを強化しよう" />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="<%= request.original_url %>" />
+    <meta property="og:image" content="<%= image_url('Frame 6.png') %>" />
+    <meta property="og:description" content="バスケの戦術を解説しています" />
+    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:site" content="@papa55106109" />
+    <meta name="twitter:image" content="<%= image_url('Frame 6.png') %>" />
   </head>
 
   <body>
