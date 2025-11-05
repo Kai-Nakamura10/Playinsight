@@ -25,7 +25,7 @@ RSpec.describe User, type: :model do
 
         it 'emailは必須&一意' do
             create(:user, email: 'a@example.com')
-            u = build(:user, email:'a@example.com')
+            u = build(:user, email: 'a@example.com')
             expect(u).to be_invalid
             expect(u.errors[:email]).to be_present
         end
@@ -48,14 +48,14 @@ RSpec.describe User, type: :model do
             user = create(:user)
             video1 = user.videos.create!(title: 'Video 1', description: 'Desc 1')
             video2 = user.videos.create!(title: 'Video 2', description: 'Desc 2')
-            expect(user.videos).to match_array([video1, video2])
+            expect(user.videos).to match_array([ video1, video2 ])
         end
-        
+
         it 'commentsを複数持てる' do
             user = create(:user)
             comment1 = user.comments.create!(body: 'Comment 1')
             comment2 = user.comments.create!(body: 'Comment 2')
-            expect(user.comments).to match_array([comment1, comment2])
+            expect(user.comments).to match_array([ comment1, comment2 ])
         end
 
         it 'ユーザーが削除されると関連する動画も削除される' do
@@ -87,8 +87,8 @@ RSpec.describe User, type: :model do
 
         it 'パスワードリセットトークンを生成できる' do
             user = create(:user)
-            expect { 
-              user.send_reset_password_instructions 
+            expect {
+              user.send_reset_password_instructions
               user.reload
             }.to change { user.reset_password_token }.from(nil)
             expect(user.reset_password_sent_at).to be_present
