@@ -2,20 +2,20 @@ require 'rails_helper'
 
 RSpec.describe User, type: :model do
     describe 'バリデーション' do
-        it 'nicknameが必須' do
+        it 'ニックネームが必須' do
             user = build(:user, nickname: nil)
             expect(user).to be_invalid
             expect(user.errors[:nickname]).to be_present
         end
 
-        it 'nicknameは一意' do
+        it 'ニックネームは一意' do
             create(:user, nickname: 'kai')
             dup = build(:user, nickname: 'kai')
             expect(dup).to be_invalid
-            expect(dup.errors[:nickname]).to include('has already been taken').or include('既に使用されています')
+            expect(dup.errors.of_kind?(:nickname, :taken)).to be true
         end
 
-        it 'nicknameは10文字まで（10はOK/11はNG）' do
+        it 'ニックネームは10文字まで（10はOK/11はNG）' do
             ok = build(:user, nickname: 'a' * 10)
             ng = build(:user, nickname: 'a' * 11)
             expect(ok).to be_valid
@@ -23,20 +23,24 @@ RSpec.describe User, type: :model do
             expect(ng.errors[:nickname]).to be_present
         end
 
-        it 'emailは必須&一意' do
+        it 'メールアドレスは必須&一意' do
+            missing = build(:user, email: nil)
+            expect(missing).to be_invalid
+            expect(missing.errors[:email]).to be_present
+
             create(:user, email: 'a@example.com')
-            u = build(:user, email: 'a@example.com')
-            expect(u).to be_invalid
-            expect(u.errors[:email]).to be_present
+            dup = build(:user, email: 'a@example.com')
+            expect(dup).to be_invalid
+            expect(dup.errors[:email]).to be_present
         end
 
-        it 'passwordは6文字未満だとNG' do
+        it 'パスワードは6文字未満だとNG' do
             u = build(:user, password: 'short', password_confirmation: 'short')
             expect(u).to be_invalid
             expect(u.errors[:password]).to be_present
         end
 
-        it 'password_cofirmationが一致しないとNG' do
+        it 'パスワードの確認が一致しないとNG' do
             u = build(:user, password: 'password', password_confirmation: 'mismatch')
             expect(u).to be_invalid
             expect(u.errors[:password_confirmation]).to be_present
@@ -44,32 +48,34 @@ RSpec.describe User, type: :model do
     end
 
     describe '関連' do
-        it 'videosを複数持てる' do
+        it 'ビデオを複数持てる' do
             user = create(:user)
-            video1 = user.videos.create!(title: 'Video 1', description: 'Desc 1')
-            video2 = user.videos.create!(title: 'Video 2', description: 'Desc 2')
+            video1 = user.videos.create!(title: 'Video 1', description: 'Desc 1', visibility: :public)
+            video2 = user.videos.create!(title: 'Video 2', description: 'Desc 2', visibility: :public)
             expect(user.videos).to match_array([ video1, video2 ])
         end
 
-        it 'commentsを複数持てる' do
+        it 'コメントを複数持てる' do
             user = create(:user)
-            comment1 = user.comments.create!(body: 'Comment 1')
-            comment2 = user.comments.create!(body: 'Comment 2')
+            video = user.videos.create!(title: 'Video', description: 'Desc', visibility: :public)
+            comment1 = user.comments.create!(body: 'Comment 1', video: video)
+            comment2 = user.comments.create!(body: 'Comment 2', video: video)
             expect(user.comments).to match_array([ comment1, comment2 ])
         end
 
         it 'ユーザーが削除されると関連する動画も削除される' do
             user = create(:user)
-            video = user.videos.create!(title: 'Video', description: 'Desc')
-            expect { user.destroy }.to change { Video.count }.by(-1)
-            expect { Video.reload }.to raise_error(ActiveRecord::RecordNotFound)
+            video = user.videos.create!(title: 'Video', description: 'Desc', visibility: :public)
+            expect { user.destroy }.to change(Video, :count).by(-1)
+            expect { video.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
 
         it 'ユーザーが削除されると関連するコメントも削除される' do
             user = create(:user)
-            comment = user.comments.create!(body: 'Comment')
-            expect { user.destroy }.to change { Comment.count }.by(-1)
-            expect { Comment.reload }.to raise_error(ActiveRecord::RecordNotFound)
+            video = user.videos.create!(title: 'Video', description: 'Desc', visibility: :public)
+            comment = user.comments.create!(body: 'Comment', video: video)
+            expect { user.destroy }.to change(Comment, :count).by(-1)
+            expect { comment.reload }.to raise_error(ActiveRecord::RecordNotFound)
         end
     end
 
@@ -87,6 +93,7 @@ RSpec.describe User, type: :model do
 
         it 'パスワードリセットトークンを生成できる' do
             user = create(:user)
+            allow(user).to receive(:send_devise_notification)
             expect {
               user.send_reset_password_instructions
               user.reload
