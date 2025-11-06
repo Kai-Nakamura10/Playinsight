@@ -43,8 +43,8 @@ RSpec.describe Comment, type: :model do
 
       expect(child.parent).to eq parent
       expect(parent.children).to include child
-      expect(child.ancestors).to eq [parent]
-      expect(child.path).to eq [parent, child]
+      expect(child.ancestors).to eq [ parent ]
+      expect(child.path).to eq [ parent, child ]
     end
 
     it "2段以上のネストでも path が繋がる" do
@@ -52,7 +52,7 @@ RSpec.describe Comment, type: :model do
       c = create(:comment, body: "子", parent: p)
       g = create(:comment, body: "孫", parent: c)
 
-      expect(g.ancestors).to eq [p, c]
+      expect(g.ancestors).to eq [ p, c ]
       expect(g.path.map(&:body)).to eq %w[親 子 孫]
     end
   end

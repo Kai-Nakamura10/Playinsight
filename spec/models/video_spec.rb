@@ -62,8 +62,8 @@ RSpec.describe Video, type: :model do
       cm    = video.comments.create!(user: video.user, body: "hi")
 
       expect { video.destroy }.to change {
-        [VideoTactic.count, Timeline.count, VideoTag.count, Comment.count]
-      }.from([1,1,1,1]).to([0,0,0,0])
+        [ VideoTactic.count, Timeline.count, VideoTag.count, Comment.count ]
+      }.from([ 1, 1, 1, 1 ]).to([ 0, 0, 0, 0 ])
 
       expect { vt.reload }.to raise_error(ActiveRecord::RecordNotFound)
       expect { vt2.reload }.to raise_error(ActiveRecord::RecordNotFound)
@@ -117,7 +117,7 @@ RSpec.describe Video, type: :model do
     it "ジョブに id が渡される" do
       perform_enqueued_jobs do
         v = create(:video)
-        assert_performed_with(job: VideoJob, args: [v.id])
+        assert_performed_with(job: VideoJob, args: [ v.id ])
       end
     end
   end
