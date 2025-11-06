@@ -26,7 +26,10 @@ Rails.application.routes.draw do
   resources :tags, only: %i[index show create destroy new]
   resources :bestselects
   resources :tactics
-  resources :questions
+  resources :faqs
+  resources :questions, only: [ :show ] do
+    post :answer, on: :member
+  end
   resources :rules do
     collection do
       get :search

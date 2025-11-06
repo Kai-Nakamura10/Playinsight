@@ -1,23 +1,25 @@
-<% grouped = @faqs.group_by(&:category) %>
+<h1>戦術クイズ</h1>
 
-<div class="faqs">
-  <% grouped.each do |category, faqs| %>
-    <section class="faq-category">
-      <h2 class="faq-category__title"><%= category.presence || "その他" %></h2>
+<p><%= @question.content %></p>
 
-      <dl class="faq-list">
-        <% faqs.sort_by(&:order).each_with_index do |faq, i| %>
-          <dt class="faq-question">
-            Q<%= i + 1 %>. <%= h(faq.body) %>
-          </dt>
+<%= form_with url: answer_question_path(@question), method: :post do %>
+  <ul>
+    <% @question.choices.each do |choice| %>
+      <li>
+        <label>
+          <%= radio_button_tag :choice_id, choice.id %>
+          <%= choice.body %>
+        </label>
+      </li>
+    <% end %>
+  </ul>
+  <%= submit_tag "回答する" %>
+<% end %>
 
-          <% faq.faqs_answers.each do |ans| %>
-            <dd class="faq-answer">
-              A. <%= simple_format(h(ans.body)) %>
-            </dd>
-          <% end %>
-        <% end %>
-      </dl>
-    </section>
-  <% end %>
-</div>
+<% if defined?(@selected_choice) && @selected_choice.present? %>
+  <hr>
+  <p>あなたの回答：<%= @selected_choice.body %></p>
+  <p><strong><%= @selected_choice.is_correct? ? "正解！" : "不正解…" %></strong></p>
+  <p>解説：</p>
+  <div><%= simple_format(@question.explanation) %></div>
+<% end %>
