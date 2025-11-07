@@ -1,2 +1,0 @@
-class TacticQuiz < ApplicationRecord
-end

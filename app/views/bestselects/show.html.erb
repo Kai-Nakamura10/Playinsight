@@ -26,7 +26,7 @@
       <p><%= @bestselect.explanation %></p>
     </div>
 
-    <% if @next_bestselect.present? %>
+    <% if @next_bestselect.present? && @next_bestselect.id != @bestselect.id %>
       <div class="mt-6">
         <%= link_to "次の問題へ", bestselect_path(@next_bestselect), class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
       </div>
