@@ -22,4 +22,16 @@
   <p><strong><%= @selected_choice.is_correct? ? "正解！" : "不正解…" %></strong></p>
   <p>解説：</p>
   <div><%= simple_format(@question.explanation) %></div>
+
+  <% if @next_question %>
+    <div class="mt-4">
+      <%= link_to "次の問題へ ▶", question_path(@next_question),
+          class: "inline-block rounded-lg px-4 py-2 bg-blue-600 text-white hover:bg-blue-700" %>
+    </div>
+  <% else %>
+    <div class="mt-4 flex gap-3">
+      <%= link_to "終了（最初に戻る）", question_path(Question.order(:id).first),
+          class: "inline-block rounded-lg px-4 py-2 bg-gray-600 text-white hover:bg-gray-700" %>
+    </div>
+  <% end %>
 <% end %>
