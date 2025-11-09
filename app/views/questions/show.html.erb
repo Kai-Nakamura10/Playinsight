@@ -4,7 +4,7 @@
 
 <%= form_with url: answer_question_path(@question), method: :post do %>
   <ul>
-    <% @question.choices.each do |choice| %>
+    <% @choices.each do |choice| %> <!-- ← 統一 -->
       <li>
         <label>
           <%= radio_button_tag :choice_id, choice.id %>
@@ -20,8 +20,39 @@
   <hr>
   <p>あなたの回答：<%= @selected_choice.body %></p>
   <p><strong><%= @selected_choice.is_correct? ? "正解！" : "不正解…" %></strong></p>
-  <p>解説：</p>
-  <div><%= simple_format(@question.explanation) %></div>
+
+  <% if @ai.present? %>
+    <div class="ai-explanation">
+      <h3>🤖 AIの解説</h3>
+      <p><strong>📋 要点:</strong> <%= @ai[:summary] %></p>
+      <p><strong>🎯 あなたの解答について:</strong> <%= @ai[:selected_reason] %></p>
+
+      <h4>📝 各選択肢の解説</h4>
+      <% per = @ai[:per_choice] || [] %>
+      <ul>
+        <% per.each do |pc| %>
+          <% choice_obj  = @choices[pc[:index].to_i - 1] %>  <!-- ← 統一 -->
+          <% choice_text = choice_obj&.body || "(選択肢テキスト不明)" %>
+
+          <li>
+            <strong><%= pc[:index] %>.</strong>
+            <%= choice_text %>
+            <span class="<%= pc[:correct] ? 'correct' : 'incorrect' %>">
+              （<%= pc[:correct] ? "✅ 正解" : "❌ 不正解" %>）
+            </span>
+            …<%= pc[:reason] %>
+          </li>
+        <% end %>
+      </ul>
+
+      <div class="tip-section">
+        <p><strong>💡 実戦ワンポイント:</strong> <%= @ai[:tip] %></p>
+      </div>
+    </div>
+  <% else %>
+    <p>解説：</p>
+    <div><%= simple_format(@question.explanation) %></div>
+  <% end %>
 
   <% if @next_question %>
     <div class="mt-4">
@@ -29,7 +60,7 @@
           class: "inline-block rounded-lg px-4 py-2 bg-blue-600 text-white hover:bg-blue-700" %>
     </div>
   <% else %>
-    <div class="mt-4 flex gap-3">
+    <div class="mt-4">
       <%= link_to "終了（最初に戻る）", question_path(Question.order(:id).first),
           class: "inline-block rounded-lg px-4 py-2 bg-gray-600 text-white hover:bg-gray-700" %>
     </div>

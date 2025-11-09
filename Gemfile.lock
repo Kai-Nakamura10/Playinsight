@@ -142,11 +142,20 @@ GEM
     ed25519 (1.4.0)
     erb (5.0.2)
     erubi (1.13.1)
+    event_stream_parser (1.0.0)
     factory_bot (6.5.6)
       activesupport (>= 6.1.0)
     factory_bot_rails (6.5.1)
       factory_bot (~> 6.5)
       railties (>= 6.1.0)
+    faraday (2.14.0)
+      faraday-net_http (>= 2.0, < 3.5)
+      json
+      logger
+    faraday-multipart (1.1.1)
+      multipart-post (~> 2.0)
+    faraday-net_http (3.4.2)
+      net-http (~> 0.5)
     globalid (1.2.1)
       activesupport (>= 6.1)
     i18n (1.14.7)
@@ -191,6 +200,9 @@ GEM
     minitest (5.25.5)
     msgpack (1.8.0)
     multi_json (1.17.0)
+    multipart-post (2.4.1)
+    net-http (0.7.0)
+      uri
     net-imap (0.5.10)
       date
       net-protocol
@@ -352,6 +364,10 @@ GEM
       rubocop (>= 1.72)
       rubocop-performance (>= 1.24)
       rubocop-rails (>= 2.30)
+    ruby-openai (8.3.0)
+      event_stream_parser (>= 0.3.0, < 2.0.0)
+      faraday (>= 1)
+      faraday-multipart (>= 1)
     ruby-progressbar (1.13.0)
     rubyzip (3.1.1)
     securerandom (0.4.1)
@@ -458,6 +474,7 @@ DEPENDENCIES
   redis (~> 5.4, >= 5.4.1)
   rspec-rails (~> 8.0, >= 8.0.2)
   rubocop-rails-omakase
+  ruby-openai
   selenium-webdriver
   sidekiq (~> 8.0, >= 8.0.7)
   solid_cable
