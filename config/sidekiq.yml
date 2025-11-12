@@ -1,9 +1,7 @@
-:concurrency: 2
-
+:concurrency: 1
 :queues:
-  - [critical, 2]
-  - [default, 3]
-  - [low, 1]
+  - [video, 1]
+  - [default, 1]
 
 production:
-  :concurrency: 2
+  :concurrency: 1
