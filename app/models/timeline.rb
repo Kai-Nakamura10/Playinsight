@@ -3,6 +3,8 @@ class Timeline < ApplicationRecord
 
   KINDS = %w[質問 よい選択 戦術].freeze
 
+  validates :title, length: { maximum: 100 }
+  validates :body, length: { maximum: 400 }
   validates :kind, presence: true, inclusion: { in: KINDS }
   validates :start_seconds, presence: true, numericality: { greater_than_or_equal_to: 0 }
   validates :end_seconds, numericality: { greater_than_or_equal_to: :start_seconds }, allow_blank: true
