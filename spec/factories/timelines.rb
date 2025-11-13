@@ -1,10 +1,11 @@
 FactoryBot.define do
   factory :timeline do
     association :video
-    kind { "質問" }
-    title { "セグメント" }
+    kind { Timeline::KINDS.sample }
+    title { "サンプルタイトル" }
+    body  { "サンプル本文" }
     start_seconds { 0 }
-    end_seconds { nil }
+    end_seconds   { nil }
     payload { {} }
   end
 end

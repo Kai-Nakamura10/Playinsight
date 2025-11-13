@@ -4,6 +4,7 @@ class Comment < ApplicationRecord
   belongs_to :timeline, optional: true
   has_ancestry
   validates :body, presence: true
+  validates :body, length: { maximum: 500 }
 
   default_scope { order(created_at: :asc) }
 
