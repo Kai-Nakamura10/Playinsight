@@ -2,6 +2,8 @@ class Tactic < ApplicationRecord
   attr_accessor :success_text, :failure_text, :counters_text
   has_many :video_tactics, dependent: :destroy
   has_many :videos, through: :video_tactics
+  has_many :success_conditions, dependent: :destroy
+  has_many :failure_patterns, dependent: :destroy
   validates :title, presence: true
   validates :slug, presence: true, uniqueness: true
   # Ensure text accessor fields are reflected into JSON columns before validation
