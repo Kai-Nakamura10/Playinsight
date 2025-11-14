@@ -1,0 +1,28 @@
+/* AI解説セクション */
+.ai-explanation {
+  background-color: #f8f9fa;
+  border-left: 4px solid #007bff;
+  padding: 1rem;
+  margin: 1rem 0;
+  border-radius: 0.25rem;
+}
+
+/* 選択肢の正解・不正解表示 */
+.correct {
+  color: #28a745;
+  font-weight: bold;
+}
+
+.incorrect {
+  color: #dc3545;
+  font-weight: bold;
+}
+
+/* ワンポイントアドバイス */
+.tip-section {
+  background-color: #fff3cd;
+  border: 1px solid #ffeaa7;
+  padding: 0.75rem;
+  border-radius: 0.25rem;
+  margin-top: 1rem;
+}

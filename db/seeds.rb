@@ -7,66 +7,67 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-# 1問目
-bestselect1 = Bestselect.create!(
-  question: "この状況でベストな選択は？",
-  explanation: "相手ディフェンスが2人来ているときはフリーの選手ができる。そこにパスを出すことでシュート成功がしやすくなります"
-)
+def seed_bestselect!(question:, explanation:, answers:)
+  bestselect = Bestselect.find_or_initialize_by(question: question, explanation: explanation)
+  bestselect.save!
 
-bestselect1.answers.create!([
-  { body: "フリーになった5番にパス", position: 1, is_correct: true },
-  { body: "その場で止まりジャンプシュート", position: 2, is_correct: false },
-  { body: "3pointlineまで戻る", position: 3, is_correct: false },
-  { body: "相手を抜いてレイアップ", position: 4, is_correct: false }
-])
-# 2問目
-bestselect2 = Bestselect.create!(
-  question: "この状況でベストな選択は？",
-  explanation: "シュートスペースがあるなら、そのままレイアップにしましょう。シュートを狙わないとディフェンスの脅威になりません。"
-)
+  bestselect.answers.destroy_all
+  bestselect.answers.create!(answers)
+end
 
-bestselect2.answers.create!([
-  { body: "味方の3番にパスをだしてコーナースリー", position: 1, is_correct: false },
-  { body: "ステップバックシュート", position: 2, is_correct: false },
-  { body: "シュートスペースがあり、そのままレイアップ", position: 3, is_correct: true },
-  { body: "ロールしてカッティングしてくる5番にパス", position: 4, is_correct: false }
-])
-# 3問目
-bestselect3 = Bestselect.create!(
-  question: "この状況でベストな選択は？",
-  explanation: "身長差を活かした攻撃はシュート成功率を上げる。"
-)
-
-bestselect3.answers.create!([
-  { body: "①がインサイドにカット", position: 1, is_correct: false },
-  { body: "③にバウンドパス", position: 2, is_correct: false },
-  { body: "ミスマッチを活かして1on1", position: 3, is_correct: true },
-  { body: "シュートフェイクからのゴール下シュート", position: 4, is_correct: false }
-])
-# 4問目
-bestselect4 = Bestselect.create!(
-  question: "この状況でベストな選択は？",
-  explanation: "スピードで勝てるケースでは1on1で抜く"
-)
-
-bestselect4.answers.create!([
-  { body: "②にパス", position: 1, is_correct: false },
-  { body: "ハンドオフをする", position: 2, is_correct: false },
-  { body: "3pointを狙う", position: 3, is_correct: false },
-  { body: "スピードで相手を抜く", position: 4, is_correct: true }
-])
-# 5問目
-bestselect5 = Bestselect.create!(
-  question: "この状況でベストな選択は？",
-  explanation: "インサイドアウトはアウトサイドが得意な選手がいると得点を狙える。"
-)
-
-bestselect5.answers.create!([
-  { body: "プルアップをする", position: 1, is_correct: false },
-  { body: "ユーロステップをする", position: 2, is_correct: false },
-  { body: "③にパス", position: 3, is_correct: true },
-  { body: "ロールターンをする", position: 4, is_correct: false }
-])
+[
+  {
+    explanation: "相手ディフェンスが2人来ているときはフリーの選手ができる。そこにパスを出すことでシュート成功がしやすくなります",
+    answers: [
+      { body: "フリーになった5番にパス", position: 1, is_correct: true },
+      { body: "その場で止まりジャンプシュート", position: 2, is_correct: false },
+      { body: "3pointlineまで戻る", position: 3, is_correct: false },
+      { body: "相手を抜いてレイアップ", position: 4, is_correct: false }
+    ]
+  },
+  {
+    explanation: "シュートスペースがあるなら、そのままレイアップにしましょう。シュートを狙わないとディフェンスの脅威になりません。",
+    answers: [
+      { body: "味方の3番にパスをだしてコーナースリー", position: 1, is_correct: false },
+      { body: "ステップバックシュート", position: 2, is_correct: false },
+      { body: "シュートスペースがあり、そのままレイアップ", position: 3, is_correct: true },
+      { body: "ロールしてカッティングしてくる5番にパス", position: 4, is_correct: false }
+    ]
+  },
+  {
+    explanation: "身長差を活かした攻撃はシュート成功率を上げる。",
+    answers: [
+      { body: "①がインサイドにカット", position: 1, is_correct: false },
+      { body: "③にバウンドパス", position: 2, is_correct: false },
+      { body: "ミスマッチを活かして1on1", position: 3, is_correct: true },
+      { body: "シュートフェイクからのゴール下シュート", position: 4, is_correct: false }
+    ]
+  },
+  {
+    explanation: "スピードで勝てるケースでは1on1で抜く",
+    answers: [
+      { body: "②にパス", position: 1, is_correct: false },
+      { body: "ハンドオフをする", position: 2, is_correct: false },
+      { body: "3pointを狙う", position: 3, is_correct: false },
+      { body: "スピードで相手を抜く", position: 4, is_correct: true }
+    ]
+  },
+  {
+    explanation: "インサイドアウトはアウトサイドが得意な選手がいると得点を狙える。",
+    answers: [
+      { body: "プルアップをする", position: 1, is_correct: false },
+      { body: "ユーロステップをする", position: 2, is_correct: false },
+      { body: "③にパス", position: 3, is_correct: true },
+      { body: "ロールターンをする", position: 4, is_correct: false }
+    ]
+  }
+].each do |attrs|
+  seed_bestselect!(
+    question: "この状況でベストな選択は？",
+    explanation: attrs[:explanation],
+    answers: attrs[:answers]
+  )
+end
 
 # 2対1の速攻
 tactic = Tactic.find_or_initialize_by(slug: "fastbreak-2on1")
@@ -454,3 +455,81 @@ Rule.transaction do
 
   rule.save!
 end
+
+ActiveRecord::Base.transaction do
+  def seed_question!(content:, explanation:, choices:, correct_index:)
+    q = Question.find_or_initialize_by(content: content)
+    q.explanation = explanation
+    q.save!
+
+    q.choices.destroy_all
+    choices.each_with_index do |text, i|
+      q.choices.create!(
+        body: text,
+        is_correct: (i == correct_index)
+      )
+    end
+  end
+
+  seed_question!(
+    content: "Q1. ピック＆ロールとは？",
+    choices: [
+      "ボールを持つ選手が1人で攻める",
+      "味方が体で壁（スクリーン）を作り、ボールを持つ選手がその横を通る",
+      "相手を3人で囲んでボールを奪う",
+      "シュートを打たずに時間をかける"
+    ],
+    correct_index: 1,
+    explanation: "味方がディフェンスの前に立って壁を作り、ボール保持者がその横を通って攻める戦術（スクリーン＆ロール）。"
+  )
+
+  seed_question!(
+    content: "Q2. アイソレーション（1対1）の目的は？",
+    choices: [
+      "味方全員で相手を囲む",
+      "ボールを持っていない選手が走り回る",
+      "ボールを持つ選手がスペースを作って1対1を仕掛ける",
+      "ディフェンス全員でゴール下を守る"
+    ],
+    correct_index: 2,
+    explanation: "チームメイトがスペースを空け、ボール保持者が1対1を仕掛けやすくするための戦術。"
+  )
+
+  seed_question!(
+    content: "Q3. ゾーンディフェンスの特徴は？",
+    choices: [
+      "相手選手をそれぞれ1人ずつ守る",
+      "ボールを持つ人だけを見る",
+      "それぞれの「エリア」を守る",
+      "相手にわざと攻めさせる"
+    ],
+    correct_index: 2,
+    explanation: "“人”ではなく“エリア”を分担して守る。外からのシュートに弱点が出やすい。"
+  )
+
+  seed_question!(
+    content: "Q4. ファストブレイク（速攻）の狙いは？",
+    choices: [
+      "ディフェンスが整う前に一気に攻めて得点する",
+      "パスを何度も回して時間を使う",
+      "相手のファウルをわざと誘う",
+      "ボールをキープして休む"
+    ],
+    correct_index: 0,
+    explanation: "相手守備が整う前に素早く攻めて高確率で得点を狙う。"
+  )
+
+  seed_question!(
+    content: "Q5. プレスディフェンスの特徴は？",
+    choices: [
+      "ゴール下だけを守る守備",
+      "コート全体で相手に激しくプレッシャーをかける守備",
+      "相手にわざとシュートを打たせる守備",
+      "味方全員でベンチに座る"
+    ],
+    correct_index: 1,
+    explanation: "コート全体で積極的にボールやパスコースへ圧力をかけ、ミスを誘う守備戦術。"
+  )
+end
+
+puts "Seeded basketball quiz (5 questions)."

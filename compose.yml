@@ -43,6 +43,7 @@ services:
       AWS_SECRET_ACCESS_KEY: ${AWS_SECRET_ACCESS_KEY}
       AWS_S3_BUCKET: playinsightbucket
       AWS_EC2_METADATA_DISABLED: "true"
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     ports:
       - "3000:3000"
     depends_on:
@@ -62,6 +63,7 @@ services:
     environment:
       TZ: Asia/Tokyo
       REDIS_URL: redis://redis:6379/0
+      OPENAI_API_KEY: ${OPENAI_API_KEY}
     depends_on:
       db:
         condition: service_healthy

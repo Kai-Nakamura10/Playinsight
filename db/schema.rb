@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_10_30_083434) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -112,6 +112,21 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_083434) do
     t.text "content"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+  end
+
+  create_table "question_attempts", force: :cascade do |t|
+    t.bigint "question_id", null: false
+    t.bigint "choice_id", null: false
+    t.boolean "is_correct", default: false, null: false
+    t.jsonb "explanation_json", default: {}, null: false
+    t.string "ai_model_name"
+    t.integer "latency_ms"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["choice_id"], name: "index_question_attempts_on_choice_id"
+    t.index ["created_at"], name: "index_question_attempts_on_created_at"
+    t.index ["question_id", "choice_id"], name: "index_question_attempts_on_question_id_and_choice_id"
+    t.index ["question_id"], name: "index_question_attempts_on_question_id"
   end
 
   create_table "questions", force: :cascade do |t|
@@ -228,6 +243,8 @@ ActiveRecord::Schema[8.0].define(version: 2025_10_30_083434) do
   add_foreign_key "comments", "videos"
   add_foreign_key "failure_patterns", "tactics"
   add_foreign_key "faqs_answers", "faqs"
+  add_foreign_key "question_attempts", "choices"
+  add_foreign_key "question_attempts", "questions"
   add_foreign_key "success_conditions", "tactics"
   add_foreign_key "timelines", "videos"
   add_foreign_key "video_tactics", "tactics"
