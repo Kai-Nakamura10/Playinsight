@@ -1,4 +1,5 @@
 class FailurePattern < ApplicationRecord
-    has_many :videos, dependent: :nullify
-    validates :name, presence: true, uniqueness: true
+  belongs_to :tactic
+  has_many :videos, dependent: :nullify
+  validates :body, length: { maximum: 100 }
 end

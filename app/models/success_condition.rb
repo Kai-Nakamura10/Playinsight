@@ -1,4 +1,5 @@
 class SuccessCondition < ApplicationRecord
+  belongs_to :tactic
   has_many :videos, dependent: :nullify
-  validates :name, presence: true, uniqueness: true
+  validates :body, length: { maximum: 100 }
 end
