@@ -6,6 +6,9 @@ class Tactic < ApplicationRecord
   has_many :failure_patterns, dependent: :destroy
   validates :title, presence: true
   validates :slug, presence: true, uniqueness: true
+  validates :trigger, :description, :counters, presence: true
+  validate :success_conditions_presence
+  validate :common_failures_presence
   # Ensure text accessor fields are reflected into JSON columns before validation
   before_validation :apply_text_fields_to_steps_and_counters
 
@@ -39,6 +42,18 @@ class Tactic < ApplicationRecord
     end
     if counters_text.present?
       self.counters = counters_text.to_s.strip
+    end
+  end
+
+  def success_conditions_presence
+    if success_conditions.blank?
+      errors.add(:success_text, "を入力してください")
+    end
+  end
+
+  def common_failures_presence
+    if common_failures.blank?
+      errors.add(:failure_text, "を入力してください")
     end
   end
 end

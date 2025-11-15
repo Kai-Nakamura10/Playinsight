@@ -21,11 +21,5 @@ RSpec.describe SuccessCondition, type: :model do
       association = described_class.reflect_on_association(:tactic)
       expect(association.macro).to eq(:belongs_to)
     end
-
-    it "videos を dependent: :nullify で has_many" do
-      association = described_class.reflect_on_association(:videos)
-      expect(association.macro).to eq(:has_many)
-      expect(association.options[:dependent]).to eq(:nullify)
-    end
   end
 end

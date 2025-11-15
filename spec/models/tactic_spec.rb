@@ -2,7 +2,7 @@ require 'rails_helper'
 
 RSpec.describe Tactic, type: :model do
   describe "バリデーション" do
-    it "title と slug があれば有効" do
+    it "必須項目が揃っていれば有効" do
       tactic = build(:tactic, title: "戦術", slug: "tactic-a")
       expect(tactic).to be_valid
     end
@@ -24,6 +24,42 @@ RSpec.describe Tactic, type: :model do
       tactic = build(:tactic, slug: "duplicate")
       expect(tactic).not_to be_valid
       expect(tactic.errors[:slug]).to be_present
+    end
+
+    it "trigger が空だと無効" do
+      tactic = build(:tactic, trigger: "")
+      expect(tactic).not_to be_valid
+      expect(tactic.errors[:trigger]).to be_present
+    end
+
+    it "description が空だと無効" do
+      tactic = build(:tactic, description: "")
+      expect(tactic).not_to be_valid
+      expect(tactic.errors[:description]).to be_present
+    end
+
+    it "counters が空だと無効" do
+      tactic = build(:tactic, counters: "")
+      expect(tactic).not_to be_valid
+      expect(tactic.errors[:counters]).to be_present
+    end
+
+    it "成功条件が空だと無効" do
+      tactic = build(
+        :tactic,
+        steps: { "success_conditions" => [], "common_failures" => ["失敗"] }
+      )
+      expect(tactic).not_to be_valid
+      expect(tactic.errors[:success_text]).to be_present
+    end
+
+    it "よくある失敗が空だと無効" do
+      tactic = build(
+        :tactic,
+        steps: { "success_conditions" => ["成功"], "common_failures" => [] }
+      )
+      expect(tactic).not_to be_valid
+      expect(tactic.errors[:failure_text]).to be_present
     end
   end
 
