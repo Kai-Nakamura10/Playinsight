@@ -47,7 +47,13 @@ RSpec.configure do |config|
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
+   config.before(type: :system, js: true) do
+    driven_by :selenium_chrome
+  end
 
+  config.before(type: :system, js: false) do
+    driven_by :rack_test
+  end
   # RSpec Rails uses metadata to mix in different behaviours to your tests,
   # for example enabling you to call `get` and `post` in request specs. e.g.:
   #
