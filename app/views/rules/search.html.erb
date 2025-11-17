@@ -1,16 +1,25 @@
-<h1>ルール検索</h1>
+<h1 class="text-2xl font-bold mb-4 text-center md:text-left">ルール検索</h1>
 
-<%= form_with url: search_rules_path, method: :get, local: true do %>
-  <%= text_field_tag :q, params[:q], placeholder: "キーワードを入力" %>
-  <%= submit_tag "検索" %>
+<%= form_with url: search_rules_path, method: :get, local: true, class: "flex flex-col md:flex-row gap-3 mb-6" do %>
+  <%= text_field_tag :q,
+        params[:q],
+        placeholder: "キーワードを入力",
+        class: "w-full md:w-1/3 px-4 py-2 border rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+
+  <%= submit_tag "検索",
+        class: "px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 w-full md:w-auto" %>
 <% end %>
 
 <% if @rules.present? %>
-  <ul>
+  <ul class="space-y-3">
     <% @rules.each do |rule| %>
-      <li><%= link_to rule.title, rule_path(rule) %></li>
+      <li>
+        <%= link_to rule.title,
+                    rule_path(rule),
+                    class: "block px-4 py-3 border rounded-md hover:bg-gray-50" %>
+      </li>
     <% end %>
   </ul>
 <% elsif params[:q].present? %>
-  <p>該当するルールは見つかりませんでした。</p>
+  <p class="text-gray-600 text-center md:text-left">該当するルールは見つかりませんでした。</p>
 <% end %>

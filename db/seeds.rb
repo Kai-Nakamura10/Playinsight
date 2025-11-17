@@ -74,7 +74,7 @@ tactic = Tactic.find_or_initialize_by(slug: "fastbreak-2on1")
 tactic.assign_attributes(
 title: "2対1の速攻",
 trigger: "DFが1人/中央レーン確保",
-description: nil, # 任意
+description: "パスは少なくする",
 steps: {
 "success_conditions" => [
 "中央レーン優先",
@@ -95,7 +95,7 @@ tactic = Tactic.find_or_initialize_by(slug: "pick-and-roll")
 tactic.assign_attributes(
 title: "ピック＆ロール",
 trigger: "1on1で攻め切れないとき/ディフェンスがドロップしているとき",
-description: nil, # 任意
+description: "ディフェンス二人きたら、ゴールにドライブ",
 steps: {
 "success_conditions" => [
 "スクリーンにしっかり接触させる",
@@ -116,7 +116,7 @@ tactic = Tactic.find_or_initialize_by(slug: "zone-high-post")
 tactic.assign_attributes(
 title: "ゾーンオフェンス（ハイポスト起点）",
 trigger: "相手が2-3ゾーンや3-2ゾーンで守っているとき",
-description: nil, # 任意
+description: "外を狙うと見せかけてペイントエリアに侵入",
 steps: {
 "success_conditions" => [
 "ハイポストにボールを確実に入れる",

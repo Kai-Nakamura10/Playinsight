@@ -1,68 +1,93 @@
-<h1>戦術クイズ</h1>
+<div class="max-w-3xl mx-auto px-4 py-6">
+  <h1 class="text-2xl font-bold mb-4 text-center">戦術クイズ</h1>
 
-<p><%= @question.content %></p>
+  <p class="text-lg mb-4 leading-relaxed"><%= @question.content %></p>
 
-<%= form_with url: answer_question_path(@question), method: :post do %>
-  <ul>
-    <% @choices.each do |choice| %> <!-- ← 統一 -->
-      <li>
-        <label>
-          <%= radio_button_tag :choice_id, choice.id %>
-          <%= choice.body %>
-        </label>
-      </li>
-    <% end %>
-  </ul>
-  <%= submit_tag "回答する" %>
-<% end %>
+  <%= form_with url: answer_question_path(@question),
+                method: :post,
+                local: true,
+                class: "space-y-4" do %>
 
-<% if defined?(@selected_choice) && @selected_choice.present? %>
-  <hr>
-  <p>あなたの回答：<%= @selected_choice.body %></p>
-  <p><strong><%= @selected_choice.is_correct? ? "正解！" : "不正解…" %></strong></p>
+    <ul class="space-y-3">
+      <% @choices.each do |choice| %>
+        <li class="border rounded-lg p-3 hover:bg-gray-50 cursor-pointer transition">
+          <label class="flex items-center gap-3 text-base sm:text-lg">
+            <%= radio_button_tag :choice_id, choice.id, false,
+                  class: "h-5 w-5 sm:h-6 sm:w-6" %>
+            <span><%= choice.body %></span>
+          </label>
+        </li>
+      <% end %>
+    </ul>
 
-  <% if @ai.present? %>
-    <div class="ai-explanation">
-      <h3>🤖 AIの解説</h3>
-      <p><strong>📋 要点:</strong> <%= @ai[:summary] %></p>
-      <p><strong>🎯 あなたの解答について:</strong> <%= @ai[:selected_reason] %></p>
+    <%= submit_tag "回答する",
+        class: "w-full sm:w-auto px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition" %>
+  <% end %>
 
-      <h4>📝 各選択肢の解説</h4>
-      <% per = @ai[:per_choice] || [] %>
-      <ul>
-        <% per.each do |pc| %>
-          <% choice_obj  = @choices[pc[:index].to_i - 1] %>  <!-- ← 統一 -->
-          <% choice_text = choice_obj&.body || "(選択肢テキスト不明)" %>
+  <% if defined?(@selected_choice) && @selected_choice.present? %>
+    <hr class="my-6">
 
-          <li>
-            <strong><%= pc[:index] %>.</strong>
-            <%= choice_text %>
-            <span class="<%= pc[:correct] ? 'correct' : 'incorrect' %>">
-              （<%= pc[:correct] ? "✅ 正解" : "❌ 不正解" %>）
-            </span>
-            …<%= pc[:reason] %>
-          </li>
-        <% end %>
-      </ul>
+    <p class="text-lg font-medium mb-2">
+      あなたの回答：<%= @selected_choice.body %>
+    </p>
 
-      <div class="tip-section">
-        <p><strong>💡 実戦ワンポイント:</strong> <%= @ai[:tip] %></p>
+    <p class="text-xl font-bold mb-4 <%= @selected_choice.is_correct? ? 'text-green-600' : 'text-red-600' %>">
+      <%= @selected_choice.is_correct? ? "正解！" : "不正解…" %>
+    </p>
+
+    <% if @ai.present? %>
+      <div class="ai-explanation bg-gray-50 p-4 rounded-lg border space-y-4">
+
+        <h3 class="text-xl font-semibold">🤖 AIの解説</h3>
+
+        <p><strong>📋 要点:</strong> <%= @ai[:summary] %></p>
+        <p><strong>🎯 あなたの解答について:</strong> <%= @ai[:selected_reason] %></p>
+
+        <div>
+          <h4 class="font-semibold mt-2 mb-2">📝 各選択肢の解説</h4>
+          <ul class="space-y-2">
+            <% per = @ai[:per_choice] || [] %>
+            <% per.each do |pc| %>
+              <% choice_obj  = @choices[pc[:index].to_i - 1] %>
+              <% choice_text = choice_obj&.body || "(選択肢テキスト不明)" %>
+
+              <li class="p-2 bg-white rounded border">
+                <strong><%= pc[:index] %>.</strong> <%= choice_text %>
+                <span class="ml-1 <%= pc[:correct] ? 'text-green-600 font-bold' : 'text-red-600 font-bold' %>">
+                  （<%= pc[:correct] ? "✅ 正解" : "❌ 不正解" %>）
+                </span>
+                <div class="mt-1 text-sm text-gray-700">
+                  <%= pc[:reason] %>
+                </div>
+              </li>
+            <% end %>
+          </ul>
+        </div>
+
+        <div class="tip-section mt-4">
+          <p><strong>💡 実戦ワンポイント:</strong> <%= @ai[:tip] %></p>
+        </div>
+
       </div>
-    </div>
-  <% else %>
-    <p>解説：</p>
-    <div><%= simple_format(@question.explanation) %></div>
-  <% end %>
+    <% else %>
+      <p class="font-semibold mt-4">解説：</p>
+      <div class="bg-gray-50 p-4 rounded border mt-2 leading-relaxed">
+        <%= simple_format(@question.explanation) %>
+      </div>
+    <% end %>
 
-  <% if @next_question %>
-    <div class="mt-4">
-      <%= link_to "次の問題へ ▶", question_path(@next_question),
-          class: "inline-block rounded-lg px-4 py-2 bg-blue-600 text-white hover:bg-blue-700" %>
-    </div>
-  <% else %>
-    <div class="mt-4">
-      <%= link_to "終了（最初に戻る）", question_path(Question.order(:id).first),
-          class: "inline-block rounded-lg px-4 py-2 bg-gray-600 text-white hover:bg-gray-700" %>
-    </div>
+    <% if @next_question %>
+      <div class="mt-6 text-center">
+        <%= link_to "次の問題へ ▶",
+            question_path(@next_question),
+            class: "inline-block rounded-lg px-4 py-3 bg-blue-600 text-white hover:bg-blue-700 w-full sm:w-auto" %>
+      </div>
+    <% else %>
+      <div class="mt-6 text-center">
+        <%= link_to "終了（最初に戻る）",
+            question_path(Question.order(:id).first),
+            class: "inline-block rounded-lg px-4 py-3 bg-gray-600 text-white hover:bg-gray-700 w-full sm:w-auto" %>
+      </div>
+    <% end %>
   <% end %>
-<% end %>
+</div>

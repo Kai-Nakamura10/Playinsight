@@ -2,44 +2,82 @@
   <div class="max-w-4xl mx-auto">
     <h1 class="text-2xl font-bold mb-6">動画一覧</h1>
 
-    <ul class="videos-list list-none p-0 m-0 space-y-6">
+    <ul class="space-y-6">
       <% @videos.each do |video| %>
         <li class="bg-white shadow-lg rounded-lg overflow-hidden">
           <div class="flex flex-col md:flex-row">
             <% poster_url = video.thumbnail.attached? ? url_for(video.thumbnail) : nil %>
 
-            <div class="w-full md:w-56 flex-shrink-0 bg-gray-100">
+            <!-- サムネイル -->
+            <div class="w-full md:w-56 bg-gray-100">
               <% if video.file.attached? %>
-                <%= video_tag url_for(video.file), controls: true, poster: poster_url, preload: 'metadata', muted: true, class: "w-full h-auto object-cover" %>
+                <%= video_tag url_for(video.file),
+                    controls: true,
+                    poster: poster_url,
+                    preload: 'metadata',
+                    muted: true,
+                    class: "w-full h-48 md:h-full object-cover" %>
               <% elsif poster_url %>
-                <%= image_tag poster_url, alt: "#{video.title} thumbnail", class: "w-full h-auto object-cover" %>
+                <%= image_tag poster_url,
+                    alt: "#{video.title} thumbnail",
+                    class: "w-full h-48 md:h-full object-cover" %>
               <% else %>
-                <div class="w-full h-36 flex items-center justify-center text-gray-400">サムネイルなし</div>
+                <div class="w-full h-48 flex items-center justify-center text-gray-400">
+                  サムネイルなし
+                </div>
               <% end %>
             </div>
 
+            <!-- 本文 -->
             <div class="p-4 flex-1">
-              <div class="text-lg font-semibold text-gray-900 mb-2"><%= video.title %></div>
-              <div class="text-sm text-gray-600 mb-3"><%= truncate(video.description, length: 220) %></div>
+              <h2 class="text-lg font-semibold text-gray-900 mb-2 break-words">
+                <%= video.title %>
+              </h2>
 
-              <div class="text-xs text-gray-500 mb-4">公開設定: <%= t("enums.video.visibility.#{video.visibility}") %> •  長さ: <%= video.duration_seconds.present? ? "#{video.duration_seconds}秒" : "解析中…" %></div>
+              <p class="text-sm text-gray-600 mb-3 break-words">
+                <%= truncate(video.description, length: 200) %>
+              </p>
 
-              <div class="text-xs text-gray-400">保存日時: <%= l(video.created_at, format: :long) %></div>
+              <p class="text-xs text-gray-500 mb-2">
+                公開設定：<%= t("enums.video.visibility.#{video.visibility}") %>
+              </p>
+              <p class="text-xs text-gray-500 mb-2">
+                長さ：<%= video.duration_seconds.present? ? "#{video.duration_seconds}秒" : "解析中…" %>
+              </p>
+
+              <p class="text-xs text-gray-400">
+                保存日時：<%= l(video.created_at, format: :long) %>
+              </p>
             </div>
-            <% if video.respond_to?(:id) && video.id.present? %>
-              <%= link_to "動画詳細へ", video_path(video), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-            <% else %>
-              <span class="text-gray-400 px-4 py-2 rounded">詳細なし</span>
-            <% end %>
+
+            <!-- ボタン（スマホでは下に表示） -->
+            <div class="border-t md:border-t-0 md:border-l px-4 py-3 flex items-center justify-end">
+              <% if video.id.present? %>
+                <%= link_to "動画詳細へ",
+                    video_path(video),
+                    class: "text-sm px-3 py-2 bg-gray-100 text-gray-800 rounded hover:bg-gray-200" %>
+              <% else %>
+                <span class="text-sm text-gray-400">詳細なし</span>
+              <% end %>
+            </div>
           </div>
         </li>
       <% end %>
     </ul>
 
-    <div class="mt-6 text-right">
-      <%= link_to "動画を投稿", new_video_path, class: 'inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700' %>
-      <%= link_to "タグ作成", new_tag_path, class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>
-      <%= link_to "戦術一覧", tactics_path, class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>
+    <!-- フッターボタン -->
+    <div class="mt-6 flex flex-wrap gap-3 justify-end">
+      <%= link_to "動画を投稿",
+          new_video_path,
+          class: "bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700 text-sm" %>
+
+      <%= link_to "タグ作成",
+          new_tag_path,
+          class: "bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200 text-sm" %>
+
+      <%= link_to "戦術一覧",
+          tactics_path,
+          class: "bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200 text-sm" %>
     </div>
   </div>
 </div>

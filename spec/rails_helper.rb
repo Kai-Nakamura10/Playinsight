@@ -47,7 +47,7 @@ RSpec.configure do |config|
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
-   config.before(type: :system, js: true) do
+  config.before(type: :system, js: true) do
     driven_by :selenium_chrome
   end
 

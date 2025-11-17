@@ -1,156 +1,187 @@
-<div class="max-w-4xl mx-auto mt-6">
-  <div class="relative">
-    <video
-      id="player-<%= @video.id %>"
-      class="video-js vjs-default-skin vjs-fluid w-full bg-black mx-auto"
-      controls
-      preload="auto"
-      playsinline
-    >
-      <% if @video.file.attached? %>
-        <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
-        お使いのブラウザは動画タグに対応していません。
-      <% else %>
-        <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
+<div class="max-w-5xl mx-auto px-4 py-6 space-y-10">
+  <div class="bg-white shadow-sm rounded-2xl p-4 sm:p-6">
+    <div class="relative rounded-xl overflow-hidden bg-black">
+      <video
+        id="player-<%= @video.id %>"
+        class="video-js vjs-default-skin vjs-fluid w-full h-full bg-black"
+        controls
+        preload="auto"
+        playsinline
+      >
+        <% if @video.file.attached? %>
+          <source src="<%= url_for(@video.file) %>" type="<%= @video.file.content_type %>">
+          お使いのブラウザは動画タグに対応していません。
+        <% else %>
+          <p class="text-center text-red-600">動画ファイルが見つかりません。</p>
+        <% end %>
+      </video>
+      <%= tag.div(
+        id: "tactic-overlay",
+        data: { video_id: @video.id, tactics: @tactics_payload },
+        class: "pointer-events-none absolute inset-0 z-50"
+      ) %>
+    </div>
+    <div class="mt-6 space-y-4">
+      <h1 class="text-2xl font-semibold"><%= @video.title %></h1>
+      <p class="text-gray-700 leading-relaxed"><%= @video.description %></p>
+      <div class="grid gap-2 text-sm text-gray-600 sm:grid-cols-2">
+        <p>公開設定: <%= t("enums.video.visibility.#{@video.visibility}") %></p>
+        <p>長さ: <%= @video.duration_seconds.present? ? "#{@video.duration_seconds}秒" : "解析中…" %></p>
+        <p class="sm:col-span-2">保存日時: <%= l(@video.created_at, format: :long) %></p>
+      </div>
+      <div class="flex flex-col gap-3 sm:flex-row sm:flex-wrap">
+        <%= link_to "動画を編集", edit_video_path(@video), class: 'inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700' %>
+        <%= link_to "動画一覧へ", videos_path, class: 'inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200' %>
+        <%= link_to "削除", video_path(@video), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: 'inline-flex items-center justify-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700' %>
+      </div>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <div>
+      <h3 class="text-lg font-semibold">タグ</h3>
+      <ul id="video-tags" class="flex gap-2 flex-wrap mt-2">
+        <%= render partial: "videos/tag", collection: @video.tags, as: :tag, locals: { video: @video } %>
+      </ul>
+    </div>
+    <div class="grid gap-4 md:grid-cols-2">
+      <%= form_with url: video_video_tags_path(@video), method: :post, data: { turbo_stream: true }, class: "flex flex-col gap-2 bg-white rounded-xl p-4 shadow-sm" do %>
+        <label class="text-sm font-medium text-gray-600">既存タグを追加</label>
+        <%= select_tag :tag_id, options_from_collection_for_select(Tag.order(:name), :id, :name), class: "rounded border px-3 py-2" %>
+        <%= submit_tag "追加", class: "rounded bg-blue-600 px-4 py-2 text-white" %>
       <% end %>
-    </video>
-    <%= tag.div(
-      id: "tactic-overlay",
-      data: { video_id: @video.id, tactics: @tactics_payload },
-      class: "pointer-events-none absolute inset-0 z-50"
-    ) %>
-  </div>
-</div>
-<h3>タグ</h3>
-<ul id="video-tags" class="flex gap-2 flex-wrap">
-  <%= render partial: "videos/tag", collection: @video.tags, as: :tag, locals: { video: @video } %>
-</ul>
-<%= form_with url: video_video_tags_path(@video), method: :post, data: { turbo_stream: true } do %>
-  <%= select_tag :tag_id, options_from_collection_for_select(Tag.order(:name), :id, :name) %>
-  <%= submit_tag "追加" %>
-<% end %>
-<%= form_with url: video_video_tags_path(@video), method: :post, data: { turbo_stream: true } do %>
-  <%= text_field_tag :name, nil, placeholder: "新しいタグ名" %>
-  <%= submit_tag "作成して追加" %>
-<% end %>
-<div class="max-w-4xl mx-auto mt-6 p-4 bg-white shadow-md rounded">
-  <h1 class="text-2xl font-bold mb-4"><%= @video.title %></h1>
-  <p class="text-gray-700 mb-4"><%= @video.description %></p>
-  <p class="text-sm text-gray-500 mb-2">公開設定: <%= t("enums.video.visibility.#{@video.visibility}") %></p>
-  <p class="text-sm text-gray-500 mb-2">長さ: <%= @video.duration_seconds.present? ? "#{@video.duration_seconds}秒" : "解析中…" %></p>
-  <p class="text-sm text-gray-500">保存日時: <%= l(@video.created_at, format: :long) %></p>
-  <div class="mt-4 flex space-x-2">
-    <%= link_to "動画を編集", edit_video_path(@video), class: 'inline-block bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700' %>
-    <%= link_to "動画一覧へ", videos_path, class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>
-    <%= link_to "削除", video_path(@video), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: 'inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700' %>
-  </div>
-</div>
-
-<h2 class="text-lg font-semibold mb-2">タイムライン</h2>
-<div id="timelines_list">
-  <%= render partial: "timelines/list", locals: { timelines: @video.timelines.order(:start_seconds) } %>
-</div>
-
-<%= form_with model: [@video, Timeline.new], data: { turbo_stream: true } do |f| %>
-  <div class="mb-4">
-    <%= f.label :start_seconds, "開始時間 (秒)", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.number_field :start_seconds, step: "0.01", class: "mt-1 block w-full border rounded p-2" %>
+      <%= form_with url: video_video_tags_path(@video), method: :post, data: { turbo_stream: true }, class: "flex flex-col gap-2 bg-white rounded-xl p-4 shadow-sm" do %>
+        <label class="text-sm font-medium text-gray-600">新しいタグを作成</label>
+        <%= text_field_tag :name, nil, placeholder: "新しいタグ名", class: "rounded border px-3 py-2" %>
+        <%= submit_tag "作成して追加", class: "rounded bg-emerald-600 px-4 py-2 text-white" %>
+      <% end %>
+    </div>
   </div>
 
-  <div class="mb-4">
-    <%= f.label :kind, "種別", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.select :kind, Timeline::KINDS.map { |k| [k.titleize, k] }, { include_blank: false }, class: "mt-1 block w-full border rounded p-2" %>
-  </div>
+  <div class="space-y-4">
+    <div class="flex items-center justify-between">
+      <h2 class="text-lg font-semibold">タイムライン</h2>
+      <p class="text-sm text-gray-500">時系列で閲覧できます</p>
+    </div>
+    <div id="timelines_list" class="bg-white rounded-2xl shadow-sm p-4">
+      <%= render partial: "timelines/list", locals: { timelines: @video.timelines.order(:start_seconds) } %>
+    </div>
+    <%= form_with model: [@video, Timeline.new], data: { turbo_stream: true }, class: "bg-white rounded-2xl shadow-sm p-4 grid gap-4 md:grid-cols-2" do |f| %>
+      <div>
+        <%= f.label :start_seconds, "開始時間 (秒)", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.number_field :start_seconds, step: "0.01", class: "mt-1 block w-full border rounded-lg p-2" %>
+      </div>
 
-  <div class="mb-4">
-    <%= f.label :body, "ノート / 説明", class: "block text-sm font-medium text-gray-700" %>
-    <%= f.text_area :body, rows: 3, class: "mt-1 block w-full border rounded p-2" %>
-  </div>
+      <div>
+        <%= f.label :kind, "種別", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.select :kind, Timeline::KINDS.map { |k| [k.titleize, k] }, { include_blank: false }, class: "mt-1 block w-full border rounded-lg p-2" %>
+      </div>
 
-  <div>
-    <%= f.submit "タイムラインを追加", class: "bg-green-600 text-black px-4 py-2 rounded hover:bg-green-700" %>
-  </div>
-<% end %>
-<h2 class="text-lg font-semibold mb-2 mt-6">コメント</h2>
-<div id="comments_wrapper">
-  <table class="w-full table-auto border-collapse">
-    <tbody id="comments_list">
-      <%= render partial: "comments/comment", collection: @video.comments.order(created_at: :desc), as: :comment %>
-    </tbody>
-  </table>
-</div>
-<div id="new_comment_form">
-  <%= render partial: "comments/form", locals: { comment: Comment.new, video: @video } %>
-</div>
-<div class="mt-4">
-  <%= render "comments/tree", nodes: @comment_tree, video: @video, list_id: "comments_tree" %>
-</div>
-<h2 class="text-lg font-bold mt-6 mb-2">この動画に戦術を追加</h2>
+      <div class="md:col-span-2">
+        <%= f.label :body, "ノート / 説明", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.text_area :body, rows: 3, class: "mt-1 block w-full border rounded-lg p-3" %>
+      </div>
 
-<%= form_with url: video_tactics_path, method: :post, class: "flex flex-wrap gap-3 items-end" do %>
-  <%= hidden_field_tag "video_tactic[video_id]", @video.id %>
-
-  <div>
-    <label class="block text-sm font-medium">戦術</label>
-    <%= select_tag "video_tactic[tactic_id]",
-          options_from_collection_for_select(@tactics, :id, :title),
-          class: "rounded border px-3 py-2" %>
-  </div>
-
-  <div>
-    <label class="block text-sm font-medium">表示秒</label>
-    <%= number_field_tag "video_tactic[display_time]", 2.0, step: 0.1, min: 0,
-          id: "vt_display_time_new",
-          class: "rounded border px-3 py-2 w-28" %>
-    <button type="button" class="ml-2 rounded px-2 py-1 border"
-      onclick="
-        (function(){
-          const p = videojs(document.getElementById('player-<%= @video.id %>'));
-          document.getElementById('vt_display_time_new').value = p.currentTime().toFixed(2);
-        })();
-      ">
-      現在の再生位置をセット
-    </button>
-  </div>
-
-  <%= submit_tag "追加", class: "rounded bg-blue-600 px-4 py-2 text-white" %>
-<% end %>
-<h3 class="text-md font-semibold mt-6 mb-2">登録済みの戦術</h3>
-<table class="w-full border-collapse">
-  <thead>
-    <tr class="bg-gray-100">
-      <th class="border px-3 py-2 text-left">秒数</th>
-      <th class="border px-3 py-2 text-left">戦術</th>
-      <th class="border px-3 py-2">操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @video_tactics.each do |vt| %>
-      <tr>
-        <td class="border px-3 py-2 w-32">
-          <%= form_with model: vt, url: video_tactic_path(vt), method: :patch, class: "flex items-center gap-2" do |f| %>
-            <%= f.number_field :display_time, value: vt.display_time.to_f, step: 0.1, min: 0,
-                  id: "vt_display_time_#{vt.id}",
-                  class: "rounded border px-2 py-1 w-24" %>
-            <button type="button" class="rounded px-2 py-1 border"
-              onclick="
-                (function(){
-                  const p = videojs(document.getElementById('player-<%= @video.id %>'));
-                  document.getElementById('vt_display_time_<%= vt.id %>').value = p.currentTime().toFixed(2);
-                })();
-              ">
-              現在位置
-            </button>
-            <%= f.submit "更新", class: "rounded bg-gray-700 px-2 py-1 text-white" %>
-          <% end %>
-        </td>
-        <td class="border px-3 py-2"><%= vt.tactic.title %></td>
-        <td class="border px-3 py-2 text-center">
-          <%= button_to "削除", video_tactic_path(vt), method: :delete,
-                data: { turbo_confirm: "削除しますか？" },
-                class: "rounded bg-red-600 px-3 py-1 text-white" %>
-        </td>
-      </tr>
+      <div>
+        <%= f.submit "タイムラインを追加", class: "bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700" %>
+      </div>
     <% end %>
-  </tbody>
-</table>
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-lg font-semibold">コメント</h2>
+    <div id="comments_wrapper" class="bg-white rounded-2xl shadow-sm">
+      <div class="overflow-x-auto">
+        <table class="w-full table-auto border-collapse text-sm">
+          <tbody id="comments_list">
+            <%= render partial: "comments/comment", collection: @video.comments.order(created_at: :desc), as: :comment %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+    <div id="new_comment_form" class="bg-white rounded-2xl shadow-sm p-4">
+      <%= render partial: "comments/form", locals: { comment: Comment.new, video: @video } %>
+    </div>
+    <div class="bg-white rounded-2xl shadow-sm p-4">
+      <%= render "comments/tree", nodes: @comment_tree, video: @video, list_id: "comments_tree" %>
+    </div>
+  </div>
+
+  <div class="space-y-4">
+    <h2 class="text-lg font-bold">この動画に戦術を追加</h2>
+    <%= form_with url: video_tactics_path, method: :post, class: "flex flex-col gap-4 lg:flex-row lg:flex-wrap lg:items-end bg-white rounded-2xl shadow-sm p-4" do %>
+      <%= hidden_field_tag "video_tactic[video_id]", @video.id %>
+
+      <div class="flex-1 min-w-[200px]">
+        <label class="block text-sm font-medium mb-1">戦術</label>
+        <%= select_tag "video_tactic[tactic_id]",
+              options_from_collection_for_select(@tactics, :id, :title),
+              class: "rounded border px-3 py-2 w-full" %>
+      </div>
+
+      <div class="flex flex-col sm:flex-row sm:items-center gap-2">
+        <div>
+          <label class="block text-sm font-medium mb-1">表示秒</label>
+          <%= number_field_tag "video_tactic[display_time]", 2.0, step: 0.1, min: 0,
+                id: "vt_display_time_new",
+                class: "rounded border px-3 py-2 w-28" %>
+        </div>
+        <button type="button" class="rounded px-3 py-2 border text-sm"
+          onclick="
+            (function(){
+              const p = videojs(document.getElementById('player-<%= @video.id %>'));
+              document.getElementById('vt_display_time_new').value = p.currentTime().toFixed(2);
+            })();
+          ">
+          現在の再生位置をセット
+        </button>
+      </div>
+
+      <%= submit_tag "追加", class: "rounded bg-blue-600 px-6 py-2 text-white" %>
+    <% end %>
+
+    <div>
+      <h3 class="text-md font-semibold mb-2">登録済みの戦術</h3>
+      <div class="bg-white rounded-2xl shadow-sm overflow-x-auto">
+        <table class="w-full border-collapse text-sm min-w-[480px]">
+          <thead>
+            <tr class="bg-gray-100 text-left text-gray-600">
+              <th class="border px-3 py-2">秒数</th>
+              <th class="border px-3 py-2">戦術</th>
+              <th class="border px-3 py-2 text-center">操作</th>
+            </tr>
+          </thead>
+          <tbody>
+            <% @video_tactics.each do |vt| %>
+              <tr class="odd:bg-gray-50">
+                <td class="border px-3 py-2 w-40">
+                  <%= form_with model: vt, url: video_tactic_path(vt), method: :patch, class: "flex flex-col sm:flex-row sm:items-center gap-2" do |f| %>
+                    <%= f.number_field :display_time, value: vt.display_time.to_f, step: 0.1, min: 0,
+                          id: "vt_display_time_#{vt.id}",
+                          class: "rounded border px-2 py-1 w-full sm:w-24" %>
+                    <button type="button" class="rounded px-2 py-1 border text-xs"
+                      onclick="
+                        (function(){
+                          const p = videojs(document.getElementById('player-<%= @video.id %>'));
+                          document.getElementById('vt_display_time_<%= vt.id %>').value = p.currentTime().toFixed(2);
+                        })();
+                      ">
+                      現在位置
+                    </button>
+                    <%= f.submit "更新", class: "rounded bg-gray-700 px-2 py-1 text-white text-xs" %>
+                  <% end %>
+                </td>
+                <td class="border px-3 py-2 align-top"><%= vt.tactic.title %></td>
+                <td class="border px-3 py-2 text-center">
+                  <%= button_to "削除", video_tactic_path(vt), method: :delete,
+                        data: { turbo_confirm: "削除しますか？" },
+                        class: "rounded bg-red-600 px-3 py-1 text-white text-sm" %>
+                </td>
+              </tr>
+            <% end %>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

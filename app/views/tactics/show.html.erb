@@ -1,49 +1,64 @@
-<div class="relative min-h-[calc(100vh-134px)] bg-center bg-contain bg-no-repeat" style="background-image: url('<%= asset_path("Group_1_#{@tactic.id}.svg") %>');"></div>
+<div class="relative min-h-[calc(60vh)] md:min-h-[calc(100vh-134px)] bg-center bg-contain bg-no-repeat"
+     style="background-image: url('<%= asset_path("Group_1_#{@tactic.id}.svg") %>');">
+</div>
 
-<div class="tactic">
-  <h1><%= @tactic.title %></h1>
+<div class="tactic max-w-3xl mx-auto px-4 py-6 space-y-6">
+  <h1 class="text-2xl font-bold text-gray-900 md:text-3xl">
+    <%= @tactic.title %>
+  </h1>
 
   <% if @tactic.trigger.present? %>
-    <p>トリガー：<%= @tactic.trigger %></p>
+    <p class="text-base md:text-lg">
+      <strong>トリガー：</strong><%= @tactic.trigger %>
+    </p>
   <% end %>
 
   <% if @tactic.description.present? %>
-    <div class="description"><%= simple_format(@tactic.description) %></div>
+    <div class="description text-gray-800 leading-relaxed text-base md:text-lg">
+      <%= simple_format(@tactic.description) %>
+    </div>
   <% end %>
 
   <% steps = @tactic.steps || {} %>
 
   <% success_conditions = steps["success_conditions"] || steps["success"] %>
   <% if success_conditions.present? %>
-    <h2>✅ 成功条件</h2>
-    <ul>
-      <% success_conditions.each do |cond| %>
-        <li><%= cond %></li>
-      <% end %>
-    </ul>
+    <div>
+      <h2 class="text-xl font-semibold mb-2">✅ 成功条件</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <% success_conditions.each do |cond| %>
+          <li class="text-gray-800"><%= cond %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
   <% common_failures = steps["common_failures"] || steps["failures"] %>
   <% if common_failures.present? %>
-    <h2>⚠️ よくある失敗</h2>
-    <ul>
-      <% common_failures.each do |f| %>
-        <li><%= f %></li>
-      <% end %>
-    </ul>
+    <div>
+      <h2 class="text-xl font-semibold mb-2">⚠️ よくある失敗</h2>
+      <ul class="list-disc pl-5 space-y-1">
+        <% common_failures.each do |f| %>
+          <li class="text-gray-800"><%= f %></li>
+        <% end %>
+      </ul>
+    </div>
   <% end %>
 
   <% if @tactic.counters.present? %>
-    <h2>🔄 カウンター</h2>
-    <p><%= @tactic.counters %></p>
+    <div>
+      <h2 class="text-xl font-semibold mb-2">🔄 カウンター</h2>
+      <p class="text-base md:text-lg"><%= @tactic.counters %></p>
+    </div>
   <% end %>
 </div>
-<div class="mt-6 flex gap-3">
+
+<div class="mt-8 flex flex-col md:flex-row gap-4 md:gap-6 justify-center">
   <%= link_to "← 前の戦術",
       tactic_path(@prev_tactic),
-      class: "px-4 py-2 rounded bg-gray-200 hover:bg-gray-300" %>
+      class: "px-4 py-2 rounded bg-gray-200 text-center hover:bg-gray-300 text-gray-900 font-medium" %>
 
   <%= link_to "次の戦術 →",
       tactic_path(@next_tactic),
-      class: "px-4 py-2 rounded bg-blue-600 text-white hover:bg-blue-700" %>
+      class: "px-4 py-2 rounded bg-blue-600 text-white text-center hover:bg-blue-700 font-medium" %>
 </div>

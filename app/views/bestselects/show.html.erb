@@ -1,39 +1,77 @@
-<div class="relative min-h-[calc(100vh-134px)] bg-center bg-contain bg-no-repeat" style="background-image: url('<%= asset_path("Group_34_#{@bestselect.id}.svg") %>');"></div>
+<!-- 背景画像（レスポンシブ対応） -->
+<div 
+  class="relative bg-center bg-contain bg-no-repeat
+         min-h-[220px] sm:min-h-[300px] md:min-h-[calc(100vh-134px)]"
+  style="background-image: url('<%= asset_path("Group_34_#{@bestselect.id}.svg") %>');">
+</div>
 
 <% if @bestselect.present? %>
-  <div class="question p-4" data-controller="bestselect" data-bestselect-current-id-value="<%= @bestselect.id %>">
-    <h2 class="text-xl font-semibold mb-4"><%= @bestselect.question %></h2>
+  <div 
+    class="question px-4 py-6 sm:px-6 md:px-8 lg:px-10 
+           max-w-3xl mx-auto"
+    data-controller="bestselect"
+    data-bestselect-current-id-value="<%= @bestselect.id %>"
+  >
+    <!-- 質問文 -->
+    <h2 class="text-lg sm:text-xl md:text-2xl font-semibold mb-4 leading-relaxed">
+      <%= @bestselect.question %>
+    </h2>
 
-    <ul class="answers space-y-2 mb-6">
+    <!-- 選択肢 -->
+    <ul class="answers space-y-3 mb-6">
       <% @bestselect.answers.each do |answer| %>
         <li
-          class="p-3 border rounded cursor-pointer hover:bg-gray-50"
+          class="p-4 border rounded-lg cursor-pointer bg-white shadow-sm
+                 hover:bg-gray-50 active:bg-gray-100
+                 transition-all text-base sm:text-lg"
           data-action="click->bestselect#choose"
           data-bestselect-correct-value="<%= answer.is_correct %>"
           data-bestselect-target="answer"
         >
-          <span class="mr-2 text-gray-500"><%= answer.position %>.</span>
+          <span class="mr-2 text-gray-500 font-medium"><%= answer.position %>.</span>
           <span><%= answer.body %></span>
         </li>
       <% end %>
     </ul>
 
-    <div class="mt-2 text-base font-medium" data-bestselect-target="result"></div>
-    <button type="button" class="mt-3 text-sm text-blue-600 hover:underline" data-action="bestselect#reset">もう一度</button>
+    <!-- 結果 -->
+    <div 
+      class="mt-2 text-base sm:text-lg font-medium min-h-[1.5rem]"
+      data-bestselect-target="result">
+    </div>
 
-    <div class="explanation p-4 bg-gray-50 rounded border hidden" data-bestselect-target="explanation">
+    <!-- もう一度ボタン -->
+    <button 
+      type="button" 
+      class="mt-3 text-sm sm:text-base text-blue-600 hover:text-blue-700 underline"
+      data-action="bestselect#reset">
+      もう一度
+    </button>
+
+    <!-- 解説 -->
+    <div
+      class="explanation mt-4 p-4 bg-gray-50 rounded border hidden
+             text-sm sm:text-base leading-relaxed"
+      data-bestselect-target="explanation">
       <h3 class="font-medium mb-2">解説</h3>
       <p><%= @bestselect.explanation %></p>
     </div>
 
+    <!-- 次の問題 -->
     <% if @next_bestselect.present? && @next_bestselect.id != @bestselect.id %>
-      <div class="mt-6">
-        <%= link_to "次の問題へ", bestselect_path(@next_bestselect), class: "inline-flex items-center px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700" %>
+      <div class="mt-8">
+        <%= link_to "次の問題へ",
+          bestselect_path(@next_bestselect),
+          class: "inline-flex items-center px-5 py-2.5 
+                  bg-blue-600 text-white rounded-lg shadow
+                  text-sm sm:text-base
+                  hover:bg-blue-700 transition" %>
       </div>
     <% end %>
   </div>
+
 <% else %>
-  <div class="p-4">
+  <div class="p-4 text-center text-sm sm:text-base">
     <p>問題が見つかりません。`bin/rails db:seed` を実行してください。</p>
   </div>
 <% end %>
