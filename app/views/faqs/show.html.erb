@@ -1,21 +1,27 @@
 <% grouped = @faqs.group_by(&:category) %>
 
-<div class="faqs">
+<div class="faqs max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
   <% grouped.each do |category, faqs| %>
-    <section class="faq-category">
-      <h2 class="faq-category__title"><%= category.presence || "その他" %></h2>
+    <section class="faq-category mb-10">
+      <h2 class="faq-category__title text-2xl font-bold mb-4 border-b pb-2">
+        <%= category.presence || "その他" %>
+      </h2>
 
-      <dl class="faq-list">
+      <dl class="faq-list space-y-6">
         <% faqs.sort_by(&:order).each_with_index do |faq, i| %>
-          <dt class="faq-question">
-            Q<%= i + 1 %>. <%= h(faq.body) %>
-          </dt>
+          <div class="bg-white rounded-lg shadow p-4 sm:p-6">
+            <dt class="faq-question font-semibold text-lg mb-2">
+              <span class="text-blue-600">Q<%= i + 1 %>.</span>
+              <%= h(faq.body) %>
+            </dt>
 
-          <% faq.faqs_answers.each do |ans| %>
-            <dd class="faq-answer">
-              A. <%= simple_format(h(ans.body)) %>
-            </dd>
-          <% end %>
+            <% faq.faqs_answers.each do |ans| %>
+              <dd class="faq-answer text-gray-700 bg-gray-50 p-3 rounded mt-2 border-l-4 border-blue-400">
+                <strong class="text-blue-600">A.</strong>
+                <%= simple_format(h(ans.body)) %>
+              </dd>
+            <% end %>
+          </div>
         <% end %>
       </dl>
     </section>

@@ -1,9 +1,23 @@
-<h1>タグ一覧</h1>
-<ul>
-  <% @tags.each do |tag| %>
-    <li>
-      <%= link_to "#{tag.name} (#{tag.videos.count})", videos_path(tag_id: tag.id) %>
-    </li>
-  <% end %>
-</ul>
-<%= link_to '動画一覧へ戻る', videos_path, class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>
+<div class="max-w-4xl mx-auto px-4 py-8 space-y-6">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <h1 class="text-2xl font-semibold">タグ一覧</h1>
+    <%= link_to '動画一覧へ戻る', videos_path, class: 'inline-flex justify-center rounded-lg bg-gray-100 text-gray-700 px-4 py-2 hover:bg-gray-200' %>
+  </div>
+
+  <div class="bg-white rounded-2xl shadow-sm p-4">
+    <% if @tags.any? %>
+      <ul class="grid gap-3 sm:grid-cols-2">
+        <% @tags.each do |tag| %>
+          <li>
+            <%= link_to videos_path(tag_id: tag.id), class: "flex items-center justify-between rounded-xl border border-gray-200 px-4 py-3 hover:border-blue-400 hover:bg-blue-50" do %>
+              <span class="font-medium text-gray-800"><%= tag.name %></span>
+              <span class="text-sm text-gray-500"><%= tag.videos.count %> 件</span>
+            <% end %>
+          </li>
+        <% end %>
+      </ul>
+    <% else %>
+      <p class="text-center text-gray-500 py-8">登録されているタグはまだありません。</p>
+    <% end %>
+  </div>
+</div>

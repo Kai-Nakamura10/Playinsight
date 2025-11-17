@@ -1,29 +1,58 @@
-<h1 class="text-xl font-bold mb-4">戦術一覧</h1>
+<div class="max-w-6xl mx-auto px-4 py-8 space-y-6">
+  <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between">
+    <h1 class="text-2xl font-semibold">戦術一覧</h1>
+    <%= link_to "新規作成", new_tactic_path,
+                class: "inline-flex justify-center rounded-lg bg-blue-600 px-4 py-2 text-white hover:bg-blue-700" %>
+  </div>
 
-<div class="mb-4">
-  <%= link_to "新規作成", new_tactic_path,
-              class: "inline-block rounded bg-blue-600 px-3 py-2 text-white hover:bg-blue-700" %>
+  <div class="bg-white rounded-2xl shadow-sm p-4 space-y-6">
+    <div class="overflow-x-auto hidden md:block">
+      <table class="w-full border-collapse text-sm">
+        <thead>
+          <tr class="bg-gray-100 text-left text-gray-600">
+            <th class="border px-3 py-2">タイトル</th>
+            <th class="border px-3 py-2">スラッグ</th>
+            <th class="border px-3 py-2">トリガー</th>
+            <th class="border px-3 py-2">操作</th>
+          </tr>
+        </thead>
+        <tbody>
+          <% @tactics.each do |t| %>
+            <tr class="odd:bg-gray-50">
+              <td class="border px-3 py-2"><%= t.title %></td>
+              <td class="border px-3 py-2"><%= t.slug %></td>
+              <td class="border px-3 py-2"><%= t.trigger %></td>
+              <td class="border px-3 py-2">
+                <%= link_to "編集", edit_tactic_path(t), class: "text-blue-600 hover:underline" %>
+              </td>
+            </tr>
+          <% end %>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="space-y-4 md:hidden">
+      <% @tactics.each do |t| %>
+        <div class="rounded-xl border border-gray-200 p-4 space-y-2">
+          <div>
+            <p class="text-sm text-gray-500">タイトル</p>
+            <p class="text-lg font-medium text-gray-900"><%= t.title %></p>
+          </div>
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm text-gray-700">
+            <div>
+              <p class="text-gray-500">スラッグ</p>
+              <p class="font-medium break-all"><%= t.slug %></p>
+            </div>
+            <div>
+              <p class="text-gray-500">トリガー</p>
+              <p class="font-medium"><%= t.trigger %></p>
+            </div>
+          </div>
+          <div>
+            <%= link_to "編集", edit_tactic_path(t), class: "inline-flex text-blue-600 font-medium hover:underline" %>
+          </div>
+        </div>
+      <% end %>
+    </div>
+  </div>
 </div>
-
-<table class="w-full border-collapse">
-  <thead>
-    <tr class="bg-gray-100">
-      <th class="border px-3 py-2 text-left">タイトル</th>
-      <th class="border px-3 py-2 text-left">スラッグ</th>
-      <th class="border px-3 py-2 text-left">トリガー</th>
-      <th class="border px-3 py-2 text-left">操作</th>
-    </tr>
-  </thead>
-  <tbody>
-    <% @tactics.each do |t| %>
-      <tr>
-        <td class="border px-3 py-2"><%= t.title %></td>
-        <td class="border px-3 py-2"><%= t.slug %></td>
-        <td class="border px-3 py-2"><%= t.trigger %></td>
-        <td class="border px-3 py-2">
-          <%= link_to "編集", edit_tactic_path(t), class: "text-blue-600 hover:underline" %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
