@@ -10,7 +10,7 @@ class CreateQuestionAttempts < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :question_attempts, [:question_id, :choice_id]
+    add_index :question_attempts, [ :question_id, :choice_id ]
     add_index :question_attempts, :created_at
   end
 end

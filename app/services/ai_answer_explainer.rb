@@ -3,10 +3,10 @@ require "json"
 
 class AiAnswerExplainer
   def self.test_connection
-    api_key = ENV['OPENAI_API_KEY']
+    api_key = ENV["OPENAI_API_KEY"]
     puts "API Key present: #{api_key.present?}"
     puts "API Key format: #{api_key&.slice(0, 10)}..." if api_key
-    
+
     # 簡単な接続テスト
     client = OpenAI::Client.new(access_token: api_key)
     response = client.models.list
@@ -91,7 +91,7 @@ class AiAnswerExplainer
       raise "Empty response from OpenAI" if text.nil? || text.strip.empty?
 
       json = JSON.parse(text, symbolize_names: true)
-      
+
       Rails.logger.info("[AiAnswerExplainer] API call successful in #{elapsed_ms}ms")
       return json, elapsed_ms, MODEL
 
