@@ -60,7 +60,7 @@ RSpec.describe "Tactical quiz", type: :system do
   end
 
   it "shows the AI explanation with all sections when the correct answer is chosen" do
-    expect(AiAnswerExplainer).to receive(:call).and_return([ai_payload, 432, "gpt-test"])
+    expect(AiAnswerExplainer).to receive(:call).and_return([ ai_payload, 432,"gpt-test" ])
 
     answer_question(correct_choice)
 
@@ -83,7 +83,7 @@ RSpec.describe "Tactical quiz", type: :system do
   end
 
   it "marks the answer incorrect but still renders the AI feedback" do
-    expect(AiAnswerExplainer).to receive(:call).and_return([ai_payload, 512, "gpt-test"])
+    expect(AiAnswerExplainer).to receive(:call).and_return([ ai_payload, 512,"gpt-test" ])
 
     answer_question(drive_choice)
 

@@ -80,9 +80,12 @@ RSpec.describe "Tactics management", type: :system do
       fill_in "タイトル", with: "プッシュブレイク"
       fill_in "スラッグ", with: "push-break"
       fill_in "トリガー", with: "リバウンド確保"
+      click_button "次へ"
       fill_in "説明", with: "リバウンド後に5秒以内で仕掛ける。"
+      click_button "次へ"
       fill_in "成功条件（1行=1項目）", with: success_lines
       fill_in "よくある失敗（1行=1項目）", with: failure_lines
+      click_button "次へ"
       fill_in "カウンター（文字列でOK）", with: "ゾーンプレスにはドラッグスクリーン"
 
       expect do
@@ -91,8 +94,11 @@ RSpec.describe "Tactics management", type: :system do
 
       created = Tactic.find_by(slug: "push-break")
       expect(page).to have_current_path(edit_tactic_path(created))
+      click_button "次へ"
+      click_button "次へ"
       expect(find_field("成功条件（1行=1項目）").value).to eq(success_lines)
       expect(find_field("よくある失敗（1行=1項目）").value).to eq(failure_lines)
+      click_button "次へ"
       expect(find_field("カウンター（文字列でOK）").value).to eq("ゾーンプレスにはドラッグスクリーン")
     end
 
@@ -100,6 +106,9 @@ RSpec.describe "Tactics management", type: :system do
       sign_in!
       visit new_tactic_path
 
+      click_button "次へ"
+      click_button "次へ"
+      click_button "次へ"
       expect do
         find('input[type="submit"]').click
       end.not_to change(Tactic, :count)
@@ -111,14 +120,14 @@ RSpec.describe "Tactics management", type: :system do
 
   describe "match analysis workflows", js: true do
     let!(:existing_tag) { create(:tag, name: "トランジション") }
-    let!(:available_tactic) { create(:tactic, title: "ゾーンアタックセット" ) }
+    let!(:available_tactic) { create(:tactic, title: "ゾーンアタックセット") }
 
     it "allows uploading a video and enriching it with tags, timelines, comments, and tactics" do
       video_title = "試合分析テスト動画"
       timeline_note = "2-3ゾーンをアタック"
       comment_body = "12秒でギャップが空いたのでフレアカットを優先"
       display_time = "6.5"
-      uploaded_file = Tempfile.new(["match-analysis", ".mp4"])
+      uploaded_file = Tempfile.new([ "match-analysis",".mp4" ])
       uploaded_file.binmode
       uploaded_file.write("FAKEVIDEO")
       uploaded_file.rewind
