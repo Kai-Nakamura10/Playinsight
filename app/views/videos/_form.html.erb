@@ -1,46 +1,65 @@
-<%= form_with model: video, local: true, html: { multipart: true, class: 'space-y-4' } do |f| %>
-  <div>
-    <%= f.label :title, 'タイトル', class: 'block text-sm font-medium text-gray-700' %>
-    <%= f.text_field :title, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm' %>
+<%= form_with model: video, local: true, data: { controller: "step-form" }, html: { multipart: true, class: "space-y-6" } do |f| %>
+  <div class="h-2 w-full rounded-full bg-gray-200">
+    <div class="h-2 rounded-full bg-red-500 transition-all duration-300" data-step-form-target="progress"></div>
   </div>
 
-  <div>
-    <%= f.label :description, '説明', class: 'block text-sm font-medium text-gray-700' %>
-    <%= f.text_area :description, rows: 6, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm' %>
-  </div>
-
-  <div class="grid grid-cols-1 gap-4">
+  <div data-step-form-target="step" class="space-y-4">
     <div>
-      <%= f.label :visibility, '公開設定', class: 'block text-sm font-medium text-gray-700' %>
-      <%= f.select :visibility, options_for_select([['公開','public'], ['限定公開','unlisted'], ['非公開','private']], video.visibility), {}, class: 'mt-1 block w-full rounded-md border-gray-300 shadow-sm' %>
-    </div>
-  </div>
-
-  <div class="grid grid-cols-2 gap-4">
-    <div>
-      <%= f.label :file, '動画ファイル', class: 'block text-sm font-medium text-gray-700' %>
-      <%= f.file_field :file, accept: 'video/*', class: 'mt-1 block w-full' %>
-      <% if video.file.attached? %>
-        <div class="mt-2 text-sm text-gray-600">現在のファイル: <%= link_to '再生', url_for(video.file), target: '_blank' %></div>
-      <% end %>
+      <%= f.label :title, "タイトル", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_field :title, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
     </div>
 
     <div>
-      <%= f.label :thumbnail, 'サムネイル', class: 'block text-sm font-medium text-gray-700' %>
-      <%= f.file_field :thumbnail, accept: 'image/*', class: 'mt-1 block w-full' %>
-      <% if video.thumbnail.attached? %>
-        <div class="mt-2"><%= image_tag url_for(video.thumbnail), alt: 'thumbnail', class: 'h-24' %></div>
-      <% end %>
+      <%= f.label :description, "説明", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.text_area :description, rows: 6, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+    </div>
+
+    <div class="flex justify-end gap-3">
+      <button type="button" class="rounded border border-gray-300 px-4 py-2 text-gray-600" data-step-form-target="prevButton" data-action="click->step-form#prev">前へ</button>
+      <button type="button" class="rounded bg-red-600 px-4 py-2 text-white" data-step-form-target="nextButton" data-action="click->step-form#next">次へ</button>
     </div>
   </div>
 
-  <div class="flex items-center justify-between">
-    <div class="flex space-x-2">
-      <%= f.submit '保存する', class: 'inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700' %>
-      <%= link_to 'キャンセル', video_path(video), class: 'inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200' %>
-    </div>
+  <div data-step-form-target="step" class="space-y-4 hidden">
     <div>
-      <%= link_to '動画一覧に戻る', videos_path, class: 'text-sm text-gray-500 hover:underline' %>
+      <%= f.label :visibility, "公開設定", class: "block text-sm font-medium text-gray-700" %>
+      <%= f.select :visibility, options_for_select([["公開","public"], ["限定公開","unlisted"], ["非公開","private"]], video.visibility), {}, class: "mt-1 block w-full rounded-md border-gray-300 shadow-sm" %>
+    </div>
+
+    <div class="flex justify-between gap-3">
+      <button type="button" class="rounded border border-gray-300 px-4 py-2 text-gray-600" data-step-form-target="prevButton" data-action="click->step-form#prev">前へ</button>
+      <button type="button" class="rounded bg-red-600 px-4 py-2 text-white" data-step-form-target="nextButton" data-action="click->step-form#next">次へ</button>
+    </div>
+  </div>
+
+  <div data-step-form-target="step" class="space-y-4 hidden">
+    <div class="grid grid-cols-1 gap-4 md:grid-cols-2">
+      <div>
+        <%= f.label :file, "動画ファイル", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.file_field :file, accept: "video/*", class: "mt-1 block w-full" %>
+        <% if video.file.attached? %>
+          <div class="mt-2 text-sm text-gray-600">現在のファイル: <%= link_to "再生", url_for(video.file), target: "_blank" %></div>
+        <% end %>
+      </div>
+
+      <div>
+        <%= f.label :thumbnail, "サムネイル", class: "block text-sm font-medium text-gray-700" %>
+        <%= f.file_field :thumbnail, accept: "image/*", class: "mt-1 block w-full" %>
+        <% if video.thumbnail.attached? %>
+          <div class="mt-2"><%= image_tag url_for(video.thumbnail), alt: "thumbnail", class: "h-24" %></div>
+        <% end %>
+      </div>
+    </div>
+
+    <div class="flex flex-col gap-3 md:flex-row md:items-center md:justify-between">
+      <div class="flex flex-wrap gap-2">
+        <button type="button" class="rounded border border-gray-300 px-4 py-2 text-gray-600" data-step-form-target="prevButton" data-action="click->step-form#prev">前へ</button>
+        <%= f.submit "保存する", class: "inline-block bg-red-600 text-white px-4 py-2 rounded hover:bg-red-700" %>
+        <%= link_to "キャンセル", video.persisted? ? video_path(video) : videos_path, class: "inline-block bg-gray-100 text-gray-700 px-4 py-2 rounded hover:bg-gray-200" %>
+      </div>
+      <div>
+        <%= link_to "動画一覧に戻る", videos_path, class: "text-sm text-gray-500 hover:underline" %>
+      </div>
     </div>
   </div>
 <% end %>

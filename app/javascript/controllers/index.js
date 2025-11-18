@@ -13,3 +13,5 @@ import BestselectController from "./bestselect_controller"
 application.register("bestselect", BestselectController)
 import Autocomplete from "stimulus-autocomplete"
 application.register("autocomplete", Autocomplete)
+import StepFormController from "./step_form_controller"
+application.register("step-form", StepFormController)
