@@ -6,10 +6,10 @@ class RulesController < ApplicationController
   end
 
   def search
-    if params[:q].present?
-      @rules = Rule.where("title ILIKE ? OR body ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%")
-    else
-      @rules = Rule.none
+    @rules = params[:q].present? ? Rule.where("title ILIKE ? OR body ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%") : Rule.none
+    respond_to do |format|
+      format.html
+      format.json { render json: @rules.limit(8).map(&:title) }
     end
   end
 end

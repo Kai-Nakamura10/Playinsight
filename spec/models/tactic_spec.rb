@@ -47,7 +47,7 @@ RSpec.describe Tactic, type: :model do
     it "成功条件が空だと無効" do
       tactic = build(
         :tactic,
-        steps: { "success_conditions" => [], "common_failures" => ["失敗"] }
+        steps: { "success_conditions" => [ ], "common_failures" => [ "失敗" ] }
       )
       expect(tactic).not_to be_valid
       expect(tactic.errors[:success_text]).to be_present
@@ -56,7 +56,7 @@ RSpec.describe Tactic, type: :model do
     it "よくある失敗が空だと無効" do
       tactic = build(
         :tactic,
-        steps: { "success_conditions" => ["成功"], "common_failures" => [] }
+        steps: { "success_conditions" => [ "成功" ], "common_failures" => [ ] }
       )
       expect(tactic).not_to be_valid
       expect(tactic.errors[:failure_text]).to be_present
