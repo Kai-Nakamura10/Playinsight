@@ -127,7 +127,7 @@ RSpec.describe "Tactics management", type: :system do
       timeline_note = "2-3ゾーンをアタック"
       comment_body = "12秒でギャップが空いたのでフレアカットを優先"
       display_time = "6.5"
-      uploaded_file = Tempfile.new([ "match-analysis",".mp4" ])
+      uploaded_file = Tempfile.new([ "match-analysis", ".mp4" ])
       uploaded_file.binmode
       uploaded_file.write("FAKEVIDEO")
       uploaded_file.rewind

@@ -1,0 +1,206 @@
+<div class="min-h-screen bg-slate-100 py-12 px-4">
+  <div class="max-w-6xl mx-auto bg-white rounded-[32px] shadow-2xl px-8 py-12 space-y-10">
+    <header class="text-center max-w-3xl mx-auto">
+      <p class="text-sm font-semibold text-indigo-500 tracking-[0.3em] uppercase">Start Guide</p>
+      <h1 class="mt-4 text-4xl font-bold text-gray-900">このサービスの最適な使い方</h1>
+      <p class="mt-4 text-gray-600 leading-relaxed">
+        3つのステップで素早くオンボーディングできます。左側の手順を選ぶと右側に詳細とデモ動画が表示されます。
+      </p>
+    </header>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+      <aside class="lg:w-1/3 bg-slate-50 rounded-2xl border border-slate-200 p-6 space-y-4">
+        <p class="text-sm font-semibold text-slate-600">手順を選択</p>
+        <div id="howto-side-tabs" class="space-y-4">
+          <button type="button" class="howto-tab w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-white border border-transparent shadow transition hover:-translate-y-0.5">
+            <span class="tab-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 text-lg font-bold">1</span>
+            <div class="text-left">
+              <p class="text-xs text-gray-500">ステップ1</p>
+              <p class="text-base font-semibold text-gray-900">アカウント登録</p>
+              <p class="text-xs text-gray-500">初回ログインまでの流れ</p>
+            </div>
+          </button>
+          <button type="button" class="howto-tab w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-white border border-transparent shadow transition hover:-translate-y-0.5">
+            <span class="tab-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 text-lg font-bold">2</span>
+            <div class="text-left">
+              <p class="text-xs text-gray-500">ステップ2</p>
+              <p class="text-base font-semibold text-gray-900">動画をアップロード</p>
+              <p class="text-xs text-gray-500">ドラッグ＆ドロップ対応</p>
+            </div>
+          </button>
+          <button type="button" class="howto-tab w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-white border border-transparent shadow transition hover:-translate-y-0.5">
+            <span class="tab-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 text-lg font-bold">3</span>
+            <div class="text-left">
+              <p class="text-xs text-gray-500">ステップ3</p>
+              <p class="text-base font-semibold text-gray-900">戦術とクイズで学ぶ</p>
+              <p class="text-xs text-gray-500">振り返りと共有</p>
+            </div>
+          </button>
+        </div>
+      </aside>
+
+      <section class="lg:flex-1">
+        <div id="howto-panels" class="rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 text-white p-8 space-y-8">
+          <div class="howto-panel hidden">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+              <div class="lg:flex-1 space-y-4">
+                <p class="text-sm uppercase tracking-wide text-indigo-200">ステップ1</p>
+                <h2 class="text-3xl font-bold">アカウント登録</h2>
+                <p class="text-indigo-100 leading-relaxed">
+                  チーム名と役割を登録し、メンバー招待リンクを発行します。メール認証を完了すると全ての機能が開放されます。
+                </p>
+                <ul class="list-disc list-inside text-sm text-indigo-100 space-y-1">
+                  <li>管理者プロフィールを入力して推奨テンプレートを取得</li>
+                  <li>招待リンクを共有し、初回ログイン状況をダッシュボードで確認</li>
+                  <li>通知設定でリマインダーやレポート受信を有効化</li>
+                </ul>
+                <div class="flex flex-wrap gap-3 mt-4 text-xs font-semibold">
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">所要時間 約3分</span>
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">必要：メールアドレス</span>
+                </div>
+              </div>
+              <div class="lg:w-64">
+                <div class="rounded-2xl bg-white/10 border border-white/20 p-2">
+                  <%= image_tag "howto_signup.gif", alt: "アカウント登録デモ", class: "w-full rounded-xl" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="howto-panel hidden">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+              <div class="lg:flex-1 space-y-4">
+                <p class="text-sm uppercase tracking-wide text-indigo-200">ステップ2</p>
+                <h2 class="text-3xl font-bold">動画をアップロード</h2>
+                <p class="text-indigo-100 leading-relaxed">
+                  試合や練習動画をドラッグ＆ドロップすると自動でシーン分割とタグ付けがされます。重要シーンをピン留めして共有しましょう。
+                </p>
+                <ul class="list-disc list-inside text-sm text-indigo-100 space-y-1">
+                  <li>複数動画を同時にアップロード、進行状況はリアルタイム表示</li>
+                  <li>タグ検索で欲しいシーンだけ抽出し、共有リンクを生成</li>
+                  <li>アップロード履歴から再処理や注釈の編集が可能</li>
+                </ul>
+                <div class="flex flex-wrap gap-3 mt-4 text-xs font-semibold">
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">最大5GB / ファイル</span>
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">ドラッグ＆ドロップ対応</span>
+                </div>
+              </div>
+              <div class="lg:w-64">
+                <div class="rounded-2xl bg-white/10 border border-white/20 p-2">
+                  <%= image_tag "howto_upload.gif", alt: "動画アップロードデモ", class: "w-full rounded-xl" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="howto-panel hidden">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+              <div class="lg:flex-1 space-y-4">
+                <p class="text-sm uppercase tracking-wide text-indigo-200">ステップ3</p>
+                <h2 class="text-3xl font-bold">戦術とクイズで学ぶ</h2>
+                <p class="text-indigo-100 leading-relaxed">
+                  分析済みシーンをもとに戦術カードを作成し、クイズで理解度を可視化。メンバーの回答ログを活用して振り返りミーティングを実施します。
+                </p>
+                <ul class="list-disc list-inside text-sm text-indigo-100 space-y-1">
+                  <li>AI提案を反映した戦術カードをチームで共有</li>
+                  <li>クイズ結果をダッシュボードで確認し、苦手分野を抽出</li>
+                  <li>レポートをPDFやCSVで出力し、次回練習メニューに活かす</li>
+                </ul>
+                <div class="flex flex-wrap gap-3 mt-4 text-xs font-semibold">
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">回答履歴を自動保存</span>
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">クイズ結果を共有可能</span>
+                </div>
+              </div>
+              <div class="lg:w-64">
+                <div class="rounded-2xl bg-white/10 border border-white/20 p-2">
+                  <%= image_tag "howto_tactics.gif", alt: "戦術とクイズのデモ", class: "w-full rounded-xl" %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-6 border-t border-white/20">
+            <button type="button" id="howto-prev" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm font-semibold transition">前へ</button>
+            <button type="button" id="howto-next" class="px-5 py-2 rounded-full bg-white bg-opacity-90 text-indigo-900 font-semibold hover:bg-opacity-80 transition">次へ</button>
+          </div>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <div class="max-w-6xl mx-auto mt-10 bg-white rounded-3xl shadow-lg p-8 space-y-6">
+    <h2 class="text-2xl font-bold text-gray-900">よくある質問</h2>
+    <div class="space-y-5 text-gray-700">
+      <div>
+        <p class="font-semibold text-gray-900">Q. メンバー招待の上限はありますか？</p>
+        <p class="mt-2 text-gray-600">A. プランごとに推薦人数がありますが、必要に応じて管理画面から即時アップグレードできます。</p>
+      </div>
+      <div>
+        <p class="font-semibold text-gray-900">Q. 動画アップロードが途中で止まった場合は？</p>
+        <p class="mt-2 text-gray-600">A. アップロードは自動再開されます。再開しない場合は履歴から「続行」を押すと復旧します。</p>
+      </div>
+      <div>
+        <p class="font-semibold text-gray-900">Q. クイズ結果はどこで確認できますか？</p>
+        <p class="mt-2 text-gray-600">A. ダッシュボードの「学習状況」タブで個人別・チーム別の正答率を確認でき、CSV出力も可能です。</p>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    (function () {
+      let initialized = false;
+
+      function setupHowtoTabs() {
+        if (initialized) return;
+        const tabs = Array.from(document.querySelectorAll('.howto-tab'));
+        const panels = Array.from(document.querySelectorAll('.howto-panel'));
+        const prev = document.getElementById('howto-prev');
+        const next = document.getElementById('howto-next');
+        if (!tabs.length || !panels.length || !prev || !next) return;
+
+        let current = 0;
+
+        function update(index) {
+          current = index;
+          tabs.forEach((tab, i) => {
+            const active = i === current;
+            const badge = tab.querySelector('.tab-badge');
+            tab.classList.toggle('border-indigo-400', active);
+            tab.classList.toggle('shadow-xl', active);
+            tab.classList.toggle('bg-white', active);
+            tab.classList.toggle('bg-white/70', !active);
+            tab.setAttribute('aria-pressed', active.toString());
+            if (badge) {
+              badge.classList.toggle('bg-indigo-600', active);
+              badge.classList.toggle('text-white', active);
+              badge.classList.toggle('bg-indigo-100', !active);
+              badge.classList.toggle('text-indigo-700', !active);
+            }
+          });
+          panels.forEach((panel, i) => {
+            panel.classList.toggle('hidden', i !== current);
+          });
+        }
+
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => update(index));
+        });
+
+        prev.addEventListener('click', () => {
+          const nextIndex = (current - 1 + panels.length) % panels.length;
+          update(nextIndex);
+        });
+
+        next.addEventListener('click', () => {
+          const nextIndex = (current + 1) % panels.length;
+          update(nextIndex);
+        });
+
+        update(0);
+        initialized = true;
+      }
+
+      document.addEventListener('DOMContentLoaded', setupHowtoTabs);
+      document.addEventListener('turbo:load', setupHowtoTabs);
+      document.addEventListener('turbolinks:load', setupHowtoTabs);
+    })();
+  </script>
+</div>
