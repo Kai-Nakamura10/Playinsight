@@ -1,10 +1,10 @@
 class TacticsController < ApplicationController
   def show
     @tactic = Tactic.find(params[:id])
-    scope = Tactic.order(:id)
+    scope = Tactic.order(:order)
 
-    @next_tactic = scope.where("id > ?", @tactic.id).first || scope.first
-    @prev_tactic = scope.where("id < ?", @tactic.id).last  || scope.last
+    @next_tactic = scope.where("tactics.order > ?", @tactic.order).first || scope.first
+    @prev_tactic = scope.where("tactics.order < ?", @tactic.order).last || scope.last
   end
 
   def index

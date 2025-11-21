@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -43,7 +43,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   end
 
   create_table "answers", force: :cascade do |t|
-    t.bigint "bestselect_id", null: false
+    t.uuid "bestselect_id", null: false
     t.text "body"
     t.boolean "is_correct", default: false, null: false
     t.integer "position"
@@ -52,7 +52,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
     t.index ["bestselect_id"], name: "index_answers_on_bestselect_id"
   end
 
-  create_table "bestselects", force: :cascade do |t|
+  create_table "bestselects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "question", null: false
     t.text "explanation"
     t.datetime "created_at", null: false
@@ -60,7 +60,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   end
 
   create_table "choices", force: :cascade do |t|
-    t.bigint "question_id", null: false
+    t.uuid "question_id", null: false
     t.text "body", null: false
     t.boolean "is_correct", default: false, null: false
     t.datetime "created_at", null: false
@@ -84,14 +84,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   end
 
   create_table "failure_patterns", force: :cascade do |t|
-    t.bigint "tactic_id", null: false
+    t.uuid "tactic_id", null: false
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tactic_id"], name: "index_failure_patterns_on_tactic_id"
   end
 
-  create_table "faqs", force: :cascade do |t|
+  create_table "faqs", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "body"
     t.string "category"
     t.integer "order"
@@ -100,7 +100,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   end
 
   create_table "faqs_answers", force: :cascade do |t|
-    t.bigint "faq_id", null: false
+    t.uuid "faq_id", null: false
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -115,7 +115,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   end
 
   create_table "question_attempts", force: :cascade do |t|
-    t.bigint "question_id", null: false
+    t.uuid "question_id", null: false
     t.bigint "choice_id", null: false
     t.boolean "is_correct", default: false, null: false
     t.jsonb "explanation_json", default: {}, null: false
@@ -129,14 +129,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
     t.index ["question_id"], name: "index_question_attempts_on_question_id"
   end
 
-  create_table "questions", force: :cascade do |t|
+  create_table "questions", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "content", null: false
     t.text "explanation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
   end
 
-  create_table "rules", force: :cascade do |t|
+  create_table "rules", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title", null: false
     t.text "body"
     t.string "slug", null: false
@@ -148,14 +148,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
   end
 
   create_table "success_conditions", force: :cascade do |t|
-    t.bigint "tactic_id", null: false
+    t.uuid "tactic_id", null: false
     t.string "body"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.index ["tactic_id"], name: "index_success_conditions_on_tactic_id"
   end
 
-  create_table "tactics", force: :cascade do |t|
+  create_table "tactics", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.string "title"
     t.text "description"
     t.string "trigger"
@@ -164,6 +164,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
     t.string "slug"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.integer "order", default: 0, null: false
     t.index ["slug"], name: "index_tactics_on_slug_unique", unique: true, where: "(slug IS NOT NULL)"
   end
 
@@ -203,7 +204,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_07_092141) do
 
   create_table "video_tactics", force: :cascade do |t|
     t.bigint "video_id", null: false
-    t.bigint "tactic_id", null: false
+    t.uuid "tactic_id", null: false
     t.decimal "display_time", precision: 8, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
