@@ -2,7 +2,7 @@
 <div 
   class="relative bg-center bg-contain bg-no-repeat
          min-h-[220px] sm:min-h-[300px] md:min-h-[calc(100vh-134px)]"
-  style="background-image: url('<%= asset_path("Group_34_#{@bestselect.id}.svg") %>');">
+  style="background-image: url('<%= asset_path(@bestselect.image_filename) %>');">
 </div>
 
 <% if @bestselect.present? %>
