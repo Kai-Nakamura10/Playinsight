@@ -7,8 +7,9 @@
 #   ["Action", "Comedy", "Drama", "Horror"].each do |genre_name|
 #     MovieGenre.find_or_create_by!(name: genre_name)
 #   end
-def seed_bestselect!(question:, explanation:, answers:)
+def seed_bestselect!(question:, explanation:, answers:, image_filename:)
   bestselect = Bestselect.find_or_initialize_by(question: question, explanation: explanation)
+  bestselect.image_filename = image_filename
   bestselect.save!
 
   bestselect.answers.destroy_all
@@ -17,6 +18,7 @@ end
 
 [
   {
+    image_filename: "Group_34_1.svg",
     explanation: "相手ディフェンスが2人来ているときはフリーの選手ができる。そこにパスを出すことでシュート成功がしやすくなります",
     answers: [
       { body: "フリーになった5番にパス", position: 1, is_correct: true },
@@ -26,6 +28,7 @@ end
     ]
   },
   {
+    image_filename: "Group_34_2.svg",
     explanation: "シュートスペースがあるなら、そのままレイアップにしましょう。シュートを狙わないとディフェンスの脅威になりません。",
     answers: [
       { body: "味方の3番にパスをだしてコーナースリー", position: 1, is_correct: false },
@@ -35,6 +38,7 @@ end
     ]
   },
   {
+    image_filename: "Group_34_3.svg",
     explanation: "身長差を活かした攻撃はシュート成功率を上げる。",
     answers: [
       { body: "①がインサイドにカット", position: 1, is_correct: false },
@@ -44,6 +48,7 @@ end
     ]
   },
   {
+    image_filename: "Group_34_4.svg",
     explanation: "スピードで勝てるケースでは1on1で抜く",
     answers: [
       { body: "②にパス", position: 1, is_correct: false },
@@ -53,6 +58,7 @@ end
     ]
   },
   {
+    image_filename: "Group_34_5.svg",
     explanation: "インサイドアウトはアウトサイドが得意な選手がいると得点を狙える。",
     answers: [
       { body: "プルアップをする", position: 1, is_correct: false },
@@ -65,7 +71,8 @@ end
   seed_bestselect!(
     question: "この状況でベストな選択は？",
     explanation: attrs[:explanation],
-    answers: attrs[:answers]
+    answers: attrs[:answers],
+    image_filename: attrs[:image_filename]
   )
 end
 
@@ -460,6 +467,7 @@ Rule.transaction do
 end
 
 ActiveRecord::Base.transaction do
+  QuestionAttempt.delete_all
   def seed_question!(content:, explanation:, choices:, correct_index:)
     q = Question.find_or_initialize_by(content: content)
     q.explanation = explanation

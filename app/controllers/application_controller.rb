@@ -4,6 +4,9 @@ class ApplicationController < ActionController::Base
   before_action :configure_permitted_parameters, if: :devise_controller?
   before_action :set_header_rule
   before_action :set_header_tactic
+  before_action :set_header_question
+  before_action :set_header_faq
+  before_action :set_header_bestselect
 
   protected
 
@@ -15,10 +18,22 @@ class ApplicationController < ActionController::Base
   private
 
   def set_header_rule
-    @rule = Rule.first
+    @header_rule = Rule.order(:created_at).first
   end
 
   def set_header_tactic
-    @tactic = Tactic.first
+    @header_tactic = Tactic.order(:created_at).first
+  end
+
+  def set_header_question
+    @header_question = Question.order(:created_at).first
+  end
+
+  def set_header_faq
+    @header_faq = Faq.order(:created_at).first
+  end
+
+  def set_header_bestselect
+    @header_bestselect = Bestselect.order(:created_at).first
   end
 end

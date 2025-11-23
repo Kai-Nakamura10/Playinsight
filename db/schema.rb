@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_23_021850) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -57,6 +57,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
     t.text "explanation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
+    t.string "image_filename"
   end
 
   create_table "choices", force: :cascade do |t|
@@ -70,7 +71,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
 
   create_table "comments", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.bigint "video_id", null: false
+    t.uuid "video_id", null: false
     t.bigint "timeline_id"
     t.decimal "video_timestamp_seconds", precision: 8, scale: 2
     t.text "body"
@@ -175,7 +176,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
   end
 
   create_table "timelines", force: :cascade do |t|
-    t.bigint "video_id", null: false
+    t.uuid "video_id", null: false
     t.string "kind"
     t.decimal "start_seconds", precision: 8, scale: 2, null: false
     t.decimal "end_seconds", precision: 8, scale: 2
@@ -203,7 +204,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
   end
 
   create_table "video_tactics", force: :cascade do |t|
-    t.bigint "video_id", null: false
+    t.uuid "video_id", null: false
     t.uuid "tactic_id", null: false
     t.decimal "display_time", precision: 8, scale: 2, default: "0.0", null: false
     t.datetime "created_at", null: false
@@ -215,7 +216,7 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
   end
 
   create_table "video_tags", force: :cascade do |t|
-    t.bigint "video_id", null: false
+    t.uuid "video_id", null: false
     t.bigint "tag_id", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
@@ -224,14 +225,14 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_21_095407) do
     t.index ["video_id"], name: "index_video_tags_on_video_id"
   end
 
-  create_table "videos", force: :cascade do |t|
+  create_table "videos", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.bigint "user_id", null: false
     t.string "title", null: false
     t.text "description"
     t.integer "duration_seconds"
+    t.string "visibility", default: "unlisted", null: false
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.string "visibility", default: "unlisted", null: false
     t.index ["user_id"], name: "index_videos_on_user_id"
   end
 

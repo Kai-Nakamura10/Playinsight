@@ -14,22 +14,22 @@
       <div data-toggle-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none">
         <ul class="flex justify-between flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">
           <li>
-            <%= link_to t('header.basic_rules'), rule_path(@rule), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
+            <%= link_to t('header.basic_rules'), rule_path(@header_rule), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
           </li>
           <li>
-            <%= link_to t('header.tactics'), tactic_path(@tactic), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.tactics'), tactic_path(@header_tactic), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
             <%= link_to t('header.rule_search'), search_rules_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to t('header.tactics_quiz'), question_path(1), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.tactics_quiz'), question_path(@header_question), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to t('header.faq'), faq_path(1), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.faq'), faq_path(@header_faq), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to t('header.best_selections'), bestselect_path(1), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <%= link_to t('header.best_selections'), bestselect_path(@header_bestselect), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
             <%= link_to t('header.videos'), videos_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
