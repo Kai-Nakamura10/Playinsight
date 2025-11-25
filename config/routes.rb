@@ -28,7 +28,9 @@ Rails.application.routes.draw do
   end
   resources :video_tactics, only: [ :create, :update, :destroy ]
   resources :tags, only: %i[index show create destroy new]
-  resources :bestselects
+  resources :bestselects, only: :show do
+    post :answer, on: :member
+  end
   resources :tactics
   resources :faqs
   resources :questions, only: [ :show ] do
