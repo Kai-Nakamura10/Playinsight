@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_23_021850) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_25_094244) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -52,12 +52,26 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_23_021850) do
     t.index ["bestselect_id"], name: "index_answers_on_bestselect_id"
   end
 
+  create_table "bestselect_answers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.uuid "bestselect_id", null: false
+    t.bigint "answer_id", null: false
+    t.boolean "is_correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_bestselect_answers_on_answer_id"
+    t.index ["bestselect_id"], name: "index_bestselect_answers_on_bestselect_id"
+    t.index ["user_id"], name: "index_bestselect_answers_on_user_id"
+  end
+
   create_table "bestselects", id: :uuid, default: -> { "gen_random_uuid()" }, force: :cascade do |t|
     t.text "question", null: false
     t.text "explanation"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.string "image_filename"
+    t.uuid "tactic_id"
+    t.index ["tactic_id"], name: "index_bestselects_on_tactic_id"
   end
 
   create_table "choices", force: :cascade do |t|
@@ -239,6 +253,10 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_23_021850) do
   add_foreign_key "active_storage_attachments", "active_storage_blobs", column: "blob_id"
   add_foreign_key "active_storage_variant_records", "active_storage_blobs", column: "blob_id"
   add_foreign_key "answers", "bestselects"
+  add_foreign_key "bestselect_answers", "answers"
+  add_foreign_key "bestselect_answers", "bestselects"
+  add_foreign_key "bestselect_answers", "users"
+  add_foreign_key "bestselects", "tactics"
   add_foreign_key "choices", "questions"
   add_foreign_key "comments", "timelines"
   add_foreign_key "comments", "users"

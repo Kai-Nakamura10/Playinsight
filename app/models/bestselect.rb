@@ -1,4 +1,5 @@
 class Bestselect < ApplicationRecord
+  belongs_to :tactic, optional: true
   has_many :answers, dependent: :destroy
   validates :question, presence: true
   validates :explanation, presence: true

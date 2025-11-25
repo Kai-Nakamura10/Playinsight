@@ -1,3 +1,10 @@
+<div 
+  class="question px-4 py-6 sm:px-6 md:px-8 lg:px-10 
+          max-w-3xl mx-auto"
+  data-controller="bestselect"
+  data-bestselect-current-id-value="<%= @bestselect.id %>"
+>
+
 <!-- 背景画像（レスポンシブ対応） -->
 <div 
   class="relative bg-center bg-contain bg-no-repeat
@@ -6,12 +13,6 @@
 </div>
 
 <% if @bestselect.present? %>
-  <div 
-    class="question px-4 py-6 sm:px-6 md:px-8 lg:px-10 
-           max-w-3xl mx-auto"
-    data-controller="bestselect"
-    data-bestselect-current-id-value="<%= @bestselect.id %>"
-  >
     <!-- 質問文 -->
     <h2 class="text-lg sm:text-xl md:text-2xl font-semibold mb-4 leading-relaxed">
       <%= @bestselect.question %>
@@ -26,6 +27,7 @@
                  transition-all text-base sm:text-lg"
           data-action="click->bestselect#choose"
           data-bestselect-correct-value="<%= answer.is_correct %>"
+          data-choice-id="<%= answer.id %>"
           data-bestselect-target="answer"
         >
           <span class="mr-2 text-gray-500 font-medium"><%= answer.position %>.</span>
@@ -74,4 +76,26 @@
   <div class="p-4 text-center text-sm sm:text-base">
     <p>問題が見つかりません。`bin/rails db:seed` を実行してください。</p>
   </div>
+<% end %>
+<% if @total.to_i > 0 %>
+  <canvas id="tactic-chart"></canvas>
+
+  <script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const ctx = document.getElementById("tactic-chart");
+    if (!ctx) return;
+
+    new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["正解", "不正解"],
+        datasets: [{
+          data: [<%= @correct %>, <%= @total - @correct %>],
+          backgroundColor: ["#2563eb", "#e5e7eb"]
+        }]
+      },
+      options: { cutout: "65%" }
+    });
+  });
+  </script>
 <% end %>
