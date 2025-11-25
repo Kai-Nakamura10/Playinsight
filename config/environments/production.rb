@@ -85,4 +85,5 @@ Rails.application.configure do
   config.asset_host = "https://playinsight.onrender.com"
   config.hosts << "playinsight.jp"
   config.hosts << "www.playinsight.jp"
+  config.hosts << "playinsight.onrender.com"
 end
