@@ -4,6 +4,6 @@ class Question < ApplicationRecord
   validates :explanation, presence: true
   accepts_nested_attributes_for :choices, allow_destroy: true, reject_if: :all_blank
   def next
-    Question.where("orders > ?", self.order).order(:order).first
+    Question.where("order > ?", self.order).order(:order).first
   end
 end
