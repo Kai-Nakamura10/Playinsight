@@ -6,4 +6,8 @@ class Question < ApplicationRecord
   def next
     Question.where("questions.order > ?", self.order).order(:order).first
   end
+  scope :ordered, -> { order(:order) }
+  def self.first_question
+    ordered.first
+  end
 end
