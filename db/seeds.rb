@@ -471,6 +471,7 @@ ActiveRecord::Base.transaction do
   def seed_question!(content:, explanation:, choices:, correct_index:)
     q = Question.find_or_initialize_by(content: content)
     q.explanation = explanation
+    q.order = order
     q.save!
 
     q.choices.destroy_all
