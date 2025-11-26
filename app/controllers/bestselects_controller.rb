@@ -1,5 +1,5 @@
 class BestselectsController < ApplicationController
-  before_action :set_bestselect, only: [:show, :answer]
+  before_action :set_bestselect, only: [ :show, :answer ]
 
   def show
     @bestselect = Bestselect.find(params[:id])
