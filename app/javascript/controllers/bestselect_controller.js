@@ -53,7 +53,9 @@ export default class extends Controller {
     .then(res => res.json())
     .then(data => {
       console.log("回答が保存されました:", data)
-      window.location.reload()
+      setTimeout(() => {
+        window.location.reload()
+      }, 2000)
     })
     .catch(err => console.error("回答保存エラー:", err))
   }
