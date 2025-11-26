@@ -468,7 +468,7 @@ end
 
 ActiveRecord::Base.transaction do
   QuestionAttempt.delete_all
-  def seed_question!(content:, explanation:, choices:, correct_index:)
+  def seed_question!(content:, explanation:, choices:, correct_index:, order:)
     q = Question.find_or_initialize_by(content: content)
     q.explanation = explanation
     q.order = order
