@@ -85,7 +85,7 @@
     <% else %>
       <div class="mt-6 text-center">
         <%= link_to "終了（最初に戻る）",
-            question_path(Question.order(:id).first),
+            question_path(Question.first_question),
             class: "inline-block rounded-lg px-4 py-3 bg-gray-600 text-white hover:bg-gray-700 w-full sm:w-auto" %>
       </div>
     <% end %>
