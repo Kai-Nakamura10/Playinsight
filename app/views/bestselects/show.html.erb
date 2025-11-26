@@ -77,25 +77,27 @@
     <p>問題が見つかりません。`bin/rails db:seed` を実行してください。</p>
   </div>
 <% end %>
-<% if @total.to_i > 0 %>
-  <canvas id="tactic-chart"></canvas>
+<div class="w-full flex justify-center items-center mt-6">
+  <% if @total.to_i > 0 %>
+    <canvas id="tactic-chart" class="sm:w-16 md:w-24 lg:w-48 mx-auto"></canvas>
 
-  <script>
-  document.addEventListener("DOMContentLoaded", () => {
-    const ctx = document.getElementById("tactic-chart");
-    if (!ctx) return;
+    <script>
+    document.addEventListener("DOMContentLoaded", () => {
+      const ctx = document.getElementById("tactic-chart");
+      if (!ctx) return;
 
-    new Chart(ctx, {
-      type: "doughnut",
-      data: {
-        labels: ["正解", "不正解"],
-        datasets: [{
-          data: [<%= @correct %>, <%= @total - @correct %>],
-          backgroundColor: ["#2563eb", "#e5e7eb"]
-        }]
-      },
-      options: { cutout: "65%" }
+      new Chart(ctx, {
+        type: "doughnut",
+        data: {
+          labels: ["正解", "不正解"],
+          datasets: [{
+            data: [<%= @correct %>, <%= @total - @correct %>],
+            backgroundColor: ["#2563eb", "#e5e7eb"]
+          }]
+        },
+        options: { cutout: "65%" }
+      });
     });
-  });
-  </script>
-<% end %>
+    </script>
+  <% end %>
+</div>
