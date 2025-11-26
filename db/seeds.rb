@@ -491,7 +491,8 @@ ActiveRecord::Base.transaction do
       "シュートを打たずに時間をかける"
     ],
     correct_index: 1,
-    explanation: "味方がディフェンスの前に立って壁を作り、ボール保持者がその横を通って攻める戦術（スクリーン＆ロール）。"
+    explanation: "味方がディフェンスの前に立って壁を作り、ボール保持者がその横を通って攻める戦術（スクリーン＆ロール）。",
+    order: 1
   )
 
   seed_question!(
@@ -503,7 +504,8 @@ ActiveRecord::Base.transaction do
       "ディフェンス全員でゴール下を守る"
     ],
     correct_index: 2,
-    explanation: "チームメイトがスペースを空け、ボール保持者が1対1を仕掛けやすくするための戦術。"
+    explanation: "チームメイトがスペースを空け、ボール保持者が1対1を仕掛けやすくするための戦術。",
+    order: 2
   )
 
   seed_question!(
@@ -515,7 +517,8 @@ ActiveRecord::Base.transaction do
       "相手にわざと攻めさせる"
     ],
     correct_index: 2,
-    explanation: "“人”ではなく“エリア”を分担して守る。外からのシュートに弱点が出やすい。"
+    explanation: "“人”ではなく“エリア”を分担して守る。外からのシュートに弱点が出やすい。",
+    order: 3
   )
 
   seed_question!(
@@ -527,7 +530,8 @@ ActiveRecord::Base.transaction do
       "ボールをキープして休む"
     ],
     correct_index: 0,
-    explanation: "相手守備が整う前に素早く攻めて高確率で得点を狙う。"
+    explanation: "相手守備が整う前に素早く攻めて高確率で得点を狙う。",
+    order: 4
   )
 
   seed_question!(
@@ -539,7 +543,8 @@ ActiveRecord::Base.transaction do
       "味方全員でベンチに座る"
     ],
     correct_index: 1,
-    explanation: "コート全体で積極的にボールやパスコースへ圧力をかけ、ミスを誘う守備戦術。"
+    explanation: "コート全体で積極的にボールやパスコースへ圧力をかけ、ミスを誘う守備戦術。",
+    order: 5
   )
 end
 
