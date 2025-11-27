@@ -42,8 +42,6 @@ export default class extends Controller {
   }
 
   saveAnswer(choiceId) {
-    console.log("現在のID:", this.currentIdValue);
-    console.log("選択した回答ID:", choiceId);
     fetch(`/bestselects/${this.currentIdValue}/answer`, {
       method: "POST",
       headers: {
@@ -56,9 +54,6 @@ export default class extends Controller {
     .then(res => res.json())
     .then(data => {
       console.log("回答が保存されました:", data)
-      setTimeout(() => {
-        window.location.reload()
-      }, 2000)
     })
     .catch(err => console.error("回答保存エラー:", err))
   }
