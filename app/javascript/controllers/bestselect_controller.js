@@ -1,19 +1,47 @@
 import { Controller } from "@hotwired/stimulus"
+import Chart from 'chart.js/auto';
 
 // Controls answer selection and shows correct/incorrect feedback
 export default class extends Controller {
-  static targets = ["result", "answer", "explanation"]
+  static targets = ["result", "answer", "explanation", "chart"]
   static values = {
-    currentId: String
+    bestselectId: String,
+    correct: Number,
+    total: Number
+  }
+
+  initChart() {
+    // チャート用のターゲットが無ければ初期化しない
+    if (!this.hasChartTarget) return
+    const ctx = this.chartTarget
+    this.chart = new Chart(ctx, {
+      type: "doughnut",
+      data: {
+        labels: ["正解", "不正解"],
+        datasets: [{
+          data: [this.correctValue, this.totalValue - this.correctValue],
+          backgroundColor: ["#2563eb", "#e5e7eb"]
+        }]
+      },
+      options: { cutout: "65%" }
+    })
   }
 
   connect() {
-    console.log("Stimulus connect. currentId:", this.currentIdValue)
+    console.log("Stimulus connect. bestselectId:", this.bestselectIdValue)
+    // Chart.js が読み込まれているか確認
+    if (typeof Chart === 'undefined') {
+      console.warn('Chart.js is not loaded')
+      return
+    }
+
     // Clear any stale state on connect
     if (this.hasResultTarget) this.resultTarget.textContent = ""
     // Hide explanation initially
     if (this.hasExplanationTarget)
       this.explanationTarget.classList.add("hidden")
+    // チャートターゲットがあるときのみ初期化
+    if (this.hasChartTarget) this.initChart()
   }
 
   choose(event) {
@@ -42,20 +70,26 @@ export default class extends Controller {
   }
 
   saveAnswer(choiceId) {
-    fetch(`/bestselects/${this.currentIdValue}/answer`, {
-      method: "POST",
+    fetch(`/bestselects/${this.bestselectIdValue}/answer`, {
+      method: 'POST',
       headers: {
-        "X-CSRF-Token": document.querySelector('meta[name="csrf-token"]').content,
-        "Content-Type": "application/json",
-        "Accept": "application/json"
+        'Content-Type': 'application/json',
+        'X-CSRF-Token': document.querySelector('[name="csrf-token"]').content
       },
-      body: JSON.stringify({ choice_id: choiceId })
+      body: JSON.stringify({
+        choice_id: choiceId
+      })
     })
-    .then(res => res.json())
-    .then(data => {
-      console.log("回答が保存されました:", data)
+    .then(async response => {
+      const data = await response.json().catch(() => ({}))
+      if (!response.ok) {
+        console.error('Server error:', data.error || data)
+        return
+      }
+      // 統計を更新
+      this.updateChart(data)
     })
-    .catch(err => console.error("回答保存エラー:", err))
+    .catch(error => console.error('Network error:', error))
   }
 
   reset() {
@@ -65,6 +99,25 @@ export default class extends Controller {
     }
     if (this.hasExplanationTarget) {
       this.explanationTarget.classList.add("hidden")
+    }
+  }
+  updateChart(responseData) {
+    // サーバーから統計データを受け取る
+    const correctCount = responseData.correct_count
+    const totalCount = responseData.total_count
+
+    // Chartが存在する場合のみ更新
+    if (this.hasChartTarget && this.chart) {
+      this.chart.data.datasets[0].data = [
+        correctCount,
+        totalCount - correctCount
+      ]
+      this.chart.update()
+    }
+
+    // 正解率も表示（オプション）
+    if (responseData.accuracy_rate) {
+      console.log(`正解率: ${responseData.accuracy_rate}%`)
     }
   }
 }

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2025_11_26_081429) do
+ActiveRecord::Schema[8.0].define(version: 2025_11_27_051431) do
   # These are extensions that must be enabled in order to support this database
   enable_extension "pg_catalog.plpgsql"
 
@@ -204,6 +204,19 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_081429) do
     t.index ["video_id"], name: "index_timelines_on_video_id"
   end
 
+  create_table "user_answers", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.uuid "bestselect_id", null: false
+    t.bigint "answer_id", null: false
+    t.boolean "is_correct"
+    t.datetime "created_at", null: false
+    t.datetime "updated_at", null: false
+    t.index ["answer_id"], name: "index_user_answers_on_answer_id"
+    t.index ["bestselect_id"], name: "index_user_answers_on_bestselect_id"
+    t.index ["user_id", "bestselect_id"], name: "index_user_answers_on_user_id_and_bestselect_id", unique: true
+    t.index ["user_id"], name: "index_user_answers_on_user_id"
+  end
+
   create_table "users", force: :cascade do |t|
     t.string "email", default: "", null: false
     t.string "encrypted_password", default: "", null: false
@@ -268,6 +281,9 @@ ActiveRecord::Schema[8.0].define(version: 2025_11_26_081429) do
   add_foreign_key "question_attempts", "questions"
   add_foreign_key "success_conditions", "tactics"
   add_foreign_key "timelines", "videos"
+  add_foreign_key "user_answers", "answers"
+  add_foreign_key "user_answers", "bestselects"
+  add_foreign_key "user_answers", "users"
   add_foreign_key "video_tactics", "tactics"
   add_foreign_key "video_tactics", "videos"
   add_foreign_key "video_tags", "tags"
