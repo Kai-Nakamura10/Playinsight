@@ -42,6 +42,8 @@ export default class extends Controller {
   }
 
   saveAnswer(choiceId) {
+    console.log("現在のID:", this.currentIdValue);
+    console.log("選択した回答ID:", choiceId);
     fetch(`/bestselects/${this.currentIdValue}/answer`, {
       method: "POST",
       headers: {
