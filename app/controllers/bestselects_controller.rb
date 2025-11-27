@@ -18,39 +18,46 @@ class BestselectsController < ApplicationController
       BestselectAnswer.where(user: current_user, bestselect: @bestselect)
                       .order(created_at: :desc)
                       .first&.answer
-
-    # 正解率集計（ログイン時のみ）
-    if current_user && @tactic
-      related_bestselects = Bestselect.where(tactic: @tactic)
-
-      answers = BestselectAnswer.where(
-        user: current_user,
-        bestselect: related_bestselects
-      )
-
-      @correct = answers.where(is_correct: true).count
-      @total   = answers.count
-      @accuracy = @total.zero? ? 0 : (@correct.to_f / @total)
+    if user_signed_in?
+      @correct = current_user.correct_answers_count
+      @total = current_user.total_answers_count
+    else
+      @correct = 0
+      @total = 0
     end
   end
 
   # POST /bestselects/:id/answer
   def answer
-    choice = @bestselect.answers.find(params[:choice_id])
+    @bestselect = Bestselect.find(params[:id])
+    selected_answer = Answer.find(params[:choice_id])
 
-    BestselectAnswer.create!(
+    # 認証チェック
+    unless user_signed_in?
+      render json: { error: 'ログインが必要です' }, status: 401
+      return
+    end
+
+    # ユーザーの回答を保存（既存のものは更新）
+    user_answer = UserAnswer.find_or_initialize_by(
       user: current_user,
-      bestselect: @bestselect,
-      answer: choice,
-      is_correct: choice.is_correct
+      bestselect: @bestselect
     )
-
-    # ここが超重要！
-    # レスポンスを必ず JSON に固定する
-    render json: {
-      status: "ok",
-      correct: choice.is_correct,
-    }
+    user_answer.answer = selected_answer
+    
+    if user_answer.save
+      # 統計データを返す
+      render json: {
+        correct: user_answer.is_correct,
+        correct_count: current_user.correct_answers_count,
+        total_count: current_user.total_answers_count,
+        accuracy_rate: current_user.accuracy_rate
+      }
+    else
+      render json: { error: user_answer.errors.full_messages }, status: 422
+    end
+  rescue ActiveRecord::RecordNotFound
+    render json: { error: '不正なリクエストです' }, status: 422
   end
 
   private
