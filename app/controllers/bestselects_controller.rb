@@ -45,15 +45,11 @@ class BestselectsController < ApplicationController
       is_correct: choice.is_correct
     )
 
-    # 次の問題を返したい場合は取得（今後用）
-    next_id = @bestselect.next&.id
-
     # ここが超重要！
     # レスポンスを必ず JSON に固定する
     render json: {
       status: "ok",
       correct: choice.is_correct,
-      next_id: next_id
     }
   end
 
