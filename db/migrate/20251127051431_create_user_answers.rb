@@ -8,6 +8,6 @@ class CreateUserAnswers < ActiveRecord::Migration[8.0]
 
       t.timestamps
     end
-    add_index :user_answers, [:user_id, :bestselect_id], unique: true
+    add_index :user_answers, [ :user_id, :bestselect_id ], unique: true
   end
 end

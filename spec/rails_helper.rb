@@ -8,6 +8,22 @@ abort("The Rails environment is running in production mode!") if Rails.env.produ
 # that will avoid rails generators crashing because migrations haven't been run yet
 # return unless Rails.env.test?
 require 'rspec/rails'
+# Configure a headless Chrome driver that can pick up a Chrome/Chromium binary
+# from common locations or the CHROME_BIN / GOOGLE_CHROME_SHIM env vars.
+chrome_binary = ENV["CHROME_BIN"] || ENV["GOOGLE_CHROME_SHIM"] ||
+  %w[/usr/bin/google-chrome-stable /usr/bin/google-chrome /usr/bin/chromium-browser /usr/bin/chromium].find { |path| File.exist?(path) }
+
+Capybara.register_driver :chrome_headless_custom do |app|
+  options = Selenium::WebDriver::Chrome::Options.new
+  options.add_argument("--headless=new")
+  options.add_argument("--disable-gpu")
+  options.add_argument("--no-sandbox")
+  options.add_argument("--disable-dev-shm-usage")
+  options.binary = chrome_binary if chrome_binary
+
+  Capybara::Selenium::Driver.new(app, browser: :chrome, options: options)
+end
+
 # Add additional requires below this line. Rails is not loaded until this point!
 Dir[Rails.root.join('spec', 'support', '**', '*.rb')].sort.each { |f| require f }
 # Requires supporting ruby files with custom matchers and macros, etc, in
@@ -47,9 +63,6 @@ RSpec.configure do |config|
 
   # You can uncomment this line to turn off ActiveRecord support entirely.
   # config.use_active_record = false
-  config.before(type: :system, js: true) do
-    driven_by :selenium_chrome
-  end
 
   config.before(type: :system, js: false) do
     driven_by :rack_test

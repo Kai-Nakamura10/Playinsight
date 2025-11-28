@@ -4,17 +4,17 @@
     <%= render "devise/shared/error_messages", resource: resource %>
 
     <div class="field mb-3 shadow-sm rounded">
-      <%= f.label :nickname %><br />
+      <%= f.label :nickname, "ニックネーム" %><br />
       <%= f.text_field :nickname, autofocus: true, autocomplete: "nickname", class: "w-full border rounded px-3 py-2" %>
     </div>
 
     <div class="field mb-3 shadow-sm rounded">
-      <%= f.label :email %><br />
+      <%= f.label :email, "メールアドレス" %><br />
       <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "w-full border rounded px-3 py-2" %>
     </div>
 
     <div class="field mb-3 shadow-sm rounded">
-      <%= f.label :password %>
+      <%= f.label :password, "パスワード" %>
       <% if @minimum_password_length %>
       <em>(<%= @minimum_password_length %> 文字以上)</em>
       <% end %><br />
@@ -22,12 +22,12 @@
     </div>
 
     <div class="field mb-3 shadow-sm rounded">
-      <%= f.label :password_confirmation %><br />
+      <%= f.label :password_confirmation, "パスワード (確認用)" %><br />
       <%= f.password_field :password_confirmation, autocomplete: "new-password", class: "w-full border rounded px-3 py-2" %>
     </div>
 
     <div class="actions text-center">
-      <%= f.submit t('.create'), class: "relative z-50 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" %>
+      <%= f.submit "登録", class: "relative z-50 w-full bg-blue-600 text-white py-2 rounded hover:bg-blue-700" %>
     </div>
   <% end %>
   <div class="text-center">

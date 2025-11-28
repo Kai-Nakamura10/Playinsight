@@ -2,12 +2,12 @@ class UserAnswer < ApplicationRecord
   belongs_to :user
   belongs_to :bestselect
   belongs_to :answer
-  
-  validates :is_correct, inclusion: { in: [true, false] }
-  
+
+  validates :is_correct, inclusion: { in: [ true, false ] }
+
   # 重複防止する場合
   validates :bestselect_id, uniqueness: { scope: :user_id }
-  
+
   # スコープ（便利メソッド）
   scope :correct, -> { where(is_correct: true) }
   scope :incorrect, -> { where(is_correct: false) }

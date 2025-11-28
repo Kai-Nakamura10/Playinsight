@@ -56,7 +56,7 @@ RSpec.describe Video, type: :model do
 
     it "dependent: :destroy で関連が消える" do
       video = create(:video)
-      vt    = video.video_tactics.create!(tactic: Tactic.create!(title: "t", slug: "t"), display_time: 0)
+      vt    = video.video_tactics.create!(tactic: create(:tactic), display_time: 0)
       tl    = video.timelines.create!(title: "segment", kind: "質問", start_seconds: 0)
       vt2   = video.video_tags.create!(tag: Tag.create!(name: "ball"))
       cm    = video.comments.create!(user: video.user, body: "hi")

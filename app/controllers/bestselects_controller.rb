@@ -34,7 +34,7 @@ class BestselectsController < ApplicationController
 
     # 認証チェック
     unless user_signed_in?
-      render json: { error: 'ログインが必要です' }, status: 401
+      render json: { error: "ログインが必要です" }, status: 401
       return
     end
 
@@ -44,7 +44,7 @@ class BestselectsController < ApplicationController
       bestselect: @bestselect
     )
     user_answer.answer = selected_answer
-    
+
     if user_answer.save
       # 統計データを返す
       render json: {
@@ -57,7 +57,7 @@ class BestselectsController < ApplicationController
       render json: { error: user_answer.errors.full_messages }, status: 422
     end
   rescue ActiveRecord::RecordNotFound
-    render json: { error: '不正なリクエストです' }, status: 422
+    render json: { error: "不正なリクエストです" }, status: 422
   end
 
   private

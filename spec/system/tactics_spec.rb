@@ -80,12 +80,12 @@ RSpec.describe "Tactics management", type: :system do
       fill_in "タイトル", with: "プッシュブレイク"
       fill_in "スラッグ", with: "push-break"
       fill_in "トリガー", with: "リバウンド確保"
-      click_button "次へ"
+      click_button "次へ", match: :first
       fill_in "説明", with: "リバウンド後に5秒以内で仕掛ける。"
-      click_button "次へ"
+      click_button "次へ", match: :first
       fill_in "成功条件（1行=1項目）", with: success_lines
       fill_in "よくある失敗（1行=1項目）", with: failure_lines
-      click_button "次へ"
+      click_button "次へ", match: :first
       fill_in "カウンター（文字列でOK）", with: "ゾーンプレスにはドラッグスクリーン"
 
       expect do
@@ -94,11 +94,11 @@ RSpec.describe "Tactics management", type: :system do
 
       created = Tactic.find_by(slug: "push-break")
       expect(page).to have_current_path(edit_tactic_path(created))
-      click_button "次へ"
-      click_button "次へ"
+      click_button "次へ", match: :first
+      click_button "次へ", match: :first
       expect(find_field("成功条件（1行=1項目）").value).to eq(success_lines)
       expect(find_field("よくある失敗（1行=1項目）").value).to eq(failure_lines)
-      click_button "次へ"
+      click_button "次へ", match: :first
       expect(find_field("カウンター（文字列でOK）").value).to eq("ゾーンプレスにはドラッグスクリーン")
     end
 
@@ -106,9 +106,9 @@ RSpec.describe "Tactics management", type: :system do
       sign_in!
       visit new_tactic_path
 
-      click_button "次へ"
-      click_button "次へ"
-      click_button "次へ"
+      click_button "次へ", match: :first
+      click_button "次へ", match: :first
+      click_button "次へ", match: :first
       expect do
         find('input[type="submit"]').click
       end.not_to change(Tactic, :count)
@@ -141,7 +141,7 @@ RSpec.describe "Tactics management", type: :system do
       attach_file "動画ファイル", uploaded_file.path
 
       expect do
-        click_button "アップロード"
+        click_button "保存する"
       end.to change(Video, :count).by(1)
 
       video = Video.find_by!(title: video_title)
@@ -195,7 +195,7 @@ RSpec.describe "Tactics management", type: :system do
 
       expect(page).to have_current_path(video_path(video))
 
-      within(:xpath, "//h3[contains(.,'登録済みの戦術')]/following-sibling::table[1]") do
+      within("#registered-tactics") do
         expect(page).to have_content(available_tactic.title)
         # expect(page).to have_content(display_time)
       end
