@@ -43,13 +43,13 @@ RSpec.describe Rule, type: :model do
       expect(duplicate.errors[:slug]).to be_present
     end
 
-    it "body が400文字以内なら有効" do
-      rule = build(:rule, body: "a" * 400)
+    it "body が1000文字以内なら有効" do
+      rule = build(:rule, body: "a" * 1000)
       expect(rule).to be_valid
     end
 
-    it "body が401文字以上なら無効" do
-      rule = build(:rule, body: "a" * 401)
+    it "body が1001文字以上なら無効" do
+      rule = build(:rule, body: "a" * 1001)
       expect(rule).not_to be_valid
       expect(rule.errors[:body]).to be_present
     end

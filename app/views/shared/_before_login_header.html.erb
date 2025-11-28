@@ -13,13 +13,21 @@
       <div data-toggle-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none">
         <ul class="flex justify-between flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">
           <li>
-            <%= link_to t('header.basic_rules'), rule_path(@header_rule), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
+            <% if @header_rule %>
+              <%= link_to t('header.basic_rules'), rule_path(@header_rule), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
+            <% else %>
+              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed flex items-center" aria-disabled="true"><%= t('header.basic_rules') %></span>
+            <% end %>
           </li>
           <li>
             <%= link_to t('header.rule_search'), search_rules_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
           </li>
           <li>
-            <%= link_to t('header.tactics_quiz'), question_path(@header_question), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <% if @header_question %>
+              <%= link_to t('header.tactics_quiz'), question_path(@header_question), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
+            <% else %>
+              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed" aria-disabled="true"><%= t('header.tactics_quiz') %></span>
+            <% end %>
           </li>
           <li>
             <%= link_to t('header.sign_in'), new_user_session_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
