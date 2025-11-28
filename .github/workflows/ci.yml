@@ -39,7 +39,6 @@ jobs:
 
   test:
     runs-on: ubuntu-latest
-
     services:
       postgres:
         image: postgres
@@ -49,7 +48,6 @@ jobs:
         ports:
           - 5432:5432
         options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-
       # redis:
       #   image: redis
       #   ports:
@@ -69,10 +67,30 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
+      - name: Install JS dependencies
+        run: npm install
+
+      - name: Build JS
+        run: npm run build
+
+      - name: Install Ruby gems
+        run: bundle install --jobs 4 --retry 3
+
+      - name: Setup DB
+        run: |
+          bin/rails db:create RAILS_ENV=test
+          bin/rails db:schema:load RAILS_ENV=test
+
+      - name: Precompile assets
+        run: RAILS_ENV=test bin/rails assets:precompile
+
       - name: Run tests
         env:
           RAILS_ENV: test
           DATABASE_URL: postgres://postgres:postgres@localhost:5432
+          DB_HOST: localhost
+          DB_USERNAME: postgres
+          DB_PASSWORD: postgres
           # REDIS_URL: redis://localhost:6379/0
         run: bin/rails db:test:prepare && bundle exec rspec
 
