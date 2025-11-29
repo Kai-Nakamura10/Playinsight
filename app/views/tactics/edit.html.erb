@@ -1,10 +1,14 @@
-<div class="max-w-5xl mx-auto px-4 py-8 space-y-6">
-  <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
-    <h1 class="text-2xl font-semibold">戦術を編集</h1>
-    <%= link_to "一覧へ戻る", tactics_path, class: "inline-flex justify-center rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200" %>
-  </div>
+<main class="pt-20">
+  <section class="max-w-5xl mx-auto px-4 mt-4">
+    <div class="max-w-5xl mx-auto px-4 py-8 space-y-6">
+      <div class="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+        <h1 class="text-2xl font-semibold">戦術を編集</h1>
+        <%= link_to "一覧へ戻る", tactics_path, class: "inline-flex justify-center rounded-lg bg-gray-100 px-4 py-2 text-gray-700 hover:bg-gray-200" %>
+      </div>
 
-  <div class="bg-white rounded-2xl shadow-sm p-6">
-    <%= render "form", tactic: @tactic %>
-  </div>
-</div>
+      <div class="bg-white rounded-2xl shadow-sm p-6">
+        <%= render "form", tactic: @tactic %>
+      </div>
+    </div>
+  </section>
+</main>
