@@ -1,4 +1,4 @@
-<header>
+<header class="fixed top-0 left-0 w-full z-[1000]">
   <nav class="flex items-center justify-between p-4 bg-gray-100 shadow-md">
     <%= link_to '/', class: 'navbar-brand' do %>
       <%= image_tag 'logo.png', class: 'h-15 w-auto' %>
@@ -11,7 +11,7 @@
         </svg>
       </button>
 
-      <div data-toggle-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none">
+      <div data-toggle-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none z-[1000]">
         <ul class="flex justify-between flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">
           <li>
             <% if @header_rule %>

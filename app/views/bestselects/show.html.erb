@@ -1,10 +1,14 @@
 <div class="question px-4 py-6 sm:px-6 md:px-8 lg:px-10 max-w-3xl mx-auto" data-controller="bestselect" data-bestselect-bestselect-id-value="<%= @bestselect.id %>" data-bestselect-correct-value="<%= @correct || 0 %>" data-bestselect-total-value="<%= @total || 0 %>">
   <!-- 背景画像（レスポンシブ対応） -->
-  <div 
-    class="relative bg-center bg-contain bg-no-repeat
-          min-h-[220px] sm:min-h-[300px] md:min-h-[calc(100vh-134px)]"
-    style="background-image: url('<%= asset_path(@bestselect.image_filename) %>');">
-  </div>
+  <main class="pt-20">
+    <section class="max-w-5xl mx-auto px-4 mt-4">
+      <div class="relative min-h-[260px] sm:min-h-[320px] md:min-h-[400px] flex items-center justify-center">
+        <%= image_tag @bestselect.image_filename,
+          alt: "状況判断クイズのシーン",
+          class: "max-w-full max-h-full object-contain" %>
+      </div>
+    </section>
+  </main>
 
   <% if @bestselect.present? %>
     <!-- 質問文 -->
