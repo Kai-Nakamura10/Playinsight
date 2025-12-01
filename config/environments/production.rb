@@ -82,7 +82,7 @@ Rails.application.configure do
     host: ENV[ "RENDER_EXTERNAL_HOSTNAME" ] || "playinsight.onrender.com",
     protocol: "https"
   }
-  config.asset_host = "https://#{ENV['RENDER_EXTERNAL_HOSTNAME'] || 'playinsight.onrender.com'}"
+  config.asset_host = "https://#{ENV[ "RENDER_EXTERNAL_HOSTNAME" ] || "playinsight.onrender.com"}"
   config.hosts << "playinsight.jp"
   config.hosts << "www.playinsight.jp"
   config.hosts << "playinsight.onrender.com"
