@@ -79,10 +79,10 @@ Rails.application.configure do
   config.active_record.attributes_for_inspect = [ :id ]
 
   config.action_controller.default_url_options = {
-    host: "playinsight.onrender.com",
+    host: ENV["RENDER_EXTERNAL_HOSTNAME"] || "playinsight.onrender.com",
     protocol: "https"
   }
-  config.asset_host = "https://playinsight.onrender.com"
+  config.asset_host = "https://#{ENV["RENDER_EXTERNAL_HOSTNAME"] || "playinsight.onrender.com"}"
   config.hosts << "playinsight.jp"
   config.hosts << "www.playinsight.jp"
   config.hosts << "playinsight.onrender.com"
