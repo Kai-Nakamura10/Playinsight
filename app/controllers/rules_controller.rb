@@ -10,7 +10,9 @@ class RulesController < ApplicationController
     @rules = params[:q].present? ? Rule.where("title ILIKE ? OR body ILIKE ?", "%#{params[:q]}%", "%#{params[:q]}%") : Rule.none
     respond_to do |format|
       format.html
-      format.json { render json: @rules.limit(8).map(&:title) }
+      format.json do
+        render json: @rules.limit(8).map { |rule| { title: rule.title, url: rule_path(rule) } }
+      end
     end
   end
 end
