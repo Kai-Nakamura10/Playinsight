@@ -5,6 +5,7 @@ class QuestionsController < ApplicationController
     @question = Question.includes(:choices).find(params[:id])
     @choices  = @question.choices.order(:id).to_a
     @next_question = @question.next
+    set_question_progress!
 
     choice_id = params[:choice_id].presence
     return unless choice_id
@@ -24,6 +25,7 @@ class QuestionsController < ApplicationController
     @question = Question.includes(:choices).find(params[:id])
     @choices  = @question.choices.order(:id).to_a
     @next_question = @question.next
+    set_question_progress!
 
     if params[:choice_id].blank?
       flash.now[:alert] = "選択肢を選んでください。"
@@ -82,5 +84,22 @@ class QuestionsController < ApplicationController
     end
 
     redirect_to question_path(@question, choice_id: @selected_choice.id), status: :see_other
+  end
+
+  private
+
+  def set_question_progress!
+    ordered_ids = Question.ordered.pluck(:id)
+    @total_questions = ordered_ids.length
+
+    current_index = ordered_ids.index(@question.id) || 0
+    @question_position = current_index + 1
+    @remaining_questions = [ @total_questions - @question_position, 0 ].max
+    @progress_percent =
+      if @total_questions.positive?
+        ((@question_position.to_f / @total_questions) * 100).round
+      else
+        0
+      end
   end
 end

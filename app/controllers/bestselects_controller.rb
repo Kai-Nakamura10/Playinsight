@@ -10,6 +10,22 @@ class BestselectsController < ApplicationController
                 .order(:created_at)
                 .first || Bestselect.order(:created_at).first
 
+    # クイズ全体での位置と残り問数
+    @total_questions = Bestselect.count
+    @question_position =
+      Bestselect.where(
+        "created_at < :created_at OR (created_at = :created_at AND id <= :id)",
+        created_at: @bestselect.created_at,
+        id: @bestselect.id
+      ).count
+    @remaining_questions = [ @total_questions - @question_position, 0 ].max
+    @progress_percent =
+      if @total_questions.positive?
+        ((@question_position.to_f / @total_questions) * 100).round
+      else
+        0
+      end
+
     # 戦術の取得（必須）
     @tactic = @bestselect.tactic
 

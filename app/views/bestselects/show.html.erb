@@ -11,6 +11,26 @@
   </main>
 
   <% if @bestselect.present? %>
+    <!-- 進行状況 -->
+    <div class="mb-4">
+      <div class="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-2 text-sm sm:text-base text-gray-700">
+        <div class="flex items-center gap-2">
+          <span class="text-gray-500">現在</span>
+          <span class="text-lg font-semibold text-gray-900"><%= @question_position %></span>
+          <span class="text-gray-500">/ <%= @total_questions %> 問</span>
+        </div>
+        <div class="text-gray-600">
+          あと <span class="font-semibold text-gray-900"><%= @remaining_questions %></span> 問
+        </div>
+      </div>
+      <div class="w-full bg-gray-100 rounded-full h-2 mt-2 overflow-hidden">
+        <div
+          class="h-full bg-blue-600 rounded-full transition-all duration-300"
+          style="width: <%= @progress_percent %>%">
+        </div>
+      </div>
+    </div>
+
     <!-- 質問文 -->
     <h2 class="text-lg sm:text-xl md:text-2xl font-semibold mb-4 leading-relaxed">
       <%= @bestselect.question %>
