@@ -5,6 +5,16 @@
         <%= @rule.title %>
       </h1>
 
+      <div class="mb-6">
+        <div class="flex items-center justify-between text-sm text-gray-600 mb-2">
+          <span class="font-semibold text-gray-900">基本ルール解説 <%= @rule_position %> / <%= @total_rules %></span>
+          <span>残り<%= @remaining_rules %>個</span>
+        </div>
+        <div class="w-full h-2 bg-gray-200 rounded-full overflow-hidden">
+          <div class="h-full bg-blue-600 transition-all duration-300" style="width: <%= @progress_percentage %>%;"></div>
+        </div>
+      </div>
+
       <div class="prose prose-sm sm:prose-base max-w-none mb-6 text-gray-800">
         <%= simple_format(@rule.body) %>
 

@@ -25,6 +25,8 @@ RSpec.describe "Rule explanations", type: :system do
 
     expect(page).to have_content(first_rule.title)
     expect(page).to have_content(first_rule.body)
+    expect(page).to have_content("基本ルール解説 1 / 2")
+    expect(page).to have_content("残り1個")
     expect(page).to have_link("次のルール →", href: rule_path(second_rule))
   end
 
@@ -35,5 +37,7 @@ RSpec.describe "Rule explanations", type: :system do
     expect(page).to have_current_path(rule_path(second_rule), ignore_query: true)
     expect(page).to have_content(second_rule.title)
     expect(page).to have_content(second_rule.body)
+    expect(page).to have_content("基本ルール解説 2 / 2")
+    expect(page).to have_content("残り0個")
   end
 end
