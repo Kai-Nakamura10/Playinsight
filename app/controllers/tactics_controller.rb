@@ -1,10 +1,27 @@
 class TacticsController < ApplicationController
   def show
     @tactic = Tactic.find(params[:id])
-    scope = Tactic.order(:order)
 
-    @next_tactic = scope.where("tactics.order > ?", @tactic.order).first || scope.first
-    @prev_tactic = scope.where("tactics.order < ?", @tactic.order).last || scope.last
+    ordered_tactics = Tactic.order(:order, :id)
+    @total_tactics = ordered_tactics.count
+    @tactic_position = ordered_tactics.where(
+      "tactics.order < :order OR (tactics.order = :order AND tactics.id <= :id)",
+      order: @tactic.order,
+      id: @tactic.id
+    ).count
+    @remaining_tactics = @total_tactics - @tactic_position
+    @progress_percentage = @total_tactics.positive? ? ((@tactic_position.to_f / @total_tactics) * 100).round : 0
+
+    @next_tactic = ordered_tactics.where(
+      "tactics.order > :order OR (tactics.order = :order AND tactics.id > :id)",
+      order: @tactic.order,
+      id: @tactic.id
+    ).first || ordered_tactics.first
+    @prev_tactic = ordered_tactics.where(
+      "tactics.order < :order OR (tactics.order = :order AND tactics.id < :id)",
+      order: @tactic.order,
+      id: @tactic.id
+    ).last || ordered_tactics.last
   end
 
   def index
