@@ -20,9 +20,8 @@ class VideoJob < ApplicationJob
       end
 
       if needs_thumbnail
-        safe_id = video.id.to_s.gsub(/[^0-9A-Za-z\-]/, "")
         Dir.mktmpdir do |dir|
-          out = File.join(dir, "video_#{safe_id}_thumb.jpg")
+          out = File.join(dir, "thumb.jpg")
 
           seek = duration >= 5 ? 5 : 0
           movie.screenshot(
