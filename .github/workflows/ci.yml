@@ -1,14 +1,13 @@
 name: CI
 
 on:
-  pull_request:
   push:
     branches: [ main ]
+  pull_request:
 
 jobs:
   scan_ruby:
     runs-on: ubuntu-latest
-
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -19,7 +18,7 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Scan for common Rails security vulnerabilities using static analysis
+      - name: Brakeman security scan
         run: bin/brakeman --no-pager
 
   lint:
@@ -34,29 +33,42 @@ jobs:
           ruby-version: .ruby-version
           bundler-cache: true
 
-      - name: Lint code for consistent style
+      - name: Rubocop lint
         run: bin/rubocop -f github
 
   test:
     runs-on: ubuntu-latest
+
     services:
       postgres:
-        image: postgres
+        image: postgres:15
         env:
           POSTGRES_USER: postgres
-          POSTGRES_PASSWORD: postgres
+          POSTGRES_PASSWORD: ${{ secrets.DB_PASSWORD }}
         ports:
           - 5432:5432
-        options: --health-cmd="pg_isready" --health-interval=10s --health-timeout=5s --health-retries=3
-      # redis:
-      #   image: redis
-      #   ports:
-      #     - 6379:6379
-      #   options: --health-cmd "redis-cli ping" --health-interval 10s --health-timeout 5s --health-retries 5
+        options: >-
+          --health-cmd "pg_isready -U postgres"
+          --health-interval 10s
+          --health-timeout 5s
+          --health-retries 5
+
+    env:
+      RAILS_ENV: test
+      DB_HOST: localhost
+      DB_USERNAME: postgres
+      DB_PASSWORD: ${{ secrets.DB_PASSWORD }}
+      DATABASE_URL: ${{ secrets.DATABASE_URL }}
 
     steps:
-      - name: Install packages
-        run: sudo apt-get update && sudo apt-get install --no-install-recommends -y google-chrome-stable curl libjemalloc2 libvips postgresql-client
+      - name: Install dependencies
+        run: |
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y curl libjemalloc2 libvips postgresql-client
+          curl -fsSL https://dl.google.com/linux/linux_signing_key.pub | sudo gpg --dearmor -o /usr/share/keyrings/google-chrome.gpg
+          echo "deb [arch=amd64 signed-by=/usr/share/keyrings/google-chrome.gpg] http://dl.google.com/linux/chrome/deb/ stable main" | sudo tee /etc/apt/sources.list.d/google-chrome.list
+          sudo apt-get update
+          sudo apt-get install --no-install-recommends -y google-chrome-stable
 
       - name: Checkout code
         uses: actions/checkout@v4
@@ -70,34 +82,24 @@ jobs:
       - name: Install JS dependencies
         run: npm install
 
-      - name: Build JS
+      - name: Build JS assets
         run: npm run build
-
-      - name: Install Ruby gems
-        run: bundle install --jobs 4 --retry 3
 
       - name: Setup DB
         run: |
-          bin/rails db:create RAILS_ENV=test
-          bin/rails db:schema:load RAILS_ENV=test
+          bin/rails db:create
+          bin/rails db:schema:load
 
-      - name: Precompile assets
-        run: RAILS_ENV=test bin/rails assets:precompile
+      - name: Precompile Rails assets
+        run: bin/rails assets:precompile
 
-      - name: Run tests
-        env:
-          RAILS_ENV: test
-          DATABASE_URL: postgres://postgres:postgres@localhost:5432
-          DB_HOST: localhost
-          DB_USERNAME: postgres
-          DB_PASSWORD: postgres
-          # REDIS_URL: redis://localhost:6379/0
-        run: bin/rails db:test:prepare && bundle exec rspec
+      - name: Run RSpec tests
+        run: bundle exec rspec
 
-      - name: Keep screenshots from failed system tests
+      - name: Upload system test screenshots
         uses: actions/upload-artifact@v5
         if: failure()
         with:
           name: screenshots
-          path: ${{ github.workspace }}/tmp/screenshots
+          path: tmp/screenshots
           if-no-files-found: ignore

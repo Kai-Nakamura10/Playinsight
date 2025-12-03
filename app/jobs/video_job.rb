@@ -21,7 +21,7 @@ class VideoJob < ApplicationJob
 
       if needs_thumbnail
         Dir.mktmpdir do |dir|
-          out = File.join(dir, "video_#{video.id}_thumb.jpg")
+          out = File.join(dir, "thumb.jpg")
 
           seek = duration >= 5 ? 5 : 0
           movie.screenshot(

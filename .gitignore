@@ -39,3 +39,4 @@
 /node_modules
 /json
 /config/credentials/production.key
+/compose.yml
