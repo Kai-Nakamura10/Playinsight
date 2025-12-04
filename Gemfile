@@ -47,7 +47,7 @@ gem "aws-sdk-s3"
 
 gem "streamio-ffmpeg"
 
-gem "sidekiq", "~> 8.0", ">= 8.0.7"
+gem "sidekiq", "~> 8.0"
 
 gem "aws-sdk-cloudfront", "~> 1.129"
 
