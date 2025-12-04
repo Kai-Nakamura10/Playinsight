@@ -4,59 +4,226 @@
       <%= image_tag 'Frame 6.png', class: "max-w-full max-h-full object-contain" %>
     </div>
   </section>
-</main>
-<body class="min-h-screen bg-slate-50">
-  <%= yield %>
 
-  <div class="fixed bottom-4 right-4 z-50 flex flex-col items-end space-y-2">
-    <div id="help-panel" class="hidden origin-bottom-right transform transition-all duration-200 w-64 rounded-2xl bg-white shadow-2xl border border-slate-100 p-4 text-sm text-slate-700 scale-95 opacity-0">
-      <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">ヘルプセンター</p>
-      <p class="mt-2 leading-relaxed text-slate-600">
-        使い方ガイドで基本操作を確認し、困ったときはサポートにご連絡ください。
+  <div class="min-h-screen bg-slate-100 py-12 px-4">
+  <div class="max-w-6xl mx-auto bg-white rounded-[32px] shadow-2xl px-8 py-12 space-y-10">
+    <header class="text-center max-w-3xl mx-auto">
+      <p class="text-sm font-semibold text-indigo-500 tracking-[0.3em] uppercase">Start Guide</p>
+      <h1 class="mt-4 text-4xl font-bold text-gray-900">このサービスの最適な使い方</h1>
+      <p class="mt-4 text-gray-600 leading-relaxed">
+        3つのステップで素早くオンボーディングできます。左側の手順を選ぶと右側に詳細とデモ動画が表示されます。
       </p>
-      <div class="mt-4 space-y-3">
-        <%= link_to "使い方ガイドへ移動", how_to_path, class: "flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-50 text-indigo-700 text-sm font-semibold hover:bg-indigo-100" %>
-        <%= link_to "お問い合わせ", contact_path, class: "flex items-center justify-between px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200" %>
-      </div>
+    </header>
+
+    <div class="flex flex-col lg:flex-row gap-8">
+      <aside class="lg:w-1/3 bg-slate-50 rounded-2xl border border-slate-200 p-6 space-y-4">
+        <p class="text-sm font-semibold text-slate-600">手順を選択</p>
+        <div id="howto-side-tabs" class="space-y-4">
+          <button type="button" class="howto-tab w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-white border border-transparent shadow transition hover:-translate-y-0.5">
+            <span class="tab-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 text-lg font-bold">1</span>
+            <div class="text-left">
+              <p class="text-xs text-gray-500">ステップ1</p>
+              <p class="text-base font-semibold text-gray-900">アカウント登録</p>
+            </div>
+          </button>
+          <button type="button" class="howto-tab w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-white border border-transparent shadow transition hover:-translate-y-0.5">
+            <span class="tab-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 text-lg font-bold">2</span>
+            <div class="text-left">
+              <p class="text-xs text-gray-500">ステップ2</p>
+              <p class="text-base font-semibold text-gray-900">動画をアップロード</p>
+            </div>
+          </button>
+          <button type="button" class="howto-tab w-full flex items-center gap-4 px-5 py-4 rounded-2xl bg-white border border-transparent shadow transition hover:-translate-y-0.5">
+            <span class="tab-badge flex h-12 w-12 items-center justify-center rounded-2xl bg-indigo-100 text-indigo-700 text-lg font-bold">3</span>
+            <div class="text-left">
+              <p class="text-xs text-gray-500">ステップ3</p>
+              <p class="text-base font-semibold text-gray-900">戦術とクイズで学ぶ</p>
+            </div>
+          </button>
+        </div>
+      </aside>
+
+      <section class="lg:flex-1">
+        <div id="howto-panels" class="rounded-3xl bg-gradient-to-br from-slate-900 via-indigo-900 to-indigo-700 text-white p-8 space-y-8">
+          <div class="howto-panel hidden">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+              <div class="lg:flex-1 space-y-4">
+                <p class="text-sm uppercase tracking-wide text-indigo-200">ステップ1</p>
+                <h2 class="text-3xl font-bold">アカウント登録</h2>
+                <p class="text-indigo-100 leading-relaxed">
+                  メールアドレス、パスワード、ニックネームを入力してアカウントを作成。
+                </p>
+                <div class="flex flex-wrap gap-3 mt-4 text-xs font-semibold">
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">所要時間 約3分</span>
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">必要：メールアドレス</span>
+                </div>
+              </div>
+              <div class="lg:w-64">
+                <div class="rounded-2xl bg-white/10 border border-white/20 p-2">
+                  <%= image_tag "howto_signup.gif", alt: "アカウント登録デモ", class: "w-full rounded-xl" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="howto-panel hidden">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+              <div class="lg:flex-1 space-y-4">
+                <p class="text-sm uppercase tracking-wide text-indigo-200">ステップ2</p>
+                <h2 class="text-3xl font-bold">動画をアップロード</h2>
+                <p class="text-indigo-100 leading-relaxed">
+                  動画をポンと投稿するだけでOK。試合分析が驚くほどスムーズに。
+                </p>
+                <div class="flex flex-wrap gap-3 mt-4 text-xs font-semibold">
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">動画時間をリアルタイム表示</span>
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">特定の時間で戦術をリアルタイム表示</span>
+                </div>
+              </div>
+              <div class="lg:w-64">
+                <div class="rounded-2xl bg-white/10 border border-white/20 p-2">
+                  <%= image_tag "howto_upload.gif", alt: "動画アップロードデモ", class: "w-full rounded-xl" %>
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="howto-panel hidden">
+            <div class="flex flex-col lg:flex-row gap-6 items-center">
+              <div class="lg:flex-1 space-y-4">
+                <p class="text-sm uppercase tracking-wide text-indigo-200">ステップ3</p>
+                <h2 class="text-3xl font-bold">戦術とクイズで学ぶ</h2>
+                <p class="text-indigo-100 leading-relaxed">
+                  戦術 x 判断力をゲーム感覚で学べる“バスケ脳トレ”クイズ。
+                </p>
+                <div class="flex flex-wrap gap-3 mt-4 text-xs font-semibold">
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">「なるほど!」が増える戦術解説。AIがあなたの疑問を全部回収。</span>
+                  <span class="px-3 py-1 rounded-full border border-white/30 bg-white/10">バスケ選手の“バスケIQ”を一段引き上げる学習サポート。</span>
+                </div>
+              </div>
+              <div class="lg:w-64">
+                <div class="rounded-2xl bg-white/10 border border-white/20 p-2">
+                  <%= image_tag "howto_tactics.gif", alt: "戦術とクイズのデモ", class: "w-full rounded-xl" %>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="flex items-center justify-between pt-6 border-t border-white/20">
+            <button type="button" id="howto-prev" class="px-5 py-2 rounded-full bg-white/10 hover:bg-white/20 text-sm font-semibold transition">前へ</button>
+            <button type="button" id="howto-next" class="px-5 py-2 rounded-full bg-white bg-opacity-90 text-indigo-900 font-semibold hover:bg-opacity-80 transition">次へ</button>
+          </div>
+        </div>
+      </section>
     </div>
-
-    <button id="help-toggle" type="button" class="relative flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500 shadow-lg text-white text-sm font-semibold hover:scale-105 focus:ring-4 focus:ring-indigo-300 transition">
-      <span class="flex items-center justify-center w-7 h-7 rounded-full bg-white/20 border border-white/30 text-base font-bold">?</span>
-      <span>ヘルプ</span>
-      <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold shadow">!</span>
-    </button>
   </div>
-
   <script>
     (function () {
       let initialized = false;
 
-      function setupHelpButton() {
+      function setupHowtoTabs() {
         if (initialized) return;
-        const toggle = document.getElementById('help-toggle');
-        const panel = document.getElementById('help-panel');
-        if (!toggle || !panel) return;
+        const tabs = Array.from(document.querySelectorAll('.howto-tab'));
+        const panels = Array.from(document.querySelectorAll('.howto-panel'));
+        const prev = document.getElementById('howto-prev');
+        const next = document.getElementById('howto-next');
+        if (!tabs.length || !panels.length || !prev || !next) return;
 
-        toggle.addEventListener('click', function () {
-          const isHidden = panel.classList.toggle('hidden');
-          panel.classList.toggle('scale-100', !isHidden);
-          panel.classList.toggle('opacity-100', !isHidden);
-          panel.classList.toggle('scale-95', isHidden);
-          panel.classList.toggle('opacity-0', isHidden);
+        let current = 0;
+
+        function update(index) {
+          current = index;
+          tabs.forEach((tab, i) => {
+            const active = i === current;
+            const badge = tab.querySelector('.tab-badge');
+            tab.classList.toggle('border-indigo-400', active);
+            tab.classList.toggle('shadow-xl', active);
+            tab.classList.toggle('bg-white', active);
+            tab.classList.toggle('bg-white/70', !active);
+            tab.setAttribute('aria-pressed', active.toString());
+            if (badge) {
+              badge.classList.toggle('bg-indigo-600', active);
+              badge.classList.toggle('text-white', active);
+              badge.classList.toggle('bg-indigo-100', !active);
+              badge.classList.toggle('text-indigo-700', !active);
+            }
+          });
+          panels.forEach((panel, i) => {
+            panel.classList.toggle('hidden', i !== current);
+          });
+        }
+
+        tabs.forEach((tab, index) => {
+          tab.addEventListener('click', () => update(index));
         });
 
+        prev.addEventListener('click', () => {
+          const nextIndex = (current - 1 + panels.length) % panels.length;
+          update(nextIndex);
+        });
+
+        next.addEventListener('click', () => {
+          const nextIndex = (current + 1) % panels.length;
+          update(nextIndex);
+        });
+
+        update(0);
         initialized = true;
       }
 
-      document.addEventListener('DOMContentLoaded', setupHelpButton);
-      document.addEventListener('turbo:load', setupHelpButton);
-      document.addEventListener('turbolinks:load', setupHelpButton);
-      document.addEventListener('turbo:before-cache', () => {
-        initialized = false;
-      });
-      document.addEventListener('turbolinks:before-cache', () => {
-        initialized = false;
-      });
+      document.addEventListener('DOMContentLoaded', setupHowtoTabs);
+      document.addEventListener('turbo:load', setupHowtoTabs);
+      document.addEventListener('turbolinks:load', setupHowtoTabs);
     })();
   </script>
-</body>
+</div>
+</main>
+
+<div class="fixed bottom-4 right-4 z-50 flex flex-col items-end space-y-2">
+  <div id="help-panel" class="hidden origin-bottom-right transform transition-all duration-200 w-64 rounded-2xl bg-white shadow-2xl border border-slate-100 p-4 text-sm text-slate-700 scale-95 opacity-0">
+    <p class="text-xs font-semibold text-slate-500 uppercase tracking-wide">ヘルプセンター</p>
+    <p class="mt-2 leading-relaxed text-slate-600">
+      使い方ガイドで基本操作を確認し、困ったときはサポートにご連絡ください。
+    </p>
+    <div class="mt-4 space-y-3">
+      <%= link_to "使い方ガイドへ移動", how_to_path, class: "flex items-center justify-between px-3 py-2 rounded-xl bg-indigo-50 text-indigo-700 text-sm font-semibold hover:bg-indigo-100" %>
+      <%= link_to "お問い合わせ", contact_path, class: "flex items-center justify-between px-3 py-2 rounded-xl bg-slate-100 text-slate-700 text-sm font-semibold hover:bg-slate-200" %>
+    </div>
+  </div>
+
+  <button id="help-toggle" type="button" class="relative flex items-center gap-3 px-4 py-2 rounded-full bg-gradient-to-r from-indigo-600 to-blue-500 shadow-lg text-white text-sm font-semibold hover:scale-105 focus:ring-4 focus:ring-indigo-300 transition">
+    <span class="flex items-center justify-center w-7 h-7 rounded-full bg-white/20 border border-white/30 text-base font-bold">?</span>
+    <span>ヘルプ</span>
+    <span class="absolute -top-1 -right-1 flex h-4 w-4 items-center justify-center rounded-full bg-rose-500 text-[10px] font-bold shadow">!</span>
+  </button>
+</div>
+
+<script>
+  (function () {
+    let initialized = false;
+
+    function setupHelpButton() {
+      if (initialized) return;
+      const toggle = document.getElementById('help-toggle');
+      const panel = document.getElementById('help-panel');
+      if (!toggle || !panel) return;
+
+      toggle.addEventListener('click', function () {
+        const isHidden = panel.classList.toggle('hidden');
+        panel.classList.toggle('scale-100', !isHidden);
+        panel.classList.toggle('opacity-100', !isHidden);
+        panel.classList.toggle('scale-95', isHidden);
+        panel.classList.toggle('opacity-0', isHidden);
+      });
+
+      initialized = true;
+    }
+
+    document.addEventListener('DOMContentLoaded', setupHelpButton);
+    document.addEventListener('turbo:load', setupHelpButton);
+    document.addEventListener('turbolinks:load', setupHelpButton);
+    document.addEventListener('turbo:before-cache', () => {
+      initialized = false;
+    });
+    document.addEventListener('turbolinks:before-cache', () => {
+      initialized = false;
+    });
+  })();
+</script>
