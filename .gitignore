@@ -40,3 +40,4 @@
 /json
 /config/credentials/production.key
 /compose.yml
+db/seed_assets/

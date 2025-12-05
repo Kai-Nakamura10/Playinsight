@@ -3,6 +3,7 @@ class Timeline < ApplicationRecord
 
   KINDS = %w[質問 よい選択 戦術].freeze
 
+  has_many :comments, dependent: :destroy
   validates :title, length: { maximum: 100 }
   validates :body, length: { maximum: 400 }
   validates :kind, presence: true, inclusion: { in: KINDS }
