@@ -1,0 +1,15 @@
+<% content_for :meta_title, @video.title.presence || "試合分析をしてチームを強化しよう" %>
+<% content_for :meta_description, @video.description.presence || "バスケの戦術を理解しよう" %>
+<% content_for :meta_image, (@video.thumbnail.attached? ? url_for(@video.thumbnail) : image_url("Frame 6.png")) %>
+<% content_for :meta_image_alt, "#{@video.title} のサムネイル" %>
+<% content_for :meta_url, video_url(@video) %>
+<% content_for :meta_type, "video.other" %>
+
+<main class="pt-20">
+  <section class="max-w-3xl mx-auto px-4 py-10 text-center space-y-4">
+    <h1 class="text-2xl font-semibold">OGP プレビュー</h1>
+    <p class="text-gray-600">
+      このページは SNS などのプレビュー専用です。動画の閲覧にはログインが必要です。
+    </p>
+  </section>
+</main>

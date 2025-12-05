@@ -18,6 +18,7 @@ Rails.application.routes.draw do
   root "static_pages#top"
   resources :users, only: %i[new create]
   resources :videos do
+    get :ogp, on: :member, to: "video_ogps#show"
     resources :video_tags, only: %i[create destroy]
     resources :timelines, shallow: true, constraints: { format: :html } do
       collection do
