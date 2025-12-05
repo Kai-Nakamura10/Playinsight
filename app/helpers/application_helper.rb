@@ -20,7 +20,7 @@ module ApplicationHelper
   end
 
   def meta_url
-    content_for(:meta_url).presence || request.original_url
+    content_for(:meta_url).presence || canonical_url(request.original_url)
   end
 
   def meta_twitter_card
@@ -51,5 +51,17 @@ module ApplicationHelper
 
   def default_meta_image_alt
     "Playinsight - バスケ戦術分析アプリ"
+  end
+
+  def canonical_url(url)
+    host = ENV["APP_HOST"]
+    return url if host.blank?
+
+    uri = URI.parse(url)
+    uri.scheme = "https"
+    uri.host = host
+    uri.to_s
+  rescue URI::InvalidURIError
+    url
   end
 end
