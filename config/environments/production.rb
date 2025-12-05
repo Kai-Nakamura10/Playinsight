@@ -78,11 +78,12 @@ Rails.application.configure do
   # Only use :id for inspections in production.
   config.active_record.attributes_for_inspect = [ :id ]
 
+  canonical_host = ENV["APP_HOST"].presence || ENV["RENDER_EXTERNAL_HOSTNAME"] || "playinsight.onrender.com"
   config.action_controller.default_url_options = {
-    host: ENV["RENDER_EXTERNAL_HOSTNAME"] || "playinsight.onrender.com",
+    host: canonical_host,
     protocol: "https"
   }
-  config.asset_host = "https://#{ENV["RENDER_EXTERNAL_HOSTNAME"] || "playinsight.onrender.com"}"
+  config.asset_host = "https://#{canonical_host}"
   config.hosts << "playinsight.jp"
   config.hosts << "www.playinsight.jp"
   config.hosts << "playinsight.onrender.com"
