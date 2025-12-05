@@ -38,11 +38,11 @@ module ApplicationHelper
   private
 
   def default_meta_title
-    "試合分析をしてチームを強化しよう"
+    "Playinsight | バスケ動画の戦術分析プラットフォーム"
   end
 
   def default_meta_description
-    "バスケの戦術を理解しよう"
+    "試合映像に戦術を重ねて振り返り、チームで共有できるバスケ分析アプリ。"
   end
 
   def default_meta_image
@@ -50,7 +50,7 @@ module ApplicationHelper
   end
 
   def default_meta_image_alt
-    "Playinsight - バスケ戦術分析アプリ"
+    "Playinsightのサービスイメージ"
   end
 
   def canonical_url(url)
