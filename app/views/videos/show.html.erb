@@ -1,3 +1,10 @@
+<% content_for :meta_title, @video.title.presence || "試合分析をしてチームを強化しよう" %>
+<% content_for :meta_description, @video.description.presence || "バスケの戦術を理解しよう" %>
+<% content_for :meta_image, (@video.thumbnail.attached? ? url_for(@video.thumbnail) : image_url("Frame 6.png")) %>
+<% content_for :meta_image_alt, "#{@video.title} のサムネイル" %>
+<% content_for :meta_url, video_url(@video) %>
+<% content_for :meta_type, "video.other" %>
+
 <main class="pt-20">
   <section class="max-w-5xl mx-auto px-4 mt-4">
     <div class="max-w-5xl mx-auto px-4 py-6 space-y-10">
@@ -35,6 +42,13 @@
             <%= link_to "動画を編集", edit_video_path(@video), class: 'inline-flex items-center justify-center bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700' %>
             <%= link_to "動画一覧へ", videos_path, class: 'inline-flex items-center justify-center bg-gray-100 text-gray-700 px-4 py-2 rounded-lg hover:bg-gray-200' %>
             <%= link_to "削除", video_path(@video), data: { turbo_method: :delete, turbo_confirm: "本当に削除しますか？" }, class: 'inline-flex items-center justify-center bg-red-600 text-white px-4 py-2 rounded-lg hover:bg-red-700' %>
+            <% if @video.visibility_public? || @video.visibility_unlisted? %>
+              <% share_text = "#{@video.title} - Playinsight" %>
+              <% share_url = "https://twitter.com/intent/tweet?url=#{ERB::Util.url_encode(video_url(@video))}&text=#{ERB::Util.url_encode(share_text)}" %>
+              <%= link_to "Xでシェア", share_url,
+                    target: "_blank", rel: "noopener",
+                    class: "inline-flex items-center justify-center bg-black text-white px-4 py-2 rounded-lg hover:bg-gray-900" %>
+            <% end %>
           </div>
         </div>
       </div>
