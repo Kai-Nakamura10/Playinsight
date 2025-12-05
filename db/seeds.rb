@@ -12,8 +12,10 @@ def seed_bestselect!(question:, explanation:, answers:, image_filename:)
   bestselect.image_filename = image_filename
   bestselect.save!
 
-  bestselect.answers.destroy_all
-  bestselect.answers.create!(answers)
+  answers.each do |answer_attrs|
+    answer = bestselect.answers.find_or_initialize_by(position: answer_attrs[:position])
+    answer.update!(answer_attrs)
+  end
 end
 
 [
@@ -550,3 +552,149 @@ ActiveRecord::Base.transaction do
 end
 
 puts "Seeded basketball quiz (5 questions)."
+
+ActiveRecord::Base.transaction do
+  demo_user = User.find_or_initialize_by(email: "demo@example.com")
+  if demo_user.new_record?
+    demo_user.nickname = "デモユーザー"
+    demo_user.password = ENV.fetch("SEED_DEMO_USER_PASSWORD", SecureRandom.base64(12))
+    demo_user.password_confirmation = demo_user.password
+  end
+  demo_user.save!
+
+  # 公開後もそのまま見せられるショーケース動画
+  demo_video = Video.find_or_initialize_by(title: "ハーフコート：ホーンズから逆サイド3Pを作る")
+  if demo_video.new_record?
+    legacy_demo = Video.find_by(title: "デモ試合：速攻からのフィニッシュ")
+    demo_video = legacy_demo if legacy_demo.present?
+  end
+  demo_video.user = demo_user
+  demo_video.title = "ハーフコート：ホーンズから逆サイド3Pを作る"
+  demo_video.description = "クラブの練習試合クリップ。ホーンズエントリーからハンドオフ→ショートロール→逆サイドのキックアウトまで、どこで優位が生まれるかをタイムラインで整理。セットのテンポやリロケーションの使い方を学べます。"
+  demo_video.visibility = "public"
+  demo_video.duration_seconds = 78
+  demo_video.save!
+
+  unless demo_video.file.attached?
+    seed_video_path = ENV["SEED_VIDEO_PATH"].presence
+    seed_video_path = Pathname(seed_video_path) if seed_video_path
+    seed_video_path ||= Rails.root.join("db", "seed_assets", "IMG_2646.mp4")
+
+    if File.exist?(seed_video_path)
+      puts "Attaching demo video from #{seed_video_path}"
+      File.open(seed_video_path, "rb") do |file|
+        demo_video.file.attach(
+          io: file,
+          filename: "IMG_2646.mp4",
+          content_type: "video/mp4"
+        )
+      end
+    else
+      puts "Seed video not found at #{seed_video_path}; demo video will be created without an attachment."
+    end
+  end
+
+  unless demo_video.thumbnail.attached?
+    thumbnail_path = Rails.root.join("app/assets/images/top.png")
+    demo_video.thumbnail.attach(
+      io: File.open(thumbnail_path),
+      filename: "top.png",
+      content_type: "image/png"
+    )
+  end
+
+  demo_video.video_tags.destroy_all
+  %w[ハーフコートオフェンス ホーンズセット ショートロール キックアウト リロケーション].each do |tag_name|
+    tag = Tag.find_or_create_by!(name: tag_name)
+    demo_video.video_tags.find_or_create_by!(tag: tag)
+  end
+
+  demo_video.timelines.destroy_all
+  timeline_defs = [
+    {
+      start_seconds: 5.8,
+      end_seconds: 12.0,
+      kind: "戦術",
+      title: "ホーンズエントリーで形を作る",
+      body: "PGが左右エルボーにビッグを立たせ、左エルボーにパスしてすぐ角度をつけて戻る。DFがまだセットし切れていない。"
+    },
+    {
+      start_seconds: 14.2,
+      end_seconds: 20.5,
+      kind: "戦術",
+      title: "ハンドオフでスイッチを強制",
+      body: "エルボーの5番がガードへハンドオフ。DFがついていけずトップで2on1の形。"
+    },
+    {
+      start_seconds: 22.5,
+      end_seconds: 29.0,
+      kind: "質問",
+      title: "ヘッジされた瞬間の最優先は？",
+      body: "ハンドオフ直後に高く出たDFに対し、ショートロールで空いたミドルを突くか、逆サイドへリバースするか。"
+    },
+    {
+      start_seconds: 33.0,
+      end_seconds: 39.5,
+      kind: "よい選択",
+      title: "ショートロールから逆サイドへスキップ",
+      body: "ミドルで2人を引きつけた瞬間に逆サイド45度のシューターへロブ気味のスキップパス。"
+    },
+    {
+      start_seconds: 48.0,
+      end_seconds: 54.0,
+      kind: "戦術",
+      title: "リロケーションでキャッチ&シュート",
+      body: "コーナーのシューターが一歩上にずれ、キャッチ&シュートのリズムを確保。クローズアウトが間に合わずオープン3。"
+    }
+  ]
+
+  timelines = timeline_defs.map do |attrs|
+    record = demo_video.timelines.find_or_initialize_by(
+      start_seconds: attrs[:start_seconds],
+      kind: attrs[:kind],
+      title: attrs[:title]
+    )
+    record.end_seconds = attrs[:end_seconds]
+    record.body = attrs[:body]
+    record.payload = attrs[:payload] || {}
+    record.save!
+    record
+  end
+
+  demo_video.comments.destroy_all
+  comment_defs = [
+    {
+      body: "エントリーが早いのでDFのタグ付けが遅れてスペースが広がってますね。",
+      timestamp: 7.2,
+      timeline_title: "ホーンズエントリーで形を作る"
+    },
+    {
+      body: "ヘッジが強い相手には、このショートロールへの合わせが一番簡単にズレが作れます。",
+      timestamp: 24.8,
+      timeline_title: "ヘッジされた瞬間の最優先は？"
+    },
+    {
+      body: "リロケーションの一歩が効いてる。パスが届く頃にはクローズアウトの角度が長くなってオープン3の形。",
+      timestamp: 49.6,
+      timeline_title: "リロケーションでキャッチ&シュート"
+    },
+    {
+      body: "高校〜社会人どのカテゴリーでも使いやすいセットなので、チーム共有用の参考例としてどうぞ。",
+      timestamp: nil,
+      timeline_title: nil
+    }
+  ]
+
+  comment_defs.each do |attrs|
+    timeline = timelines.find { |tl| attrs[:timeline_title].present? && tl.title == attrs[:timeline_title] }
+    comment = demo_video.comments.find_or_initialize_by(
+      user: demo_user,
+      body: attrs[:body],
+      timeline: timeline
+    )
+    comment.video_timestamp_seconds = attrs[:timestamp]
+    comment.save!
+  end
+end
+
+puts "Seeded showcase video, tags, timelines, and comments."
