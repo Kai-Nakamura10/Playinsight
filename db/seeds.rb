@@ -564,31 +564,40 @@ ActiveRecord::Base.transaction do
 
   # 公開後もそのまま見せられるショーケース動画
   demo_video = Video.find_or_initialize_by(title: "ハーフコート：ホーンズから逆サイド3Pを作る")
+  if demo_video.new_record?
+    legacy_demo = Video.find_by(title: "デモ試合：速攻からのフィニッシュ")
+    demo_video = legacy_demo if legacy_demo.present?
+  end
   demo_video.user = demo_user
   demo_video.title = "ハーフコート：ホーンズから逆サイド3Pを作る"
   demo_video.description = "クラブの練習試合クリップ。ホーンズエントリーからハンドオフ→ショートロール→逆サイドのキックアウトまで、どこで優位が生まれるかをタイムラインで整理。セットのテンポやリロケーションの使い方を学べます。"
   demo_video.visibility = "public"
   demo_video.duration_seconds = 78
+  demo_video.save!
 
-  seed_video_path = Rails.root.join("db/seed_assets/IMG_2646.mp4")
-  raise "Seed video not found!" unless File.exist?(seed_video_path)
+  unless demo_video.file.attached?
+    seed_video_path = ENV["SEED_VIDEO_PATH"].presence
+    seed_video_path = Pathname(seed_video_path) if seed_video_path
+    seed_video_path ||= Rails.root.join("db", "seed_assets", "IMG_2646.mp4")
 
-  demo_video.save! 
-
-  binary = File.binread(seed_video_path)
-  demo_video.file.attach(
-    io: StringIO.new(binary),
-    filename: "IMG_2646.mp4",
-    content_type: "video/mp4"
-  )
+    if File.exist?(seed_video_path)
+      puts "Attaching demo video from #{seed_video_path}"
+      File.open(seed_video_path, "rb") do |file|
+        demo_video.file.attach(
+          io: file,
+          filename: "IMG_2646.mp4",
+          content_type: "video/mp4"
+        )
+      end
+    else
+      puts "Seed video not found at #{seed_video_path}; demo video will be created without an attachment."
+    end
+  end
 
   unless demo_video.thumbnail.attached?
     thumbnail_path = Rails.root.join("app/assets/images/top.png")
-    raise "Thumbnail not found!" unless File.exist?(thumbnail_path)
-
-    thumb_binary = File.binread(thumbnail_path)
     demo_video.thumbnail.attach(
-      io: StringIO.new(thumb_binary),
+      io: File.open(thumbnail_path),
       filename: "top.png",
       content_type: "image/png"
     )
