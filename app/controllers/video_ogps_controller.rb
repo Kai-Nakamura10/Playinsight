@@ -3,6 +3,9 @@ class VideoOgpsController < ApplicationController
 
   def show
     @video = Video.find_by(id: params[:id])
-    return head :not_found if @video.nil? || @video.visibility_private?
+    if @video.nil? || @video.visibility_private?
+      head :not_found
+      return
+    end
   end
 end
