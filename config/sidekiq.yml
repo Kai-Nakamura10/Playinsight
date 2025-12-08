@@ -1,7 +1,8 @@
-:concurrency: 1
 :queues:
-  - [video, 1]
-  - [default, 1]
+  - video
+  - default
+
+:concurrency: 1
 
 production:
   :concurrency: 1

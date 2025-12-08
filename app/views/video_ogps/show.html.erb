@@ -2,7 +2,7 @@
 <% content_for :meta_description, @video.description.presence || "バスケの戦術を理解しよう" %>
 <% content_for :meta_image, (@video.thumbnail.attached? ? url_for(@video.thumbnail) : image_url("Frame 6.png")) %>
 <% content_for :meta_image_alt, "#{@video.title} のサムネイル" %>
-<% content_for :meta_url, canonical_url(video_url(@video)) %>
+<% content_for :meta_url, video_ogp_url(@video) %>
 <% content_for :meta_type, "video.other" %>
 
 <main class="pt-20">
