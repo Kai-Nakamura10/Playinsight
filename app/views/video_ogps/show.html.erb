@@ -7,9 +7,20 @@
 
 <main class="pt-20">
   <section class="max-w-3xl mx-auto px-4 py-10 text-center space-y-4">
-    <h1 class="text-2xl font-semibold">OGP プレビュー</h1>
-    <p class="text-gray-600">
-      このページは SNS などのプレビュー専用です。動画の閲覧にはログインが必要です。
+
+    <h1 class="text-2xl font-semibold"><%= @video.title %></h1>
+
+    <% if @video.thumbnail.attached? %>
+      <%= image_tag @video.thumbnail, class: "rounded-xl shadow mx-auto max-w-full" %>
+    <% else %>
+      <%= image_tag "Frame 6.png", class: "rounded-xl shadow mx-auto max-w-full" %>
+    <% end %>
+
+    <p class="text-gray-700 mt-4 leading-relaxed"><%= @video.description %></p>
+
+    <p class="text-gray-500 mt-6">
+      ※ この動画の閲覧にはログインが必要です。
     </p>
+
   </section>
 </main>
