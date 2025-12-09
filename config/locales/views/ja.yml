@@ -1,14 +1,25 @@
 ja:
   header:
+    learning: 学習用
+    strategy: 戦略立案
     basic_rules: 基本ルール解説
+    basic_rules_hint: ファウルや得点方法を図解でざっと確認
     tactics: 戦術解説
+    tactics_hint: 攻守のセオリーを動きの流れで理解
     rule_search: ルール検索機能
+    rule_search_hint: 知りたい反則をキーワードで探す
     tactics_quiz: 戦術クイズ
+    tactics_quiz_hint: シチュエーション別の理解度をクイズで確認
     faq: 質問集
+    faq_hint: よくある疑問にQ&A形式ですぐ回答
     best_selections: 状況判断クイズ
+    best_selections_hint: 最適な選択肢を選んで判断力を磨く
     videos: 試合分析
+    videos_hint: 試合の流れを解説付き動画で学ぶ
     sign_in: サインイン
+    sign_in_hint: ログインして学習データを保存
     sign_out: サインアウト
+    sign_out_hint: サインアウトして別のアカウントへ切替
   time:
     formats:
       default: "%Y/%m/%d(%a) %H:%M"

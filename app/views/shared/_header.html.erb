@@ -4,6 +4,16 @@
       <%= image_tag 'logo.png', class: 'h-15 w-auto' %>
     <% end %>
 
+    <% nav_item_classes = 'block h-full px-4 py-3 md:px-4 md:py-3 hover:bg-gray-100 rounded-md transition text-gray-800' %>
+    <% nav_item_disabled_classes = 'block h-full px-4 py-3 md:px-4 md:py-3 text-gray-400 cursor-not-allowed' %>
+    <% nav_text_classes = 'flex flex-col gap-1 text-left' %>
+    <% nav_description_classes = 'text-xs text-gray-500 leading-snug' %>
+    <% nav_description_disabled_classes = 'text-xs text-gray-400 leading-snug' %>
+    <% category_label_classes = 'hidden md:flex items-center gap-2 font-semibold text-gray-900 px-3 py-2 rounded-md hover:bg-gray-50 transition cursor-pointer' %>
+    <% category_mobile_title_classes = 'md:hidden font-semibold text-gray-900 mb-2' %>
+    <% dropdown_panel_classes = 'hidden md:group-hover:block md:group-focus-within:block absolute left-0 mt-2 w-80' %>
+    <% dropdown_container_classes = 'bg-white border border-gray-200 shadow-lg rounded-lg py-2' %>
+
     <nav data-controller="toggle">
       <button data-action="click->toggle#toggle" class="block md:hidden p-2 text-gray-800 focus:outline-none">
         <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -12,50 +22,224 @@
       </button>
 
       <div data-toggle-target="panel" class="hidden md:block absolute top-16 left-0 w-full bg-white shadow-lg md:relative md:top-0 md:shadow-none z-[1000]">
-        <ul class="flex justify-between flex-col md:flex-row md:items-center md:space-x-6 p-4 md:p-0">
-          <li>
-            <% if @header_rule %>
-              <%= link_to t('header.basic_rules'), rule_path(@header_rule), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer flex items-center', id: 'header-board-menu' %>
-            <% else %>
-              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed flex items-center" aria-disabled="true"><%= t('header.basic_rules') %></span>
+        <ul class="flex flex-col gap-6 md:flex-row md:items-center md:gap-6 p-4 md:p-0">
+          <li class="relative group w-full md:w-auto">
+            <span class="<%= category_mobile_title_classes %>"><%= t('header.learning') %></span>
+            <div class="space-y-2 md:hidden">
+              <% if @header_rule %>
+                <%= link_to rule_path(@header_rule), class: "#{nav_item_classes} cursor-pointer", id: 'header-board-menu' do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.basic_rules') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.basic_rules_hint') %></span>
+                  </span>
+                <% end %>
+              <% else %>
+                <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium"><%= t('header.basic_rules') %></span>
+                    <span class="<%= nav_description_disabled_classes %>"><%= t('header.basic_rules_hint') %></span>
+                  </span>
+                </div>
+              <% end %>
+              <%= link_to search_rules_path, class: "#{nav_item_classes} cursor-pointer" do %>
+                <span class="<%= nav_text_classes %>">
+                  <span class="font-medium text-gray-900"><%= t('header.rule_search') %></span>
+                  <span class="<%= nav_description_classes %>"><%= t('header.rule_search_hint') %></span>
+                </span>
+              <% end %>
+              <% if @header_question %>
+                <%= link_to question_path(@header_question), class: "#{nav_item_classes} cursor-pointer" do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.tactics_quiz') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.tactics_quiz_hint') %></span>
+                  </span>
+                <% end %>
+              <% else %>
+                <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium"><%= t('header.tactics_quiz') %></span>
+                    <span class="<%= nav_description_disabled_classes %>"><%= t('header.tactics_quiz_hint') %></span>
+                  </span>
+                </div>
+              <% end %>
+              <% if @header_faq %>
+                <%= link_to faq_path(@header_faq), class: "#{nav_item_classes} cursor-pointer" do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.faq') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.faq_hint') %></span>
+                  </span>
+                <% end %>
+              <% else %>
+                <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium"><%= t('header.faq') %></span>
+                    <span class="<%= nav_description_disabled_classes %>"><%= t('header.faq_hint') %></span>
+                  </span>
+                </div>
+              <% end %>
+            </div>
+
+            <button class="<%= category_label_classes %>" type="button">
+              <span><%= t('header.learning') %></span>
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <div class="<%= dropdown_panel_classes %>">
+              <div class="<%= dropdown_container_classes %>">
+                <% if @header_rule %>
+                  <%= link_to rule_path(@header_rule), class: "#{nav_item_classes} cursor-pointer", id: 'header-board-menu' do %>
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium text-gray-900"><%= t('header.basic_rules') %></span>
+                      <span class="<%= nav_description_classes %>"><%= t('header.basic_rules_hint') %></span>
+                    </span>
+                  <% end %>
+                <% else %>
+                  <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium"><%= t('header.basic_rules') %></span>
+                      <span class="<%= nav_description_disabled_classes %>"><%= t('header.basic_rules_hint') %></span>
+                    </span>
+                  </div>
+                <% end %>
+                <%= link_to search_rules_path, class: "#{nav_item_classes} cursor-pointer" do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.rule_search') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.rule_search_hint') %></span>
+                  </span>
+                <% end %>
+                <% if @header_question %>
+                  <%= link_to question_path(@header_question), class: "#{nav_item_classes} cursor-pointer" do %>
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium text-gray-900"><%= t('header.tactics_quiz') %></span>
+                      <span class="<%= nav_description_classes %>"><%= t('header.tactics_quiz_hint') %></span>
+                    </span>
+                  <% end %>
+                <% else %>
+                  <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium"><%= t('header.tactics_quiz') %></span>
+                      <span class="<%= nav_description_disabled_classes %>"><%= t('header.tactics_quiz_hint') %></span>
+                    </span>
+                  </div>
+                <% end %>
+                <% if @header_faq %>
+                  <%= link_to faq_path(@header_faq), class: "#{nav_item_classes} cursor-pointer" do %>
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium text-gray-900"><%= t('header.faq') %></span>
+                      <span class="<%= nav_description_classes %>"><%= t('header.faq_hint') %></span>
+                    </span>
+                  <% end %>
+                <% else %>
+                  <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium"><%= t('header.faq') %></span>
+                      <span class="<%= nav_description_disabled_classes %>"><%= t('header.faq_hint') %></span>
+                    </span>
+                  </div>
+                <% end %>
+              </div>
+            </div>
+          </li>
+
+          <li class="relative group w-full md:w-auto">
+            <span class="<%= category_mobile_title_classes %>"><%= t('header.strategy') %></span>
+            <div class="space-y-2 md:hidden">
+              <% if @header_tactic %>
+                <%= link_to tactic_path(@header_tactic), class: "#{nav_item_classes} cursor-pointer" do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.tactics') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.tactics_hint') %></span>
+                  </span>
+                <% end %>
+              <% else %>
+                <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium"><%= t('header.tactics') %></span>
+                    <span class="<%= nav_description_disabled_classes %>"><%= t('header.tactics_hint') %></span>
+                  </span>
+                </div>
+              <% end %>
+              <% if @header_bestselect %>
+                <%= link_to bestselect_path(@header_bestselect), class: "#{nav_item_classes} cursor-pointer" do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.best_selections') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.best_selections_hint') %></span>
+                  </span>
+                <% end %>
+              <% else %>
+                <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium"><%= t('header.best_selections') %></span>
+                    <span class="<%= nav_description_disabled_classes %>"><%= t('header.best_selections_hint') %></span>
+                  </span>
+                </div>
+              <% end %>
+              <%= link_to videos_path, class: "#{nav_item_classes} cursor-pointer" do %>
+                <span class="<%= nav_text_classes %>">
+                  <span class="font-medium text-gray-900"><%= t('header.videos') %></span>
+                  <span class="<%= nav_description_classes %>"><%= t('header.videos_hint') %></span>
+                </span>
+              <% end %>
+            </div>
+
+            <button class="<%= category_label_classes %>" type="button">
+              <span><%= t('header.strategy') %></span>
+              <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"/>
+              </svg>
+            </button>
+
+            <div class="<%= dropdown_panel_classes %>">
+              <div class="<%= dropdown_container_classes %>">
+                <% if @header_tactic %>
+                  <%= link_to tactic_path(@header_tactic), class: "#{nav_item_classes} cursor-pointer" do %>
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium text-gray-900"><%= t('header.tactics') %></span>
+                      <span class="<%= nav_description_classes %>"><%= t('header.tactics_hint') %></span>
+                    </span>
+                  <% end %>
+                <% else %>
+                  <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium"><%= t('header.tactics') %></span>
+                      <span class="<%= nav_description_disabled_classes %>"><%= t('header.tactics_hint') %></span>
+                    </span>
+                  </div>
+                <% end %>
+                <% if @header_bestselect %>
+                  <%= link_to bestselect_path(@header_bestselect), class: "#{nav_item_classes} cursor-pointer" do %>
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium text-gray-900"><%= t('header.best_selections') %></span>
+                      <span class="<%= nav_description_classes %>"><%= t('header.best_selections_hint') %></span>
+                    </span>
+                  <% end %>
+                <% else %>
+                  <div class="<%= nav_item_disabled_classes %>" aria-disabled="true">
+                    <span class="<%= nav_text_classes %>">
+                      <span class="font-medium"><%= t('header.best_selections') %></span>
+                      <span class="<%= nav_description_disabled_classes %>"><%= t('header.best_selections_hint') %></span>
+                    </span>
+                  </div>
+                <% end %>
+                <%= link_to videos_path, class: "#{nav_item_classes} cursor-pointer" do %>
+                  <span class="<%= nav_text_classes %>">
+                    <span class="font-medium text-gray-900"><%= t('header.videos') %></span>
+                    <span class="<%= nav_description_classes %>"><%= t('header.videos_hint') %></span>
+                  </span>
+                <% end %>
+              </div>
+            </div>
+          </li>
+
+          <li class="w-full md:w-auto">
+            <%= link_to destroy_user_session_path, class: "#{nav_item_classes} cursor-pointer border border-gray-200 md:border-transparent md:hover:border-gray-200", data: { turbo_method: :delete } do %>
+              <span class="<%= nav_text_classes %>">
+                <span class="font-medium text-gray-900"><%= t('header.sign_out') %></span>
+                <span class="<%= nav_description_classes %>"><%= t('header.sign_out_hint') %></span>
+              </span>
             <% end %>
-          </li>
-          <li>
-            <% if @header_tactic %>
-              <%= link_to t('header.tactics'), tactic_path(@header_tactic), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-            <% else %>
-              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed" aria-disabled="true"><%= t('header.tactics') %></span>
-            <% end %>
-          </li>
-          <li>
-            <%= link_to t('header.rule_search'), search_rules_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-          </li>
-          <li>
-            <% if @header_question %>
-              <%= link_to t('header.tactics_quiz'), question_path(@header_question), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-            <% else %>
-              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed" aria-disabled="true"><%= t('header.tactics_quiz') %></span>
-            <% end %>
-          </li>
-          <li>
-            <% if @header_faq %>
-              <%= link_to t('header.faq'), faq_path(@header_faq), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-            <% else %>
-              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed" aria-disabled="true"><%= t('header.faq') %></span>
-            <% end %>
-          </li>
-          <li>
-            <% if @header_bestselect %>
-              <%= link_to t('header.best_selections'), bestselect_path(@header_bestselect), class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-            <% else %>
-              <span class="text-gray-400 px-4 py-2 rounded cursor-not-allowed" aria-disabled="true"><%= t('header.best_selections') %></span>
-            <% end %>
-          </li>
-          <li>
-            <%= link_to t('header.videos'), videos_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer' %>
-          </li>
-          <li>
-            <%= link_to t('header.sign_out'), destroy_user_session_path, class: 'text-gray-800 px-4 py-2 rounded hover:bg-gray-200 cursor-pointer', data: { turbo_method: :delete } %>
           </li>
         </ul>
       </div>
