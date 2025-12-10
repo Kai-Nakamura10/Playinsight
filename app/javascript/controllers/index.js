@@ -9,6 +9,8 @@ application.register("hello", HelloController)
 
 import ToggleController from "./toggle_controller"
 application.register("toggle", ToggleController)
+import AccordionController from "./accordion_controller"
+application.register("accordion", AccordionController)
 import BestselectController from "./bestselect_controller"
 application.register("bestselect", BestselectController)
 import AutocompleteController from "./autocomplete_controller"
