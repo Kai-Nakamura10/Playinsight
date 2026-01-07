@@ -22,7 +22,9 @@ class VideosController < ApplicationController
     @new_comment = @video.comments.new
     @video_tactics = @video.video_tactics.includes(:tactic).order(:display_time)
     @tactics = Tactic.order(:title)
-    @tactics_payload = @video.video_tactics.includes(:tactic).order(:display_time).map { |vt| { display_time: vt.display_time.to_f, tactic_name: vt.tactic.title } }
+    @tactics_payload = @video.video_tactics.includes(:tactic).order(:display_time)
+                              .map { |vt| { display_time: vt.display_time.to_f, tactic_name: vt.tactic.title } }
+                              .to_json
   end
 
   def edit
