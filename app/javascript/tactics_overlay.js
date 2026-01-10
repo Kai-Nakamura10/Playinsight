@@ -38,13 +38,12 @@ function initTacticsOverlay() {
   // Sort ascending for natural forward traversal
   tacticsData.sort((a, b) => Number(a.display_time) - Number(b.display_time));
 
-  // Track shown items; show each only once per page load
-  const fired = new Set();
   const keyOf = (t) => `${t.display_time}:${t.tactic_name}`;
 
   // Toast element for display
   const toastId = `tactic-toast-${videoId}`;
   let toast = document.getElementById(toastId);
+  const playerRoot = player.el?.() || videoEl.parentElement || overlay;
   if (!toast) {
     toast = document.createElement("div");
     toast.id = toastId;
@@ -54,21 +53,23 @@ function initTacticsOverlay() {
       "text-sm", "md:text-base", "font-semibold",
       "rounded-md", "px-3", "py-2",
       "shadow-xl", "ring-1", "ring-black/10",
+      "z-[100]", "pointer-events-none",
       "hidden"
     ].join(" ");
     toast.style.right = "12px";
     toast.style.top = "12px";
-    overlay.appendChild(toast);
+    playerRoot.appendChild(toast);
   }
 
-  let hideTimer = null;
+  let activeKey = null;
   function showTactic(t) {
     toast.textContent = String(t.tactic_name || "戦術");
     toast.classList.remove("hidden");
-    if (hideTimer) clearTimeout(hideTimer);
-    hideTimer = setTimeout(() => {
-      toast.classList.add("hidden");
-    }, 3000);
+  }
+
+  function hideTactic() {
+    toast.classList.add("hidden");
+    activeKey = null;
   }
 
   let prev = 0;
@@ -99,33 +100,27 @@ function initTacticsOverlay() {
         return;
       }
 
-      const forward = now >= prev;
-
-      if (forward) {
-        // Forward: check from small -> large
-        tacticsData.forEach((t) => {
-          if (fired.has(keyOf(t))) return;
-          const m = Number(t.display_time) || 0;
-          // Crossing condition (forward): prev < m <= now
-          if (prev < m && m <= now) {
-            showTactic(t);
-            fired.add(keyOf(t));
-          }
-        });
-      } else {
-        // Rewind: check from large -> small for natural order
-        tacticsData.slice().reverse().forEach((t) => {
-          if (fired.has(keyOf(t))) return;
-          const m = Number(t.display_time) || 0;
-          // Crossing condition (rewind): now <= m < prev
-          if (now <= m && m < prev) {
-            showTactic(t);
-            fired.add(keyOf(t));
-          }
-        });
+      if (Math.abs(now - prev) >= 1) {
+        prev = now;
+        return;
       }
 
-      prev = now; // Important: update at the end
+      const match = tacticsData.find((t) => {
+        const start = Number(t.display_time) || 0;
+        return now >= start && now <= start + 2;
+      });
+
+      if (match) {
+        const nextKey = keyOf(match);
+        if (activeKey !== nextKey) {
+          showTactic(match);
+          activeKey = nextKey;
+        }
+      } else if (!toast.classList.contains("hidden")) {
+        hideTactic();
+      }
+
+      prev = now;
     });
   });
 }
