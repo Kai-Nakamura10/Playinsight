@@ -39,6 +39,14 @@
 これらの原因を補うことが出来るアプリ、それが『Playinsight』となっています。<br>
 <br>
 
+# 💻 機能紹介
+
+| ユーザー登録 / ログイン |
+| :---: | 
+| [![Image from Gyazo](https://i.gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612.gif)](https://gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612) |
+| <p align="left">『ニックネーム』『メールアドレス』『パスワード』『確認用パスワード』を入力してユーザー登録を行います。</p> |
+<br>
+
 # 🔧 技術構成について
 
 ## 使用技術
@@ -55,7 +63,7 @@
 <br>
 
 ## ER図
-<img width="713" alt="image" src="https://github.com/SatoNozomi44/Tra_gori/assets/130850494/062a742e-d459-4a26-8ed0-f94a7fb0809d">
+<img width="1542" height="933" alt="Playinsight drawio" src="https://github.com/user-attachments/assets/7cbb69b7-3989-4bcf-becc-2d8700c6425d" />
 <br>
 
 ## 画面遷移図
