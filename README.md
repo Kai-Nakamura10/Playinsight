@@ -39,6 +39,14 @@
 これらの原因を補うことが出来るアプリ、それが『Playinsight』となっています。<br>
 <br>
 
+# 💻 機能紹介
+
+| ユーザー登録 / ログイン |
+| :---: | 
+| [![Image from Gyazo](https://i.gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612.gif)](https://gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612) |
+| <p align="left">『ニックネーム』『メールアドレス』『パスワード』『確認用パスワード』を入力してユーザー登録を行います。</p> |
+<br>
+
 # 🔧 技術構成について
 
 ## 使用技術
