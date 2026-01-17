@@ -55,7 +55,7 @@
 <br>
 
 ## ER図
-<img width="713" alt="image" src="https://github.com/SatoNozomi44/Tra_gori/assets/130850494/062a742e-d459-4a26-8ed0-f94a7fb0809d">
+<img width="1542" height="933" alt="Playinsight drawio" src="https://github.com/user-attachments/assets/7cbb69b7-3989-4bcf-becc-2d8700c6425d" />
 <br>
 
 ## 画面遷移図
