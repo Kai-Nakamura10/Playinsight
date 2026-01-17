@@ -43,7 +43,7 @@
 
 | ユーザー登録 / ログイン |
 | :---: | 
-| [![Image from Gyazo](https://i.gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612.gif)](https://gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612) |
+| ![play-insight-google-chrome-2026-01-17-18-19-13_jT58qKCo](https://github.com/user-attachments/assets/ecb0f880-8fff-4d83-8c2e-710bcaedc2b0) |
 | <p align="left">『ニックネーム』『メールアドレス』『パスワード』『確認用パスワード』を入力してユーザー登録を行います。</p> |
 <br>
 
