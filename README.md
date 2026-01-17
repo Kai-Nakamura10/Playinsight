@@ -43,7 +43,7 @@
 
 | ユーザー登録 / ログイン |
 | :---: | 
-| https://github.com/user-attachments/assets/7fd11500-c5fd-415f-b719-5ff4b054f7d3 |
+| <img width="1542" height="933" alt="Playinsight video" src="https://github.com/user-attachments/assets/7fd11500-c5fd-415f-b719-5ff4b054f7d3" /> |
 | <p align="left">『ニックネーム』『メールアドレス』『パスワード』『確認用パスワード』を入力してユーザー登録を行います。</p> |
 <br>
 
