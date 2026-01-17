@@ -43,7 +43,7 @@
 
 | ユーザー登録 / ログイン |
 | :---: | 
-| [![Image from Gyazo](https://i.gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612.gif)](https://gyazo.com/173476b60f4e4b6cffc6c71fb4fbf612) |
+| https://github.com/user-attachments/assets/7fd11500-c5fd-415f-b719-5ff4b054f7d3 |
 | <p align="left">『ニックネーム』『メールアドレス』『パスワード』『確認用パスワード』を入力してユーザー登録を行います。</p> |
 <br>
 
