@@ -43,7 +43,7 @@
 
 | ユーザー登録 / ログイン |
 | :---: | 
-| <img width="1542" height="933" alt="Playinsight video" src="https://github.com/user-attachments/assets/7fd11500-c5fd-415f-b719-5ff4b054f7d3" /> |
+| ![play-insight-google-chrome-2026-01-17-18-19-13_jT58qKCo](https://github.com/user-attachments/assets/ecb0f880-8fff-4d83-8c2e-710bcaedc2b0) |
 | <p align="left">『ニックネーム』『メールアドレス』『パスワード』『確認用パスワード』を入力してユーザー登録を行います。</p> |
 <br>
 
