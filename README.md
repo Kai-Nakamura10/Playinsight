@@ -53,6 +53,12 @@
 | <p align="left">基本ルールがテキストベースで閲覧することが可能。<p> |
 <br>
 
+| 戦術表示機能 |
+| :---: | 
+| [![Image from Gyazo](https://i.gyazo.com/90b60bc6a4cd317eac41d4fc0721c1e7.gif)](https://gyazo.com/90b60bc6a4cd317eac41d4fc0721c1e7) |
+| <p align="left">好きなタイミングで戦術表示できます。<p> |
+<br>
+
 # 🔧 技術構成について
 
 ## 使用技術
