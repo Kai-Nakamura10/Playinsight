@@ -55,7 +55,7 @@
 
 | 戦術表示機能 |
 | :---: | 
-| [![Image from Gyazo](https://i.gyazo.com/90b60bc6a4cd317eac41d4fc0721c1e7.gif)](https://gyazo.com/90b60bc6a4cd317eac41d4fc0721c1e7) |
+| ![play-insight-google-chrome-2026-01-19-20-43-20_Wf2HHUXv](https://github.com/user-attachments/assets/494f3311-1bbc-4a80-a33b-22fd3aa201a9) |
 | <p align="left">好きなタイミングで戦術表示できます。<p> |
 <br>
 
