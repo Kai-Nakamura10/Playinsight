@@ -49,7 +49,7 @@
 
 | 基本ルール解説 |
 | :---: | 
-| [![Image from Gyazo](https://i.gyazo.com/b6e76e961a1be1e83b8ae55876e91762.gif)](https://gyazo.com/b6e76e961a1be1e83b8ae55876e91762) |
+| ![play-insight-google-chrome-2026-01-19-20-10-56_EcWQxa5w](https://github.com/user-attachments/assets/b12db2c8-9b6c-48f1-a079-53b824bd99a6) |
 | <p align="left">基本ルールがテキストベースで閲覧することが可能。<p> |
 <br>
 
